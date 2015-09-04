@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+
+require('../env/development');
+
+var app = require('app');
+
+
+app.start();

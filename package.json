@@ -39,7 +39,7 @@
     "game"
   ],
   "license": "MIT",
-  "main": "app.es6",
+  "main": "./client/app.es6",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kjirou/project-progress.git"
