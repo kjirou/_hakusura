@@ -1,3 +1,3 @@
-# see-you-in-the-hell
+# fury-road
 
 A simple hack & slash game
