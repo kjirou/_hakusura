@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+
+require('../env/development');
+
+var CliApp = require('client/containers/CliApp');
+
+
+(new CliApp()).start();

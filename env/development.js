@@ -7,6 +7,4 @@ require('module')._initPaths();
 
 require('babel/register');
 
-var React = require('react');
-global.React = React;
-global.Arda = require('arda');
+global.React = require('react');
