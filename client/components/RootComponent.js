@@ -1,6 +1,10 @@
+import {pages} from './pages';
+
+
 export default class RootComponent extends React.Component {
 
   render() {
+
     let props = {
       top: 'center',
       left: 'center',
@@ -19,6 +23,12 @@ export default class RootComponent extends React.Component {
       content: 'RootComponent!'
     };
 
-    return <box {...props} />;
+    const ActivePageComponent = pages['welcome'];
+
+    return (
+      <box {...props}>
+        <ActivePageComponent />
+      </box>
+    );
   }
 }
