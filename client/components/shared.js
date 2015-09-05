@@ -1,5 +1,5 @@
 const shared = {
-  pageComponentProps: {
+  pageProps: {
     top: 'top',
     left: 'left',
     width: 80,

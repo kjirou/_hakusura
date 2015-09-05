@@ -1,7 +1,19 @@
 import {pages} from './pages';
+import shared from './shared';
 
 
-export default class RootComponent extends React.Component {
+class RootComponent extends React.Component {
+
+  constructor(props, context) {
+    super(props, context);
+  }
+
+  // Doesn't work, ref #1
+  //getChildContext() {
+  //  return {
+  //    shared: shared
+  //  };
+  //}
 
   render() {
 
@@ -32,3 +44,12 @@ export default class RootComponent extends React.Component {
     );
   }
 }
+
+Object.assign(RootComponent, {
+  childContextTypes: {
+    shared: React.PropTypes.object.isRequired
+  }
+});
+
+
+export default RootComponent;

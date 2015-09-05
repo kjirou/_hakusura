@@ -5,6 +5,10 @@ import shared from '../shared';
 
 export default class WelcomePageComponent extends React.Component {
 
+  constructor(props, context) {
+    super(props, context);
+  }
+
   render() {
 
     let content = '';
@@ -12,7 +16,7 @@ export default class WelcomePageComponent extends React.Component {
     // Title
     content += '{magenta-fg}Fury Road{/}';
 
-    let props = Object.assign({}, shared.pageComponentProps);
+    let props = Object.assign({}, shared.pageProps);
 
     return (
       <box {...props} >
