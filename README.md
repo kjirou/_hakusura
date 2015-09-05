@@ -1,3 +1,3 @@
-# project-and-progress
+# see-you-in-the-hell
 
-A project progress management game by CUI
+A simple hack & slash game

@@ -1,10 +1,10 @@
 {
-  "name": "project-and-progress",
-  "description": "A project progress management game by CUI",
+  "name": "see-you-in-the-hell",
+  "description": "A simple hack & slash game",
   "version": "0.0.0",
   "author": "kjirou",
   "bugs": {
-    "url": "https://github.com/kjirou/project-and-progress/issues"
+    "url": "https://github.com/kjirou/see-you-in-the-hell/issues"
   },
   "dependencies": {
     "arda": "0.15.1",
@@ -33,7 +33,7 @@
     "node": "<=0.12",
     "npm": "<=2"
   },
-  "homepage": "https://github.com/kjirou/project-and-progress#readme",
+  "homepage": "https://github.com/kjirou/see-you-in-the-hell#readme",
   "keywords": [
     "cui",
     "game"
@@ -43,7 +43,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kjirou/project-and-progress.git"
+    "url": "git+https://github.com/kjirou/see-you-in-the-hell.git"
   },
   "scripts": {
     "test": "mocha"
