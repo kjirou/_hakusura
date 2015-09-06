@@ -1,9 +1,9 @@
 import Rx from 'rx';
+import SingletonMixin from 'singleton-mixin';
 
 import {onError} from 'input/subscriptions/error';
 import {onKeypress} from 'input/subscriptions/keypress';
 import {onTimer} from 'input/subscriptions/timer';
-import SingletonMixin from 'lib/SingletonMixin';
 import {calculateMillisecondsPerFrame} from 'lib/util';
 
 
@@ -65,10 +65,10 @@ export default class AppInput {
   }
 }
 
-Object.assign(AppInput, SingletonMixin);
-
-AppInput._destructInstance = function _destructInstance() {
-  if (this._instance) {
-    this._instance._destructor();
+Object.assign(AppInput, SingletonMixin, {
+  destructInstance() {
+    if (this._instance) {
+      this._instance._destructor();
+    }
   }
-};
+});

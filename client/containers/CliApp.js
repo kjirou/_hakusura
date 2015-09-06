@@ -3,8 +3,8 @@ import {render} from 'react-blessed';
 
 import RootComponent from 'components/RootComponent';
 import EventTypes from 'consts/EventTypes';
+import AppEvent from 'containers/AppEvent';
 import AppInput from 'input/AppInput';
-import AppStore from 'store/AppStore';
 
 
 export default class CliApp {
@@ -12,8 +12,7 @@ export default class CliApp {
   constructor() {
     this._screen = null;
 
-    // Initialize global instances
-    AppStore.getInstance();
+    // Start input subscriptions
     AppInput.getInstance();
   }
 
@@ -46,13 +45,14 @@ export default class CliApp {
    * Don't execute twice in a one process
    */
   start() {
+    const {emitter} = AppEvent.getInstance();
     const screen = this._createScreen();
 
     screen.debugLog.unkey(['q', 'escape']);
 
-    process.on(EventTypes.PRINT_SCREEN_DEBUG_LOG, this._onPrintScreenDebugLog.bind(this));
-    process.on(EventTypes.DEBUG, this._onPrintScreenDebugLog.bind(this));  // short hand
-    process.on(EventTypes.EXIT_SCREEN, this._onExitScreen.bind(this));
+    emitter.on(EventTypes.PRINT_SCREEN_DEBUG_LOG, this._onPrintScreenDebugLog.bind(this));
+    emitter.on(EventTypes.DEBUG, this._onPrintScreenDebugLog.bind(this));  // short hand
+    emitter.on(EventTypes.EXIT_SCREEN, this._onExitScreen.bind(this));
 
     render(<RootComponent />, screen);
 
