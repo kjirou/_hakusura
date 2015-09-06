@@ -18,6 +18,7 @@ export function clearApp() {
     .then(() => {
       AppInput.clearInstance();
       AppStore.clearInstance();
+      AppEvent.clearInstance();
     })
   ;
 }
