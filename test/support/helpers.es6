@@ -1,6 +1,7 @@
 import path from 'path';
 
 import conf from 'conf';
+import AppEvent from 'containers/AppEvent';
 import AppInput from 'input/AppInput';
 import AppStore from 'store/AppStore';
 
@@ -17,6 +18,7 @@ export function clearApp() {
     .then(() => {
       AppInput.clearInstance();
       AppStore.clearInstance();
+      AppEvent.clearInstance();
     })
   ;
 }

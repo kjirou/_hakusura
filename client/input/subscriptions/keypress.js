@@ -1,4 +1,5 @@
 import EventTypes from 'consts/EventTypes';
+import AppEvent from 'containers/AppEvent';
 import AppStore from 'store/AppStore';
 
 
@@ -16,11 +17,12 @@ function acceptKeyOnGamePage(state, dispatchers, keyName, keySequence, isControl
 
 
 export function onKeypress({ name, sequence, ctrl }) {
+  const {emitter} = AppEvent.getInstance();
   const {dispatchers, store} = AppStore.getInstance();
   const state = store.getState();
 
   if (name === 'escape' || ctrl && name === 'c') {
-    process.emit(EventTypes.EXIT_SCREEN);
+    emitter.emit(EventTypes.EXIT_SCREEN);
     return;
   }
 
@@ -31,7 +33,7 @@ export function onKeypress({ name, sequence, ctrl }) {
 
   if (!acceptKeyByActivePage) {
     const err = new Error(state.screen.activePageId + ' is invalid pageId');
-    process.emit(EventTypes.THROW_RUNTIME_ERROR, err);
+    emitter.emit(EventTypes.THROW_RUNTIME_ERROR, err);
     return;
   }
 

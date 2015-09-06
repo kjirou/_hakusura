@@ -1,7 +1,7 @@
 import {bindActionCreators, createStore} from 'redux';
+import SingletonMixin from 'singleton-mixin';
 
 import ScreenActionCreators from 'actions/ScreenActionCreators';
-import SingletonMixin from 'lib/SingletonMixin';
 import rootReducer from 'reducers';
 
 
