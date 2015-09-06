@@ -1,0 +1,35 @@
+{
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true
+    },
+    "rules": {
+        "linebreak-style": [
+            2,
+            "unix"
+        ],
+        "no-console": 0,
+        "no-unused-vars": [
+            2,
+            {
+                "args": "none"
+            }
+        ],
+        "quotes": [
+            2,
+            "single"
+        ],
+        "semi": [
+            2,
+            "always"
+        ]
+    },
+    "env": {
+        "es6": true,
+        "node": true
+    },
+    "extends": "eslint:recommended",
+    "globals": {
+        "React": true
+    }
+}

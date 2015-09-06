@@ -1,4 +1,4 @@
-export var WelcomePageComponent = require('./WelcomePageComponent');
 export var pages = {
-  welcome: WelcomePageComponent
+  game: require('./GamePageComponent'),
+  welcome: require('./WelcomePageComponent'),
 };

@@ -1,11 +1,20 @@
 import {pages} from './pages';
-import shared from './shared';
+//import shared from './shared';
+import AppStore from 'store/AppStore';
 
 
 class RootComponent extends React.Component {
 
   constructor(props, context) {
     super(props, context);
+
+    const {store} = AppStore.getInstance();
+
+    this.state = store.getState();  // Can't use setState
+
+    store.subscribe(() => {
+      this.setState(store.getState());
+    });
   }
 
   // Doesn't work, ref #1
@@ -32,10 +41,10 @@ class RootComponent extends React.Component {
           fg: 'white'
         }
       },
-      content: 'RootComponent!'
+      content: this.constructor.name,
     };
 
-    const ActivePageComponent = pages['welcome'];
+    const ActivePageComponent = pages[this.state.screen.activePageId];
 
     return (
       <box {...props}>
@@ -45,11 +54,11 @@ class RootComponent extends React.Component {
   }
 }
 
-Object.assign(RootComponent, {
-  childContextTypes: {
-    shared: React.PropTypes.object.isRequired
-  }
-});
-
+// Doesn't work, ref #1
+//Object.assign(RootComponent, {
+//  childContextTypes: {
+//    shared: React.PropTypes.object.isRequired
+//  }
+//});
 
 export default RootComponent;

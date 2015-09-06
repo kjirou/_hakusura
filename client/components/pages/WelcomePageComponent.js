@@ -1,13 +1,7 @@
-import _ from 'lodash';
-
 import shared from '../shared';
 
 
 export default class WelcomePageComponent extends React.Component {
-
-  constructor(props, context) {
-    super(props, context);
-  }
 
   render() {
 
