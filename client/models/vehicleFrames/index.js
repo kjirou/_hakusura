@@ -41,7 +41,7 @@ Object.assign(VehicleFrameModel, {
 // spiked 小型、トゲトゲ付き
 // classic 小型、全般的に弱いが特殊能力有り
 // jeep 中型、丈夫、軽量
-// deluxe (from cadillac) 中型、平均的な性能
+// deluxe_car (from cadillac) 中型、平均的な性能
 // armored-deluxe (from coupled-cadillac) 上記に＋装甲＋武器、しかし＋重量
 // supercar (from interceptor) 中型、全般的にかなり強い
 // trailer 大型、超積載、高装甲、高重量、低速
@@ -87,7 +87,7 @@ let modelList = [];
     }
   },
   {
-    typeId: 'deluxe',
+    typeId: 'deluxe_car',
     props: {
       _weight: 1500,
       _maxWeight: 2500,
