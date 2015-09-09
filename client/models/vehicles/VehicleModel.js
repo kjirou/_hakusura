@@ -30,6 +30,9 @@ export default class VehicleModel extends Model {
   get armorPower() {
   }
 
+  get shieldPower() {
+  }
+
   get maxArmorPower() {
     return 1;
   }
