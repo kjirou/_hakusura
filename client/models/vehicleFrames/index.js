@@ -1,7 +1,9 @@
 import _s from 'underscore.string';
 
 import Model from '../Model';
-import { createCounter, dictionarize } from 'lib/util';
+import AutomaticNamingMixin from '../mixins/AutomaticNamingMixin';
+import ParametersMixin from '../mixins/ParametersMixin';
+import { dictionarize } from 'lib/util';
 
 
 function classifyTypeId(typeId) {
@@ -10,21 +12,9 @@ function classifyTypeId(typeId) {
 
 
 export class VehicleFrameModel extends Model {
-
-  constructor(...args) {
-    super(...args);
-
-    this._weight = 0;
-    this._maxWeight = 0;
-    this._fuelEfficiency = 1;
-    this._maxArmorPower = 0;
-    this._operability = 0;
-    this._maxMainGunCount = 0;
-    this._maxSubGunCount = 0;
-    this._maxStaffCount = 1;
-  }
 }
 
+Object.assign(VehicleFrameModel.prototype, AutomaticNamingMixin, ParametersMixin);
 Object.assign(VehicleFrameModel, {
   typeId: '_vehicle_frame',
   sortOrder: 0,
@@ -64,9 +54,8 @@ let modelList = [];
   {
     typeId: 'coupe',
     props: {
-      _weight: 300,
-      _maxWeight: 1000,
-      _fuelEfficiency: 5,
+      _weight: 100,
+      _fuelEfficiencyRate: 1.5,
       _maxArmorPower: 40,
       _operability: 5,
       _maxSubGunCount: 2,
@@ -76,9 +65,8 @@ let modelList = [];
   {
     typeId: 'wagon',
     props: {
-      _weight: 800,
-      _maxWeight: 2000,
-      _fuelEfficiency: 3,
+      _weight: 150,
+      _maxWeight: 300,
       _maxArmorPower: 65,
       _operability: 2,
       _maxMainGunCount: 1,
@@ -89,9 +77,7 @@ let modelList = [];
   {
     typeId: 'deluxe_car',
     props: {
-      _weight: 1500,
-      _maxWeight: 2500,
-      _fuelEfficiency: 3,
+      _weight: 150,
       _maxArmorPower: 100,
       _operability: 3,
       _maxMainGunCount: 1,
@@ -102,9 +88,7 @@ let modelList = [];
   {
     typeId: 'supercar',
     props: {
-      _weight: 1000,
-      _maxWeight: 2500,
-      _fuelEfficiency: 4,
+      _weight: 150,
       _maxArmorPower: 125,
       _operability: 4,
       _maxMainGunCount: 2,

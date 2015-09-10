@@ -21,5 +21,6 @@ describe(heading(__filename), function() {
 
   it('should create a instance by sub class', function() {
     const model = new WoodPlateArmorModel();
+    assert(model.getShieldHardness() > 0);
   });
 });
