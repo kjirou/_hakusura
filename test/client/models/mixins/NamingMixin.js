@@ -1,4 +1,4 @@
-import assert from 'assert'
+import assert from 'power-assert'
 
 import Model from 'models/Model';
 import NamingMixin from 'models/mixins/NamingMixin'

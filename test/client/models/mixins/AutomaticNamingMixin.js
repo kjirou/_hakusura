@@ -1,4 +1,4 @@
-import assert from 'assert'
+import assert from 'power-assert'
 
 import AutomaticNamingMixin from 'models/mixins/AutomaticNamingMixin';
 import {heading} from 'test/support/helpers';
