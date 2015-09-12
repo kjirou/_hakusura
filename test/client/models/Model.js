@@ -1,4 +1,4 @@
-import assert from 'assert'
+import assert from 'power-assert'
 
 import Model from 'models/Model';
 import {heading} from 'test/support/helpers';
