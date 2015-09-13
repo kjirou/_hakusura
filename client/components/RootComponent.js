@@ -1,6 +1,6 @@
 import {pages} from './pages';
 //import shared from './shared';
-import AppStore from 'store/AppStore';
+import AppStore from 'containers/AppStore';
 
 
 class RootComponent extends React.Component {

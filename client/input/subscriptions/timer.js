@@ -1,4 +1,4 @@
-import AppStore from 'store/AppStore';
+import AppStore from 'containers/AppStore';
 
 
 export function onTimer({ value, interval }) {

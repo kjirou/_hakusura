@@ -1,6 +1,6 @@
 import assert from 'power-assert';
 
-import AppStore from 'store/AppStore';
+import AppStore from 'containers/AppStore';
 import {clearApp, heading} from 'test/support/helpers';
 
 

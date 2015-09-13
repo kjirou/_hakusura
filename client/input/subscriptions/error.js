@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 
-import AppStore from 'store/AppStore';
+import AppStore from 'containers/AppStore';
 
 
 export function onError(err) {

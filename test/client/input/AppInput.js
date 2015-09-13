@@ -1,8 +1,8 @@
 import assert from 'power-assert';
 import sinon from 'sinon';
 
+import AppStore from 'containers/AppStore';
 import AppInput from 'input/AppInput';
-import AppStore from 'store/AppStore';
 import {clearApp, heading} from 'test/support/helpers';
 
 

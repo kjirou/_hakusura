@@ -2,8 +2,8 @@ import path from 'path';
 
 import conf from 'conf';
 import AppEvent from 'containers/AppEvent';
+import AppStore from 'containers/AppStore';
 import AppInput from 'input/AppInput';
-import AppStore from 'store/AppStore';
 
 
 export function heading(filePath) {

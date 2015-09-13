@@ -1,6 +1,6 @@
 import EventTypes from 'consts/EventTypes';
 import AppEvent from 'containers/AppEvent';
-import AppStore from 'store/AppStore';
+import AppStore from 'containers/AppStore';
 
 
 function acceptKeyOnWelcomePage(state, dispatchers, keyName, keySequence, isControl) {
