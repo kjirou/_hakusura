@@ -63,6 +63,15 @@ export default class AppInput {
     this._timerSubscription.dispose();
     this._keypressSubscription.dispose();
   }
+
+  // TODO: Created for testing, but not working..
+  //emitKeypress(keyName, isShift = false, isControl = false) {
+  //  process.stdin.emit('keypress', keyName, {
+  //    name: keyName,
+  //    sequence: isShift ? keyName.toUpperCase() : keyName,
+  //    ctrl: isControl,
+  //  });
+  //}
 }
 
 Object.assign(AppInput, SingletonMixin, {

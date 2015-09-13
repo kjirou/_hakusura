@@ -1,7 +1,7 @@
 import _s from 'underscore.string';
 
 import shared from '../shared';
-import { STAGE_SELECTION } from 'consts/keys';
+import { STAGE_SELECTION } from 'consts/Keys';
 import { stages } from 'models/static/stages';
 
 

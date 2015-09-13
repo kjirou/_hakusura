@@ -1,27 +1,36 @@
 import EventTypes from 'consts/EventTypes';
+import { STAGE_SELECTION } from 'consts/Keys';
 import AppEvent from 'containers/AppEvent';
 import AppStore from 'containers/AppStore';
 
 
-function acceptKeyOnWelcomePage(state, dispatchers, keyName, keySequence, isControl) {
-  dispatchers.screen.changePage('game');
-  return true;
+function acceptKeyOnWelcomePage(state, keyName, keySequence, isControl) {
+  const { dispatchers } = AppStore.getInstance();
+
+  const stageTypeId = STAGE_SELECTION[keySequence];
+  if (stageTypeId) {
+    dispatchers.screen.startGame(stageTypeId);
+    return true;
+  }
+
   return false;
 }
 
-function acceptKeyOnGamePage(state, dispatchers, keyName, keySequence, isControl) {
+function acceptKeyOnGamePage(state, keyName, keySequence, isControl) {
+  const { dispatchers } = AppStore.getInstance();
+
   dispatchers.screen.changePage('welcome');
   return true;
   return false;
 }
 
 
-export function onKeypress({ name, sequence, ctrl }) {
+export function onKeypress({ name: keyName, sequence: keySequence, ctrl: isControl }) {
   const {emitter} = AppEvent.getInstance();
-  const {dispatchers, store} = AppStore.getInstance();
+  const {store} = AppStore.getInstance();
   const state = store.getState();
 
-  if (name === 'escape' || ctrl && name === 'c') {
+  if (keyName === 'escape' || isControl && keyName === 'c') {
     emitter.emit(EventTypes.EXIT_SCREEN);
     return;
   }
@@ -37,7 +46,7 @@ export function onKeypress({ name, sequence, ctrl }) {
     return;
   }
 
-  if (acceptKeyByActivePage(state, dispatchers, name, sequence, ctrl)) {
+  if (acceptKeyByActivePage(state, keyName, keySequence, isControl)) {
     return;
   }
 }

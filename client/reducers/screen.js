@@ -11,7 +11,12 @@ export default function screen(state = initialState, action = {}) {
 
     case ActionTypes.CHANGE_PAGE:
       return Object.assign({}, state, {
-        activePageId: action.activePageId
+        activePageId: action.activePageId,
+      });
+
+    case ActionTypes.START_GAME:
+      return Object.assign({}, state, {
+        activePageId: 'game',
       });
 
     default:
