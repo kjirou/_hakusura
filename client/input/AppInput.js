@@ -67,8 +67,6 @@ export default class AppInput {
 
 Object.assign(AppInput, SingletonMixin, {
   destructInstance() {
-    if (this._instance) {
-      this._instance._destructor();
-    }
+    this._instance._destructor();
   }
 });
