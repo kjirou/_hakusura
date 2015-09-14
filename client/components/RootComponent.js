@@ -12,8 +12,14 @@ class RootComponent extends React.Component {
 
     this.state = store.getState();  // Can't use setState
 
+    this._preAppTime = null;
     store.subscribe(() => {
-      this.setState(store.getState());
+      const state = store.getState();
+      const appTime = state.time.appTime;
+      if (appTime !== this._preAppTime) {
+        this.setState(state);
+        this._preAppTime = appTime;
+      }
     });
   }
 

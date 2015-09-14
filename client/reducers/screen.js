@@ -5,7 +5,7 @@ const initialState = {
   activePageId: 'welcome'
 };
 
-export default function screen(state = initialState, action = {}) {
+export default function screenReducer(state = initialState, action = {}) {
 
   switch (action.type) {
 

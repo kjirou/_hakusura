@@ -11,6 +11,13 @@ const ScreenActionCreators = {
     };
   },
 
+  forwardAppTime(appTime) {
+    return {
+      type: ActionTypes.FORWARD_APP_TIME,
+      appTime,
+    };
+  },
+
   startGame(stageTypeId) {
     const { game } = AppModel.getInstance();
     game.selectStage(stageTypeId);
