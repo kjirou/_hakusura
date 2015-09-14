@@ -9,9 +9,10 @@ class AppStore {
 
   constructor() {
     this._store = createStore(rootReducer);
-    this._dispatchers = {
-      screen: bindActionCreators(ScreenActionCreators, this._store.dispatch)
-    };
+    this._dispatchers = Object.assign(
+      {},
+      bindActionCreators(ScreenActionCreators, this._store.dispatch)
+    );
   }
 
   get store() {

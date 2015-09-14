@@ -9,7 +9,7 @@ function acceptKeyOnWelcomePage(state, keyName, keySequence, isControl) {
 
   const stageTypeId = STAGE_SELECTION[keySequence];
   if (stageTypeId) {
-    dispatchers.screen.startGame(stageTypeId);
+    dispatchers.startGame(stageTypeId);
     return true;
   }
 
@@ -19,7 +19,7 @@ function acceptKeyOnWelcomePage(state, keyName, keySequence, isControl) {
 function acceptKeyOnGamePage(state, keyName, keySequence, isControl) {
   const { dispatchers } = AppStore.getInstance();
 
-  dispatchers.screen.changePage('welcome');
+  dispatchers.changePage('welcome');
   return true;
   return false;
 }

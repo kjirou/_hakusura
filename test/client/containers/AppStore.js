@@ -11,7 +11,7 @@ describe(heading(__filename), function() {
   it('should be', function() {
     const {store, dispatchers} = new AppStore();
     assert.strictEqual(store.getState().screen.activePageId, 'welcome');
-    dispatchers.screen.changePage('game');
+    dispatchers.changePage('game');
     assert.strictEqual(store.getState().screen.activePageId, 'game');
   });
 });
