@@ -28,6 +28,7 @@
     "espower-babel": "3.3.0",
     "fixpack": "2.2.0",
     "mocha": "2.3.2",
+    "node-dev": "2.7.1",
     "power-assert": "1.0.0",
     "react-dom": "0.14.0-beta3",
     "sinon": "1.16.1"
@@ -49,6 +50,8 @@
     "url": "git+https://github.com/kjirou/fury-road.git"
   },
   "scripts": {
+    "d": "npm run dev",
+    "dev": "node-dev ./bin/fury-road",
     "lint": "eslint --ext .js client",
     "test": "mocha"
   }
