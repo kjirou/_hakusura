@@ -8,3 +8,8 @@ require('module')._initPaths();
 require('babel/register');
 
 global.React = require('react');
+
+var keypress = require('keypress');
+keypress(process.stdin);
+process.stdin.setRawMode(true);
+process.stdin.resume();

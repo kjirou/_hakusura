@@ -1,10 +1,12 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 
-import screen from './screen';
+import screenReducer from './screen';
+import timeReducer from './time';
 
 
 const rootReducer = combineReducers({
-  screen
+  screen: screenReducer,
+  time: timeReducer,
 });
 
 export default rootReducer;

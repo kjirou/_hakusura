@@ -8,8 +8,9 @@ const AutomaticNamingMixin = Object.assign({}, NamingMixin, {
     if (this._name) {
       return this._name;
     }
-    if (this.constructor && this.constructor.typeId) {
-      return _s.titleize(_s.humanize(this.constructor.typeId));
+    let typeId = this.typeId || (this.constructor || {}).typeId || null;
+    if (typeId) {
+      return _s.titleize(_s.humanize(typeId));
     }
     return null;
   }

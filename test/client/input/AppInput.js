@@ -1,9 +1,10 @@
 import assert from 'power-assert';
 import sinon from 'sinon';
 
+import AppModel from 'containers/AppModel';
 import AppStore from 'containers/AppStore';
 import AppInput from 'input/AppInput';
-import {clearApp, heading} from 'test/support/helpers';
+import { clearApp, heading } from 'test/support/helpers';
 
 
 describe(heading(__filename), function() {
