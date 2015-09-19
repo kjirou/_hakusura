@@ -1,3 +1,3 @@
-# fury-road
+# hakusura
 
 A simple hack & slash game

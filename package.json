@@ -1,10 +1,10 @@
 {
-  "name": "fury-road",
+  "name": "hakusura",
   "description": "A simple hack & slash game",
   "version": "0.0.0",
   "author": "kjirou",
   "bugs": {
-    "url": "https://github.com/kjirou/fury-road/issues"
+    "url": "https://github.com/kjirou/hakusura/issues"
   },
   "dependencies": {
     "babel": "5.8.23",
@@ -37,7 +37,7 @@
     "node": ">=0.12",
     "npm": ">=2"
   },
-  "homepage": "https://github.com/kjirou/fury-road#readme",
+  "homepage": "https://github.com/kjirou/hakusura#readme",
   "keywords": [
     "cui",
     "game"
@@ -47,11 +47,11 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kjirou/fury-road.git"
+    "url": "git+https://github.com/kjirou/hakusura.git"
   },
   "scripts": {
     "d": "npm run dev",
-    "dev": "node-dev ./bin/fury-road",
+    "dev": "node-dev ./bin/hakusura",
     "lint": "eslint --ext .js client",
     "test": "mocha"
   }
