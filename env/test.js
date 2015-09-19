@@ -5,7 +5,7 @@ process.env.NODE_PATH = [
 ].join(':');
 require('module')._initPaths();
 
-require('babel/register');
+require('babel/polyfill');
 
 global.React = require('react');
 
