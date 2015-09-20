@@ -1,16 +1,17 @@
-import {pages} from './pages';
+//import {pages} from './pages';
 //import shared from './shared';
+import ScreenComponent from './ScreenComponent';
 import AppStore from 'containers/AppStore';
 
 
-class RootComponent extends React.Component {
+export default class RootComponent extends React.Component {
 
   constructor(props, context) {
     super(props, context);
 
-    const {store} = AppStore.getInstance();
+    const { store } = AppStore.getInstance();
 
-    this.state = store.getState();  // Can't use setState
+    this.state = store.getState();
 
     this._preAppTime = null;
     store.subscribe(() => {
@@ -22,13 +23,6 @@ class RootComponent extends React.Component {
       }
     });
   }
-
-  // Doesn't work, ref #1
-  //getChildContext() {
-  //  return {
-  //    shared: shared
-  //  };
-  //}
 
   render() {
 
@@ -44,27 +38,18 @@ class RootComponent extends React.Component {
         fg: 'white',
         bg: 'blue',
         border: {
-          fg: 'white'
+          fg: 'white',
         }
       },
       content: this.constructor.name,
     };
 
-    const ActivePageComponent = pages[this.state.screen.activePageId];
+    //const ActivePageComponent = pages[this.state.screen.activePageId];
 
     return (
-      <box {...props}>
-        <ActivePageComponent />
+      <box { ...props } >
+        <ScreenComponent />
       </box>
     );
   }
 }
-
-// Doesn't work, ref #1
-//Object.assign(RootComponent, {
-//  childContextTypes: {
-//    shared: React.PropTypes.object.isRequired
-//  }
-//});
-
-export default RootComponent;
