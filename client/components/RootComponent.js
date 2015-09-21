@@ -1,5 +1,3 @@
-//import {pages} from './pages';
-//import shared from './shared';
 import ScreenComponent from './ScreenComponent';
 import AppStore from 'containers/AppStore';
 
@@ -13,6 +11,7 @@ export default class RootComponent extends React.Component {
 
     this.state = store.getState();
 
+    // render each frame
     this._preAppTime = null;
     store.subscribe(() => {
       const state = store.getState();
@@ -26,7 +25,7 @@ export default class RootComponent extends React.Component {
 
   render() {
 
-    let props = {
+    const props = {
       top: 'center',
       left: 'center',
       width: 82,
@@ -44,11 +43,11 @@ export default class RootComponent extends React.Component {
       content: this.constructor.name,
     };
 
-    //const ActivePageComponent = pages[this.state.screen.activePageId];
+    const screenProps = Object.assign({}, this.state);
 
     return (
       <box { ...props } >
-        <ScreenComponent />
+        <ScreenComponent { ...screenProps } />
       </box>
     );
   }

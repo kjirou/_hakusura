@@ -1,52 +1,44 @@
+import alphabet from 'alphabet';
+
 import EventTypes from 'consts/EventTypes';
 import { STAGE_SELECTION } from 'consts/Keys';
 import AppEvent from 'containers/AppEvent';
 import AppStore from 'containers/AppStore';
 
 
-function acceptKeyOnWelcomePage(state, keyName, keySequence, isControl) {
-  const { dispatchers } = AppStore.getInstance();
+const WRITABLE_KEYS = [
+  ...(alphabet.slice()),
+  ...('0123456789'.split('')),
+  ' ',
+  '"',
+  '\'',
+  '-',
+  '_',
+];
 
-  const stageTypeId = STAGE_SELECTION[keySequence];
-  if (stageTypeId) {
-    dispatchers.startGame(stageTypeId);
-    return true;
-  }
+const BACKSPACE_KEYS = [
+  'backspace',
+  'delete',
+];
 
-  return false;
-}
-
-function acceptKeyOnGamePage(state, keyName, keySequence, isControl) {
-  const { dispatchers } = AppStore.getInstance();
-
-  dispatchers.changePage('welcome');
-  return true;
-  return false;
-}
-
-
-export function onKeypress({ name: keyName, sequence: keySequence, ctrl: isControl }) {
-  const {emitter} = AppEvent.getInstance();
-  const {store} = AppStore.getInstance();
+export function onKeypress({ name: keyName, sequence: keySequence, ctrl: isEnabledControl }) {
+  const { emitter } = AppEvent.getInstance();
+  const { dispatchers, store } = AppStore.getInstance();
   const state = store.getState();
 
-  if (keyName === 'escape' || isControl && keyName === 'c') {
+  if (keyName === 'escape' || isEnabledControl && keyName === 'c') {
+    // TODO: confirm dialog
     emitter.emit(EventTypes.EXIT_SCREEN);
     return;
   }
 
-  const acceptKeyByActivePage = {
-    game: acceptKeyOnGamePage,
-    welcome: acceptKeyOnWelcomePage
-  }[state.screen.activePageId];
-
-  if (!acceptKeyByActivePage) {
-    const err = new Error(state.screen.activePageId + ' is invalid pageId');
-    emitter.emit(EventTypes.THROW_RUNTIME_ERROR, err);
+  if (BACKSPACE_KEYS.indexOf(keyName) > -1) {
+    dispatchers.deleteCharacterFromShell();
     return;
   }
 
-  if (acceptKeyByActivePage(state, keyName, keySequence, isControl)) {
+  if (WRITABLE_KEYS.indexOf(keySequence) > -1) {
+    dispatchers.inputToShell(keySequence);
     return;
   }
 }

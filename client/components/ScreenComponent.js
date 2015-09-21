@@ -42,13 +42,14 @@ export default class ScreenComponent extends React.Component {
 
   render() {
 
-    const shellLines = [
-      'Push [enter] key to start',
-    ];
     const outputLines = [
       'HAKUSURA - A text-based hack & slash RPG',
     ];
-    const lines = this.constructor.mergeLines(shellLines, outputLines);
+    const lines = this.constructor.mergeLines(
+      this.props.shell.shellLines,
+      outputLines
+      //this.props.shell.outputLines
+    );
 
     const props = {
       top: 0,

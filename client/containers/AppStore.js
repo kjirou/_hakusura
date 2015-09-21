@@ -1,17 +1,19 @@
-import {bindActionCreators, createStore} from 'redux';
+import { bindActionCreators, createStore } from 'redux';
 import SingletonMixin from 'singleton-mixin';
 
 import ScreenActionCreators from 'actions/ScreenActionCreators';
+import ShellActionCreators from 'actions/ShellActionCreators';
 import rootReducer from 'reducers';
 
 
-class AppStore {
+export default class AppStore {
 
   constructor() {
     this._store = createStore(rootReducer);
     this._dispatchers = Object.assign(
       {},
-      bindActionCreators(ScreenActionCreators, this._store.dispatch)
+      bindActionCreators(ScreenActionCreators, this._store.dispatch),
+      bindActionCreators(ShellActionCreators, this._store.dispatch)
     );
   }
 
@@ -25,5 +27,3 @@ class AppStore {
 }
 
 Object.assign(AppStore, SingletonMixin);
-
-export default AppStore;
