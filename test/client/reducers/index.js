@@ -2,7 +2,7 @@ import assert from 'power-assert';
 
 import ActionTypes from 'consts/ActionTypes';
 import reducer from 'reducers';
-import {heading} from 'test/support/helpers';
+import { heading } from 'test/support/helpers';
 
 
 describe(heading(__filename), function() {

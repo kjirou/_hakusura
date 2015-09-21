@@ -2,7 +2,7 @@ import ActionTypes from 'consts/ActionTypes';
 
 
 const initialState = {
-  activePageId: 'welcome'
+  activePageId: 'welcome',
 };
 
 export default function screenReducer(state = initialState, action = {}) {
