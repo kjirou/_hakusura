@@ -1,10 +1,10 @@
 import Rx from 'rx';
 import SingletonMixin from 'singleton-mixin';
 
-import {onError} from 'input/subscriptions/error';
-import {onKeypress} from 'input/subscriptions/keypress';
-import {onTimer} from 'input/subscriptions/timer';
-import {calculateMillisecondsPerFrame} from 'lib/util';
+import { onError } from 'input/subscriptions/error';
+import { onKeypress } from 'input/subscriptions/keypress';
+import { onTimer } from 'input/subscriptions/timer';
+import { calculateMillisecondsPerFrame } from 'lib/util';
 
 
 export default class AppInput {
