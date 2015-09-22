@@ -9,13 +9,15 @@ describe(heading(__filename), function() {
 
   context('screen', function() {
 
-    it('should be');
-    //it('should be', function() {
-    //  let state;
-    //  state = reducer();
-    //  assert.strictEqual(state.screen.activePageId, 'welcome');
-    //  state = reducer({}, { type: ActionTypes.CHANGE_PAGE, activePageId: 'game' });
-    //  assert.strictEqual(state.screen.activePageId, 'game');
-    //});
+    it('should be', function() {
+      let state;
+      state = reducer();
+      assert.strictEqual(state.shell.inputBuffer, '');
+      state = reducer(state, {
+        type: ActionTypes.INPUT_TO_SHELL,
+        input: 'a',
+      });
+      assert.strictEqual(state.shell.inputBuffer, 'a');
+    });
   });
 });
