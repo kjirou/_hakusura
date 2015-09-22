@@ -33,12 +33,12 @@ export function onKeypress({ name: keyName, sequence: keySequence, ctrl: isEnabl
   }
 
   if (BACKSPACE_KEYS.indexOf(keyName) > -1) {
-    dispatchers.deleteCharacterFromShell();
+    dispatchers.shell.deleteCharacterFromShell();
     return;
   }
 
   if (WRITABLE_KEYS.indexOf(keySequence) > -1) {
-    dispatchers.inputToShell(keySequence);
+    dispatchers.shell.inputToShell(keySequence);
     return;
   }
 }

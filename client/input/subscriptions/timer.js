@@ -5,5 +5,5 @@ import { calculateMillisecondsPerFrame } from 'lib/util';
 export function onTimer({ value, interval }) {
   const { dispatchers } = AppStore.getInstance();
 
-  dispatchers.forwardAppTime(calculateMillisecondsPerFrame());
+  dispatchers.time.forwardAppTime(calculateMillisecondsPerFrame());
 }
