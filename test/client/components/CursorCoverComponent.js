@@ -16,14 +16,6 @@ describe(heading(__filename), function() {
       blinkingPosition: -1,
     } } />);
     assert(/<\/box><\/box>$/.test(actual));
-    assert(/bg:white;/.test(actual) === false);
-
-    actual = renderToStaticMarkup(<CursorCoverComponent { ...{
-      top: 0,
-      width: 1,
-      blinkingPosition: 0,
-    } } />);
-    assert(/<\/box><\/box>$/.test(actual));
     assert(/bg:white;/.test(actual));
   });
 });

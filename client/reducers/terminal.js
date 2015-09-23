@@ -1,5 +1,6 @@
 import _s from 'underscore.string';
 
+import { SCREEN_WIDTH } from 'components/ScreenComponent';
 import ActionTypes from 'consts/ActionTypes';
 import ShellInputModes from 'consts/ShellInputModes';
 import { generatePrompt } from 'lib/text-processor';
@@ -10,6 +11,7 @@ const initialState = (() => {
   return {
     shellInputMode: ShellInputModes.DEFAULT,
     inputBuffer: inputBuffer,
+    cursorPosition: 0,
     outputLines: [],
     shellLines: [inputBuffer],
   };
@@ -39,6 +41,7 @@ export default function terminalReducer(state = initialState, action = { type: '
         state = Object.assign({}, state, {
           outputLines: [...additionalOutputLines, ...state.outputLines],
           shellInputMode: shellInputMode ? shellInputMode : state.shellInputMode,
+          cursorPosition: 0,
         });
         return state;
       })(action);
@@ -48,8 +51,15 @@ export default function terminalReducer(state = initialState, action = { type: '
         if (position === undefined || position === null) {
           position = state.inputBuffer.length - 1;
         }
+        if (position < 0) {
+          return state;
+        }
         const inputBuffer = _s.splice(state.inputBuffer, position, 1, '');
-        return syncStateByInputBufferChange(state, inputBuffer);
+        state = syncStateByInputBufferChange(state, inputBuffer);
+        state = Object.assign({}, state, {
+          cursorPosition: state.cursorPosition - 1,
+        });
+        return state;
       })(action);
 
     // TODO: shellLines, outputLines
@@ -64,7 +74,26 @@ export default function terminalReducer(state = initialState, action = { type: '
           position = state.inputBuffer.length;
         }
         const inputBuffer = _s.insert(state.inputBuffer, position, input);
-        return syncStateByInputBufferChange(state, inputBuffer);
+        state = syncStateByInputBufferChange(state, inputBuffer);
+        state = Object.assign({}, state, {
+          cursorPosition: state.cursorPosition + input.length,
+        });
+        return state;
+      })(action);
+
+    case ActionTypes.MOVE_CURSOR:
+      return (({ position, relativePosition }) => {
+        let nextPosition = 0;
+        if (typeof position === 'number') {
+          nextPosition = position;
+        } else if (typeof relativePosition === 'number') {
+          nextPosition = state.cursorPosition + relativePosition;
+        }
+        const maxPosition = Math.min(SCREEN_WIDTH - 1, state.inputBuffer.length);
+        nextPosition = Math.min(Math.max(nextPosition, 0), maxPosition);
+        return Object.assign({}, state, {
+          cursorPosition: nextPosition,
+        });
       })(action);
 
     default:

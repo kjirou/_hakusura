@@ -7,6 +7,7 @@ const ActionTypes = keymirror({
   EXECUTE_SHELL: null,
   FORWARD_APP_TIME: null,
   INPUT_TO_SHELL: null,
+  MOVE_CURSOR: null,
   UPDATE_SHELL: null,
 });
 

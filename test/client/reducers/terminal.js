@@ -1,5 +1,7 @@
 import assert from 'power-assert';
+import _s from 'underscore.string';
 
+import { SCREEN_WIDTH } from 'components/ScreenComponent';
 import ActionTypes from 'consts/ActionTypes';
 import terminalReducer from 'reducers/terminal';
 import { heading } from 'test/support/helpers';
@@ -84,5 +86,51 @@ describe(heading(__filename), function() {
       'config is ..',
       '> help config',
     ]);
+  });
+
+  it('MOVE_CURSOR', function() {
+    let state = terminalReducer();
+    assert.strictEqual(state.cursorPosition, 0);
+
+    state = terminalReducer(state, {
+      type: ActionTypes.INPUT_TO_SHELL,
+      input: _s.repeat('a', 10),
+    });
+
+    state = terminalReducer(state, {
+      type: ActionTypes.MOVE_CURSOR,
+      position: 1,
+    });
+    assert.strictEqual(state.cursorPosition, 1);
+
+    // min check
+    state = terminalReducer(state, {
+      type: ActionTypes.MOVE_CURSOR,
+      position: -1,
+    });
+    assert.strictEqual(state.cursorPosition, 0);
+
+    // max check
+    state = terminalReducer(state, {
+      type: ActionTypes.MOVE_CURSOR,
+      position: 99999999,
+    });
+    assert.strictEqual(state.cursorPosition, 10);
+
+    state = terminalReducer(state, {
+      type: ActionTypes.MOVE_CURSOR,
+      position: 0,
+    });
+    state = terminalReducer(state, {
+      type: ActionTypes.MOVE_CURSOR,
+      relativePosition: 2,
+    });
+    assert.strictEqual(state.cursorPosition, 2);
+
+    state = terminalReducer(state, {
+      type: ActionTypes.MOVE_CURSOR,
+      relativePosition: -1,
+    });
+    assert.strictEqual(state.cursorPosition, 1);
   });
 });

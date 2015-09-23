@@ -20,9 +20,12 @@ export default class CursorCoverComponent extends React.Component {
       {
         _.range(this.props.width).map((idx) => {
 
-          const style = {};
+          const style = {
+            bg: 'white',
+            transparent: true,
+          };
           if (idx === this.props.blinkingPosition) {
-            style.bg = 'white';
+            style.transparent = false;
           } else {
             style.transparent = true;
           }

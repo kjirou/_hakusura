@@ -188,6 +188,20 @@ const TerminalActionCreators = {
       position: options.position,
     };
   },
+
+  moveCursor(position) {
+    return {
+      type: ActionTypes.MOVE_CURSOR,
+      position,
+    };
+  },
+
+  moveCursorByRelative(relativePosition) {
+    return {
+      type: ActionTypes.MOVE_CURSOR,
+      relativePosition,
+    };
+  },
 };
 
 export default TerminalActionCreators;

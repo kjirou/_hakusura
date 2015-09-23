@@ -32,13 +32,34 @@ export function onKeypress({ name: keyName, sequence: keySequence, ctrl: isEnabl
     return;
   }
 
+  if (keyName === 'left') {
+    dispatchers.terminal.moveCursorByRelative(-1);
+    return;
+  }
+  if (keyName === 'right') {
+    dispatchers.terminal.moveCursorByRelative(1);
+    return;
+  }
+  if (isEnabledControl && keyName === 'a') {
+    dispatchers.terminal.moveCursor(0);
+    return;
+  }
+  if (isEnabledControl && keyName === 'e') {
+    dispatchers.terminal.moveCursor(9999);
+    return;
+  }
+
   if (BACKSPACE_KEYS.indexOf(keyName) > -1) {
-    dispatchers.terminal.deleteCharacterFromShell();
+    dispatchers.terminal.deleteCharacterFromShell({
+      position: state.terminal.cursorPosition - 1,
+    });
     return;
   }
 
   if (WRITABLE_KEYS.indexOf(keySequence) > -1) {
-    dispatchers.terminal.inputToShell(keySequence);
+    dispatchers.terminal.inputToShell(keySequence, {
+      position: state.terminal.cursorPosition,
+    });
     return;
   }
 
