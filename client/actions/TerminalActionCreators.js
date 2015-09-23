@@ -20,7 +20,7 @@ const COMMANDS = {
 };
 
 
-const ShellActionCreators = {
+const TerminalActionCreators = {
 
   deleteCharacterFromShell(options = {}) {
     options = Object.assign({
@@ -69,4 +69,4 @@ const ShellActionCreators = {
   },
 };
 
-export default ShellActionCreators;
+export default TerminalActionCreators;
