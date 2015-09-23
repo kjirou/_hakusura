@@ -26,29 +26,40 @@ export default class ScreenComponent extends React.Component {
 
   static linesToContent(lines) {
     lines = lines.slice();
+
+    // pad lines for a case of not enough
     _.range(SCREEN_HEIGHT).forEach(() => lines.push(''));
 
     return lines
-      // TODO: consider multilined-line
+      // cut the apparently extra lines for speed
       .slice(0, SCREEN_HEIGHT)
+      // ensure that the beginning of lines is displayed to the top
       .reverse()
       .map((line) => {
-        // TODO: consider blessed tags
-        return line.slice(0, SCREEN_WIDTH);
+
+        // normalize CRLF and CR to LF
+        line = line.replace(/(\r\n|\r)/g, '\n');
+
+        // TODO: consider to both blessed tags, ansi-colors and multibyte
+        //line = line.slice(0, SCREEN_WIDTH);
+
+        return line;
       })
+      // expand multilined-line
+      // e.g. ['a\nb', 'c'] -> ['a', 'b', 'c']
+      .join('\n').split('\n')
+      // adjust lines into display
+      .slice(-SCREEN_HEIGHT)
+      // to string
       .join('\n')
     ;
   }
 
   render() {
 
-    const outputLines = [
-      'HAKUSURA - A text-based hack & slash RPG',
-    ];
     const lines = this.constructor.mergeLines(
       this.props.shell.shellLines,
-      outputLines
-      //this.props.shell.outputLines
+      this.props.shell.outputLines
     );
 
     const props = {
@@ -56,6 +67,7 @@ export default class ScreenComponent extends React.Component {
       left: 0,
       width: SCREEN_WIDTH,
       height: SCREEN_HEIGHT,
+      tags: true,
       style: {
         fg: 'white',
         bg: 'black',
@@ -68,3 +80,8 @@ export default class ScreenComponent extends React.Component {
     );
   }
 }
+
+Object.assign(ScreenComponent, {
+  SCREEN_WIDTH,
+  SCREEN_HEIGHT,
+});

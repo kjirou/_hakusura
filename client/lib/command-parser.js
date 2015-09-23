@@ -41,7 +41,6 @@ export var COMMAND_DEFINITION = {
 
 export var MINIMIST_OPTIONS_FOR_COMMAND = {
   '_test': { default: { a: true } },
-  '_test2-foo': { default: { b: true } },
 };
 
 /*
@@ -57,7 +56,7 @@ export function shellInputToArgv(shellInput) {
   return trimmed.split(/ +/);
 }
 
-export function retrieveMinimistOptions(commandName, subCommandName) {
+export function generateCommandId(commandName, subCommandName) {
   let id = '';
   if (typeof commandName === 'string') {
     id += commandName;
@@ -65,15 +64,21 @@ export function retrieveMinimistOptions(commandName, subCommandName) {
       id += '-' + subCommandName;
     }
   }
-  return MINIMIST_OPTIONS_FOR_COMMAND[id] || {};
+  return id;
+}
+
+export function retrieveMinimistOptions(commandId) {
+  return MINIMIST_OPTIONS_FOR_COMMAND[commandId] || {};
 }
 
 export function parse(shellInput) {
   const argv_ = shellInputToArgv(shellInput);
   const { commands, argv } = parseCommands(COMMAND_DEFINITION, argv_);
   const [ commandName, subCommandName ] = commands;
-  const minimistOptions = retrieveMinimistOptions(commandName, subCommandName);
+  const commandId = generateCommandId(commandName, subCommandName);
+  const minimistOptions = retrieveMinimistOptions(commandId);
   return {
+    commandId,
     commandName: commandName || null,
     subCommandName: subCommandName || null,
     commandOptions: parseArgs(argv, minimistOptions),

@@ -1,5 +1,8 @@
+import _s from 'underscore.string';
+
 import ActionTypes from 'consts/ActionTypes';
 import AppModel from 'containers/AppModel';
+import { parse } from 'lib/command-parser';
 
 
 const ShellActionCreators = {
@@ -11,6 +14,32 @@ const ShellActionCreators = {
     return {
       type: ActionTypes.DELETE_CHARACTER_FROM_SHELL,
       position: options.position,
+    };
+  },
+
+  executeCommand(inputBuffer) {
+
+    if (_s.trim(inputBuffer) === '') {
+      return {
+        type: ActionTypes.APPLY_COMMAND_EXECUTION,
+      };
+    }
+
+    const { commandId, commandOptions } = parse(inputBuffer);
+
+    switch (commandId) {
+      case 'help-index':
+        return (() => {
+          return {
+            type: ActionTypes.APPLY_COMMAND_EXECUTION,
+            output: 'help',
+          };
+        })();
+    }
+
+    return {
+      type: ActionTypes.APPLY_COMMAND_EXECUTION,
+      output: '{red-fg}Invalid shell input{/}',
     };
   },
 

@@ -68,4 +68,27 @@ describe(heading(__filename), function() {
     assert.strictEqual(state.inputBuffer, '*drunk*');
     assert.deepEqual(state.shellLines, ['*drunk*']);
   });
+
+  it('APPLY_COMMAND_EXECUTION', function() {
+    let state = shellReducer();
+    assert.strictEqual(state.inputBuffer, '');
+    assert.deepEqual(state.outputLines, []);
+
+    state = shellReducer(state, {
+      type: ActionTypes.INPUT_TO_SHELL,
+      input: 'help config',
+    });
+    assert.strictEqual(state.inputBuffer, 'help config');
+    assert.deepEqual(state.outputLines, []);
+
+    state = shellReducer(state, {
+      type: ActionTypes.APPLY_COMMAND_EXECUTION,
+      appendedOutputLines: ['config is ..'],
+    });
+    assert.strictEqual(state.inputBuffer, '');
+    assert.deepEqual(state.outputLines, [
+      '> help config',
+      'config is ..',
+    ]);
+  });
 });

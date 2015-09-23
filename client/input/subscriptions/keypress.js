@@ -27,7 +27,7 @@ export function onKeypress({ name: keyName, sequence: keySequence, ctrl: isEnabl
   const state = store.getState();
 
   if (keyName === 'escape' || isEnabledControl && keyName === 'c') {
-    // TODO: confirm dialog
+    // TODO: show confirmation dialog
     emitter.emit(EventTypes.EXIT_SCREEN);
     return;
   }
@@ -39,6 +39,11 @@ export function onKeypress({ name: keyName, sequence: keySequence, ctrl: isEnabl
 
   if (WRITABLE_KEYS.indexOf(keySequence) > -1) {
     dispatchers.shell.inputToShell(keySequence);
+    return;
+  }
+
+  if (keyName === 'enter') {
+    dispatchers.shell.executeCommand(state.shell.inputBuffer);
     return;
   }
 }
