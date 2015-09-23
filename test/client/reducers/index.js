@@ -12,12 +12,12 @@ describe(heading(__filename), function() {
     it('should be', function() {
       let state;
       state = reducer();
-      assert.strictEqual(state.shell.inputBuffer, '');
+      assert.strictEqual(state.terminal.inputBuffer, '');
       state = reducer(state, {
         type: ActionTypes.INPUT_TO_SHELL,
         input: 'a',
       });
-      assert.strictEqual(state.shell.inputBuffer, 'a');
+      assert.strictEqual(state.terminal.inputBuffer, 'a');
     });
   });
 });

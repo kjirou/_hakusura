@@ -10,8 +10,8 @@ describe(heading(__filename), function() {
 
   it('should be', function() {
     const { store, dispatchers } = new AppStore();
-    assert.strictEqual(store.getState().shell.inputBuffer, '');
-    dispatchers.shell.inputToShell('a');
-    assert.strictEqual(store.getState().shell.inputBuffer, 'a');
+    assert.strictEqual(store.getState().terminal.inputBuffer, '');
+    dispatchers.terminal.inputToShell('a');
+    assert.strictEqual(store.getState().terminal.inputBuffer, 'a');
   });
 });

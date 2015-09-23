@@ -33,17 +33,17 @@ export function onKeypress({ name: keyName, sequence: keySequence, ctrl: isEnabl
   }
 
   if (BACKSPACE_KEYS.indexOf(keyName) > -1) {
-    dispatchers.shell.deleteCharacterFromShell();
+    dispatchers.terminal.deleteCharacterFromShell();
     return;
   }
 
   if (WRITABLE_KEYS.indexOf(keySequence) > -1) {
-    dispatchers.shell.inputToShell(keySequence);
+    dispatchers.terminal.inputToShell(keySequence);
     return;
   }
 
   if (keyName === 'enter') {
-    dispatchers.shell.executeCommand(state.shell.inputBuffer);
+    dispatchers.terminal.executeCommand(state.terminal.inputBuffer);
     return;
   }
 }

@@ -58,8 +58,8 @@ export default class ScreenComponent extends React.Component {
   render() {
 
     const lines = this.constructor.mergeLines(
-      this.props.shell.shellLines,
-      this.props.shell.outputLines
+      this.props.terminal.shellLines,
+      this.props.terminal.outputLines
     );
 
     const props = {

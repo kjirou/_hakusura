@@ -59,7 +59,7 @@ export default class CliApp {
     render(<RootComponent />, screen);
 
     const { dispatchers } = AppStore.getInstance();
-    dispatchers.shell.executeCommand('help');
+    dispatchers.terminal.executeCommand('help');
 
     this._screen = screen;
   }

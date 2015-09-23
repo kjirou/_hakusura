@@ -21,7 +21,7 @@ function syncStateByInputBufferChange(state, newInputBuffer) {
   });
 }
 
-export default function shellReducer(state = initialState, action = { type: '_init' }) {
+export default function terminalReducer(state = initialState, action = { type: '_init' }) {
 
   switch (action.type) {
 

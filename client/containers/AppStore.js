@@ -13,7 +13,7 @@ export default class AppStore {
     const store = createStore(rootReducer);
     this._dispatchers = {
       screen: bindActionCreators(ScreenActionCreators, store.dispatch),
-      shell: bindActionCreators(TerminalActionCreators, store.dispatch),
+      terminal: bindActionCreators(TerminalActionCreators, store.dispatch),
       time: bindActionCreators(TimeActionCreators, store.dispatch),
     };
     this._store = store;
