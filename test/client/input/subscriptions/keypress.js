@@ -10,14 +10,14 @@ describe(heading(__filename), function() {
 
   beforeEach(clearApp);
 
-  it('should create instance', function() {
-    const { store } = AppStore.getInstance();
-    const { game } = AppModel.getInstance();
+  //it('should create instance', function() {
+  //  const { store } = AppStore.getInstance();
+  //  const { game } = AppModel.getInstance();
 
-    assert.strictEqual(store.getState().screen.activePageId, 'welcome');
-    assert.strictEqual(game.stage, null);
-    onKeypress({ name: '1', sequence: '1', ctrl: false });
-    assert.strictEqual(store.getState().screen.activePageId, 'game');
-    assert.strictEqual(typeof game.stage, 'object');
-  });
+  //  assert.strictEqual(store.getState().screen.activePageId, 'welcome');
+  //  assert.strictEqual(game.stage, null);
+  //  onKeypress({ name: '1', sequence: '1', ctrl: false });
+  //  assert.strictEqual(store.getState().screen.activePageId, 'game');
+  //  assert.strictEqual(typeof game.stage, 'object');
+  //});
 });

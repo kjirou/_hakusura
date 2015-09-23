@@ -1,18 +1,22 @@
-import {bindActionCreators, createStore} from 'redux';
+import { bindActionCreators, createStore } from 'redux';
 import SingletonMixin from 'singleton-mixin';
 
 import ScreenActionCreators from 'actions/ScreenActionCreators';
+import TerminalActionCreators from 'actions/TerminalActionCreators';
+import TimeActionCreators from 'actions/TimeActionCreators';
 import rootReducer from 'reducers';
 
 
-class AppStore {
+export default class AppStore {
 
   constructor() {
-    this._store = createStore(rootReducer);
-    this._dispatchers = Object.assign(
-      {},
-      bindActionCreators(ScreenActionCreators, this._store.dispatch)
-    );
+    const store = createStore(rootReducer);
+    this._dispatchers = {
+      screen: bindActionCreators(ScreenActionCreators, store.dispatch),
+      terminal: bindActionCreators(TerminalActionCreators, store.dispatch),
+      time: bindActionCreators(TimeActionCreators, store.dispatch),
+    };
+    this._store = store;
   }
 
   get store() {
@@ -25,5 +29,3 @@ class AppStore {
 }
 
 Object.assign(AppStore, SingletonMixin);
-
-export default AppStore;

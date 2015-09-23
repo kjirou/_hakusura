@@ -1,9 +1,10 @@
 import blessed from 'blessed';
-import {render} from 'react-blessed';
+import { render } from 'react-blessed';
 
 import RootComponent from 'components/RootComponent';
 import EventTypes from 'consts/EventTypes';
 import AppEvent from 'containers/AppEvent';
+import AppStore from 'containers/AppStore';
 import AppInput from 'input/AppInput';
 
 
@@ -17,9 +18,10 @@ export default class CliApp {
   }
 
   _createScreen() {
-    let options = {
+    const options = {
       debug: true,
-      title: 'Fury Road'
+      title: 'HAKUSURA',
+      smartCSR: true,
     };
 
     //if (conf.ignoreScreenOutput) {
@@ -45,7 +47,7 @@ export default class CliApp {
    * Don't execute twice in a one process
    */
   start() {
-    const {emitter} = AppEvent.getInstance();
+    const { emitter } = AppEvent.getInstance();
     const screen = this._createScreen();
 
     screen.debugLog.unkey(['q', 'escape']);
@@ -55,6 +57,9 @@ export default class CliApp {
     emitter.on(EventTypes.EXIT_SCREEN, this._onExitScreen.bind(this));
 
     render(<RootComponent />, screen);
+
+    const { dispatchers } = AppStore.getInstance();
+    dispatchers.terminal.executeCommand('help welcome');
 
     this._screen = screen;
   }

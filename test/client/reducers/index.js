@@ -2,7 +2,7 @@ import assert from 'power-assert';
 
 import ActionTypes from 'consts/ActionTypes';
 import reducer from 'reducers';
-import {heading} from 'test/support/helpers';
+import { heading } from 'test/support/helpers';
 
 
 describe(heading(__filename), function() {
@@ -12,9 +12,12 @@ describe(heading(__filename), function() {
     it('should be', function() {
       let state;
       state = reducer();
-      assert.strictEqual(state.screen.activePageId, 'welcome');
-      state = reducer({}, { type: ActionTypes.CHANGE_PAGE, activePageId: 'game' });
-      assert.strictEqual(state.screen.activePageId, 'game');
+      assert.strictEqual(state.terminal.inputBuffer, '');
+      state = reducer(state, {
+        type: ActionTypes.INPUT_TO_SHELL,
+        input: 'a',
+      });
+      assert.strictEqual(state.terminal.inputBuffer, 'a');
     });
   });
 });
