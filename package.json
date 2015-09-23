@@ -16,6 +16,7 @@
     "keypress": "0.2.1",
     "lodash": "3.10.1",
     "minimist": "1.2.0",
+    "minimist-subcommand": "1.0.0",
     "react": "0.14.0-beta3",
     "react-blessed": "0.1.4",
     "redux": "3.0.0",
