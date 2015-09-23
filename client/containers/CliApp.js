@@ -4,6 +4,7 @@ import { render } from 'react-blessed';
 import RootComponent from 'components/RootComponent';
 import EventTypes from 'consts/EventTypes';
 import AppEvent from 'containers/AppEvent';
+import AppStore from 'containers/AppStore';
 import AppInput from 'input/AppInput';
 
 
@@ -56,6 +57,9 @@ export default class CliApp {
     emitter.on(EventTypes.EXIT_SCREEN, this._onExitScreen.bind(this));
 
     render(<RootComponent />, screen);
+
+    const { dispatchers } = AppStore.getInstance();
+    dispatchers.shell.executeCommand('help');
 
     this._screen = screen;
   }

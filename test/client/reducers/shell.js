@@ -75,20 +75,14 @@ describe(heading(__filename), function() {
     assert.deepEqual(state.outputLines, []);
 
     state = shellReducer(state, {
-      type: ActionTypes.INPUT_TO_SHELL,
-      input: 'help config',
-    });
-    assert.strictEqual(state.inputBuffer, 'help config');
-    assert.deepEqual(state.outputLines, []);
-
-    state = shellReducer(state, {
       type: ActionTypes.APPLY_COMMAND_EXECUTION,
-      appendedOutputLines: ['config is ..'],
+      input: 'help config',
+      output: 'config is ..',
     });
     assert.strictEqual(state.inputBuffer, '');
     assert.deepEqual(state.outputLines, [
-      '> help config',
       'config is ..',
+      '> help config',
     ]);
   });
 });

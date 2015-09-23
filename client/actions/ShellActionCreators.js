@@ -5,6 +5,21 @@ import AppModel from 'containers/AppModel';
 import { parse } from 'lib/command-parser';
 
 
+const COMMANDS = {
+
+  'help-welcome': function helpIndex() {
+    return {
+      type: ActionTypes.APPLY_COMMAND_EXECUTION,
+      output: [
+        '{magenta-fg}HAKUSURA{/} - A text-based hack & slash RPG',
+        '',
+        'If you are a beginner, please execute the `{green-fg}tutorial{/}` command.',
+      ].join('\n')
+    };
+  },
+};
+
+
 const ShellActionCreators = {
 
   deleteCharacterFromShell(options = {}) {
@@ -17,28 +32,27 @@ const ShellActionCreators = {
     };
   },
 
-  executeCommand(inputBuffer) {
+  executeCommand(input) {
 
-    if (_s.trim(inputBuffer) === '') {
+    if (_s.trim(input) === '') {
       return {
         type: ActionTypes.APPLY_COMMAND_EXECUTION,
+        input: '',
       };
     }
 
-    const { commandId, commandOptions } = parse(inputBuffer);
+    const { commandId, commandOptions } = parse(input);
 
-    switch (commandId) {
-      case 'help-index':
-        return (() => {
-          return {
-            type: ActionTypes.APPLY_COMMAND_EXECUTION,
-            output: 'help',
-          };
-        })();
+    const command = COMMANDS[commandId] || null;
+    if (command) {
+      return Object.assign({
+        input,
+      }, command(commandOptions));
     }
 
     return {
       type: ActionTypes.APPLY_COMMAND_EXECUTION,
+      input,
       output: '{red-fg}Invalid shell input{/}',
     };
   },

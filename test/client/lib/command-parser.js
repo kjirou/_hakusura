@@ -41,9 +41,9 @@ describe(heading(__filename), function() {
       });
 
       assert.deepEqual(parse('help arg -a -b val'), {
-        commandId: 'help-index',
+        commandId: 'help-welcome',
         commandName: 'help',
-        subCommandName: 'index',
+        subCommandName: 'welcome',
         commandOptions: {
           _: ['arg'],
           a: true,

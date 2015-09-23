@@ -19,12 +19,9 @@ export var COMMAND_DEFINITION = {
     dictionary: null,
     guild: null,
     help: {
-      default: 'index',
+      default: 'welcome',
       commands: {
-        character: null,
-        index: null,
-        item: null,
-        list: null,
+        welcome: null,
       }
     },
     item: {

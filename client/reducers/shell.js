@@ -7,9 +7,7 @@ const initialState = (() => {
   const inputBuffer = '';
   return {
     inputBuffer: inputBuffer,
-    outputLines: [
-      'HAKUSURA - A text-based hack & slash RPG',
-    ],
+    outputLines: [],
     shellLines: [inputBuffer],
   };
 })();
@@ -28,9 +26,8 @@ export default function shellReducer(state = initialState, action = { type: '_in
   switch (action.type) {
 
     case ActionTypes.APPLY_COMMAND_EXECUTION:
-      return (({ output } = { output: null }) => {
-        const beforeInputBuffer = state.inputBuffer;
-        const additionalOutputLines = ['> ' + beforeInputBuffer];
+      return (({ input, output }) => {
+        const additionalOutputLines = ['> ' + input];
         if (typeof output === 'string') {
           additionalOutputLines.unshift(output);
         }
