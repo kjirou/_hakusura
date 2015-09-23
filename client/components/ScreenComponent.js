@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import _s from 'underscore.string';
 
+import CursorCoverComponent from './CursorCoverComponent';
 import { generatePrompt } from 'lib/text-processor';
 
 
@@ -78,8 +79,17 @@ export default class ScreenComponent extends React.Component {
       content: this.constructor.linesToContent(lines),
     };
 
+    const cursorCoverProps = {
+      key: 'cursor_cover',
+      top: SCREEN_HEIGHT - 1,
+      width: SCREEN_WIDTH,
+      blinkingPosition: 1,
+    };
+
     return (
-      <box { ...props } />
+      <box { ...props } >
+        <CursorCoverComponent { ...cursorCoverProps } />
+      </box>
     );
   }
 }
