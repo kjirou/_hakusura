@@ -41,6 +41,51 @@ export function _applyShellInputModeAliasesToInput(shellInputMode, input) {
 }
 
 
+const COMMAND_DEFINITION = {
+  commands: {
+    _wizard: {
+      default: 'on',
+      commands: {
+        adventuring: null,
+        battling: null,
+        off: null,
+        on: null,
+      },
+    },
+    alias: null,
+    character: {
+      default: 'index',
+      commands: {
+        index: null,
+        list: null,
+        select: null,
+        show: null,
+      }
+    },
+    config: null,
+    dictionary: null,
+    guild: null,
+    help: {
+      default: 'welcome',
+      commands: {
+        welcome: null,
+      }
+    },
+    item: {
+      default: 'index',
+      commands: {
+        index: null,
+        list: null,
+        show: null,
+      }
+    },
+    recruit: null,
+  },
+};
+
+const MINIMIST_OPTIONS_FOR_COMMAND = {
+};
+
 const COMMANDS = {
 
   '_wizard-adventuring': function wizardAdventuring() {
@@ -117,7 +162,7 @@ const TerminalActionCreators = {
       };
     }
 
-    const { commandId, commandOptions } = parse(input);
+    const { commandId, commandOptions } = parse(COMMAND_DEFINITION, MINIMIST_OPTIONS_FOR_COMMAND, input);
 
     const command = COMMANDS[commandId] || null;
     if (command) {

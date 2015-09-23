@@ -1,9 +1,9 @@
 import assert from 'power-assert';
 
 import {
-  generateCommandId,
+  _generateCommandId,
+  _shellInputToArgv,
   retrieveMinimistOptions,
-  shellInputToArgv,
   parse,
 } from 'lib/command-parser';
 import { heading } from 'test/support/helpers';
@@ -11,27 +11,43 @@ import { heading } from 'test/support/helpers';
 
 describe(heading(__filename), function() {
 
-  it('shellInputToArgv', function() {
-    assert.deepEqual(shellInputToArgv('a   b --c  d  e'), ['a', 'b', '--c', 'd', 'e']);
-    assert.deepEqual(shellInputToArgv('  a b   '), ['a', 'b']);
-    assert.deepEqual(shellInputToArgv(''), []);
+  it('_shellInputToArgv', function() {
+    assert.deepEqual(_shellInputToArgv('a   b --c  d  e'), ['a', 'b', '--c', 'd', 'e']);
+    assert.deepEqual(_shellInputToArgv('  a b   '), ['a', 'b']);
+    assert.deepEqual(_shellInputToArgv(''), []);
   });
 
-  it('generateCommandId', function() {
-    assert.deepEqual(generateCommandId(null, null), '');
-    assert.deepEqual(generateCommandId('foo', null), 'foo');
-    assert.deepEqual(generateCommandId('foo', 'bar'), 'foo-bar');
-  });
-
-  it('retrieveMinimistOptions', function() {
-    assert.deepEqual(retrieveMinimistOptions('_not_exists'), {});
-    assert.deepEqual(retrieveMinimistOptions('_test'), { default: { a: true } });
+  it('_generateCommandId', function() {
+    assert.deepEqual(_generateCommandId(null, null), '');
+    assert.deepEqual(_generateCommandId('foo', null), 'foo');
+    assert.deepEqual(_generateCommandId('foo', 'bar'), 'foo-bar');
   });
 
   context('parse', function() {
 
     it('should be', function() {
-      assert.deepEqual(parse(''), {
+      const commandDefinition = {
+        commands: {
+          foo: {
+            default: 'hige',
+            commands: {
+              hoge: null,
+              hige: null,
+            },
+          },
+          bar: null,
+        },
+      };
+
+      const minimistOptionsForCommand = {
+        'foo-hoge': {
+          default: {
+            x: true,
+          },
+        },
+      };
+
+      assert.deepEqual(parse(commandDefinition, minimistOptionsForCommand, ''), {
         commandId: '',
         commandName: null,
         subCommandName: null,
@@ -40,14 +56,15 @@ describe(heading(__filename), function() {
         }
       });
 
-      assert.deepEqual(parse('help arg -a -b val'), {
-        commandId: 'help-welcome',
-        commandName: 'help',
-        subCommandName: 'welcome',
+      assert.deepEqual(parse(commandDefinition, minimistOptionsForCommand, 'foo hoge arg -a -b val'), {
+        commandId: 'foo-hoge',
+        commandName: 'foo',
+        subCommandName: 'hoge',
         commandOptions: {
           _: ['arg'],
           a: true,
           b: 'val',
+          x: true,
         }
       });
     });
