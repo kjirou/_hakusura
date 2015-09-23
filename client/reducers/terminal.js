@@ -1,11 +1,14 @@
 import _s from 'underscore.string';
 
 import ActionTypes from 'consts/ActionTypes';
+import ShellInputModes from 'consts/ShellInputModes';
+import { generatePrompt } from 'lib/text-processor';
 
 
 const initialState = (() => {
   const inputBuffer = '';
   return {
+    shellInputMode: ShellInputModes.DEFAULT,
     inputBuffer: inputBuffer,
     outputLines: [],
     shellLines: [inputBuffer],
@@ -26,14 +29,16 @@ export default function terminalReducer(state = initialState, action = { type: '
   switch (action.type) {
 
     case ActionTypes.APPLY_COMMAND_EXECUTION:
-      return (({ input, output }) => {
-        const additionalOutputLines = ['> ' + input];
+      return (({ input, output, shellInputMode }) => {
+        const additionalOutputLines = [generatePrompt(state.shellInputMode) + input];
         if (typeof output === 'string') {
           additionalOutputLines.unshift(output);
         }
+
         state = syncStateByInputBufferChange(state, '');
         state = Object.assign({}, state, {
-          outputLines: [...additionalOutputLines, ...state.outputLines]
+          outputLines: [...additionalOutputLines, ...state.outputLines],
+          shellInputMode: shellInputMode ? shellInputMode : state.shellInputMode,
         });
         return state;
       })(action);

@@ -1,13 +1,15 @@
 import _ from 'lodash';
 import _s from 'underscore.string';
 
+import { generatePrompt } from 'lib/text-processor';
+
 
 const SCREEN_WIDTH = 80;
 const SCREEN_HEIGHT = 32;
 
 export default class ScreenComponent extends React.Component {
 
-  static mergeLines(shellLines, outputLines) {
+  static mergeLines(shellInputMode, shellLines, outputLines) {
     const borderLine = _s.repeat('\u2500', SCREEN_WIDTH);
     const lines = [
       borderLine,
@@ -15,7 +17,7 @@ export default class ScreenComponent extends React.Component {
 
     shellLines = shellLines.slice();
     if (shellLines.length > 0) {
-      shellLines[0] = '> ' + shellLines[0];
+      shellLines[0] = generatePrompt(shellInputMode) + shellLines[0];
     }
 
     shellLines.forEach(line => lines.unshift(line));
@@ -58,6 +60,7 @@ export default class ScreenComponent extends React.Component {
   render() {
 
     const lines = this.constructor.mergeLines(
+      this.props.terminal.shellInputMode,
       this.props.terminal.shellLines,
       this.props.terminal.outputLines
     );

@@ -1,11 +1,40 @@
 import _s from 'underscore.string';
 
 import ActionTypes from 'consts/ActionTypes';
+import ShellInputModes from 'consts/ShellInputModes';
 import AppModel from 'containers/AppModel';
 import { parse } from 'lib/command-parser';
+import { PLAYER_STATE_CODES } from 'models/GameModel';
 
+
+export function _selectShellInputMode(playerStateCode) {
+  return ShellInputModes[({
+    [PLAYER_STATE_CODES.ADVENTURING]: ShellInputModes.ADVENTURE,
+    [PLAYER_STATE_CODES.BATTLING]: ShellInputModes.BATTLE,
+  }[playerStateCode]) || ShellInputModes.DEFAULT];
+}
 
 const COMMANDS = {
+
+  '_wizard-adventuring': function wizardAdventuring() {
+    const { game } = AppModel.getInstance();
+    game._isAdventuring = true;
+    game._isBattling = false;
+    return {
+      type: ActionTypes.APPLY_COMMAND_EXECUTION,
+      shellInputMode: _selectShellInputMode(game.getPlayerStateCode()),
+    };
+  },
+
+  '_wizard-battling': function wizardBattling() {
+    const { game } = AppModel.getInstance();
+    game._isAdventuring = true;
+    game._isBattling = true;
+    return {
+      type: ActionTypes.APPLY_COMMAND_EXECUTION,
+      shellInputMode: _selectShellInputMode(game.getPlayerStateCode()),
+    };
+  },
 
   'help-welcome': function helpIndex() {
     return {

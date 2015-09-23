@@ -5,6 +5,13 @@ import _s from 'underscore.string';
 
 export var COMMAND_DEFINITION = {
   commands: {
+    _wizard: {
+      commands: {
+        index: null,
+        adventuring: null,
+        battling: null,
+      },
+    },
     alias: null,
     character: {
       default: 'index',
