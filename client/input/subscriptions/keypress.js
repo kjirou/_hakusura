@@ -43,7 +43,9 @@ export function onKeypress({ name: keyName, sequence: keySequence, ctrl: isEnabl
   }
 
   if (keyName === 'enter') {
-    dispatchers.terminal.executeCommand(state.terminal.inputBuffer);
+    dispatchers.terminal.executeCommand(state.terminal.inputBuffer, {
+      shellInputMode: state.terminal.shellInputMode,
+    });
     return;
   }
 }

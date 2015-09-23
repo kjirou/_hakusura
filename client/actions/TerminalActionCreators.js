@@ -14,6 +14,33 @@ export function _selectShellInputMode(playerStateCode) {
   }[playerStateCode]) || ShellInputModes.DEFAULT];
 }
 
+
+const SHELL_INPUT_MODE_ALIASES = {
+  _test: [
+    [/ba/, 'ba_to_baz'],
+    [/baz/, ''],
+  ],
+
+  [ShellInputModes.WIZARD]: [
+    [/^adv/, '_wizard adventuring'],
+    [/^bat/, '_wizard battling'],
+  ],
+};
+
+export function _applyShellInputModeAliasesToInput(shellInputMode, input) {
+  const filters = SHELL_INPUT_MODE_ALIASES[shellInputMode] || [];
+  filters.some(([matcher, replacement]) => {
+    const replaced = input.replace(matcher, replacement);
+    if (replaced !== input) {
+      input = replaced;
+      return true;
+    }
+    return false;
+  });
+  return input;
+}
+
+
 const COMMANDS = {
 
   '_wizard-adventuring': function wizardAdventuring() {
@@ -33,6 +60,20 @@ const COMMANDS = {
     return {
       type: ActionTypes.APPLY_COMMAND_EXECUTION,
       shellInputMode: _selectShellInputMode(game.getPlayerStateCode()),
+    };
+  },
+
+  '_wizard-off': function wizardOn() {
+    return {
+      type: ActionTypes.APPLY_COMMAND_EXECUTION,
+      shellInputMode: ShellInputModes.DEFAULT,
+    };
+  },
+
+  '_wizard-on': function wizardOn() {
+    return {
+      type: ActionTypes.APPLY_COMMAND_EXECUTION,
+      shellInputMode: ShellInputModes.WIZARD,
     };
   },
 
@@ -61,7 +102,13 @@ const TerminalActionCreators = {
     };
   },
 
-  executeCommand(input) {
+  executeCommand(rawInput, options = {}) {
+
+    options = Object.assign({
+      shellInputMode: ShellInputModes.DEFAULT,
+    }, options);
+
+    const input = _applyShellInputModeAliasesToInput(options.shellInputMode, rawInput);
 
     if (_s.trim(input) === '') {
       return {
@@ -75,13 +122,13 @@ const TerminalActionCreators = {
     const command = COMMANDS[commandId] || null;
     if (command) {
       return Object.assign({
-        input,
+        input: rawInput,
       }, command(commandOptions));
     }
 
     return {
       type: ActionTypes.APPLY_COMMAND_EXECUTION,
-      input,
+      input: rawInput,
       output: '{red-fg}Invalid shell input{/}',
     };
   },

@@ -5,5 +5,6 @@ export function generatePrompt(shellInputMode) {
   return {
     [ShellInputModes.ADVENTURE]: 'adventure> ',
     [ShellInputModes.BATTLE]: 'battle> ',
+    [ShellInputModes.WIZARD]: 'wizard> ',
   }[shellInputMode] || '> ';
 }
