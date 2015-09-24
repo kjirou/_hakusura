@@ -94,7 +94,7 @@ const COMMANDS = {
     game._isBattling = false;
     return {
       type: ActionTypes.APPLY_COMMAND_EXECUTION,
-      shellInputMode: _selectShellInputMode(game.getPlayerStateCode()),
+      newShellInputMode: _selectShellInputMode(game.getPlayerStateCode()),
     };
   },
 
@@ -104,21 +104,21 @@ const COMMANDS = {
     game._isBattling = true;
     return {
       type: ActionTypes.APPLY_COMMAND_EXECUTION,
-      shellInputMode: _selectShellInputMode(game.getPlayerStateCode()),
+      newShellInputMode: _selectShellInputMode(game.getPlayerStateCode()),
     };
   },
 
   '_wizard-off': function wizardOn() {
     return {
       type: ActionTypes.APPLY_COMMAND_EXECUTION,
-      shellInputMode: ShellInputModes.DEFAULT,
+      newShellInputMode: ShellInputModes.DEFAULT,
     };
   },
 
   '_wizard-on': function wizardOn() {
     return {
       type: ActionTypes.APPLY_COMMAND_EXECUTION,
-      shellInputMode: ShellInputModes.WIZARD,
+      newShellInputMode: ShellInputModes.WIZARD,
     };
   },
 
@@ -147,13 +147,9 @@ const TerminalActionCreators = {
     };
   },
 
-  executeCommand(rawInput, options = {}) {
+  executeCommand(shellInputMode, rawInput) {
 
-    options = Object.assign({
-      shellInputMode: ShellInputModes.DEFAULT,
-    }, options);
-
-    const input = _applyShellInputModeAliasesToInput(options.shellInputMode, rawInput);
+    const input = _applyShellInputModeAliasesToInput(shellInputMode, rawInput);
 
     if (_s.trim(input) === '') {
       return {
@@ -166,15 +162,19 @@ const TerminalActionCreators = {
 
     const command = COMMANDS[commandId] || null;
     if (command) {
-      return Object.assign({
-        input: rawInput,
-      }, command(commandOptions));
+      let action = command(commandOptions);
+      if (action.type === ActionTypes.APPLY_COMMAND_EXECUTION && action.input === undefined) {
+        Object.assign(action, {
+          input: rawInput,
+        });
+      }
+      return action;
     }
 
     return {
       type: ActionTypes.APPLY_COMMAND_EXECUTION,
       input: rawInput,
-      output: '{red-fg}Invalid shell input{/}',
+      output: '{red-fg}Invalid command{/}',
     };
   },
 
