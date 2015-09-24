@@ -14,6 +14,9 @@ const WRITABLE_KEYS = [
   '\'',
   '-',
   '_',
+  '.',
+  ':',
+  ';',
 ];
 
 const BACKSPACE_KEYS = [

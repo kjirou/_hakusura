@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import _s from 'underscore.string';
 
 import {
@@ -35,36 +36,34 @@ const TerminalActionCreators = {
     };
   },
 
-  executeCommand(shellInputMode, rawInput) {
+  executeCommand(shellInputMode, input) {
 
-    let input = rawInput;
+    let expandedInput = input;
     if (SHELL_INPUT_MODE_ALIASES[shellInputMode]) {
-      input = _applyShellInputModeAliasesToInput(SHELL_INPUT_MODE_ALIASES[shellInputMode], rawInput);
+      expandedInput = _applyShellInputModeAliasesToInput(SHELL_INPUT_MODE_ALIASES[shellInputMode], input);
     }
 
-    if (_s.trim(input) === '') {
+    if (_s.trim(expandedInput) === '') {
       return {
         type: ActionTypes.APPLY_COMMAND_EXECUTION,
         input: '',
       };
     }
 
-    const { commandId, commandOptions } = parse(COMMAND_DEFINITION, MINIMIST_OPTIONS_FOR_COMMAND, input);
+    const { commandId, commandOptions } = parse(COMMAND_DEFINITION, MINIMIST_OPTIONS_FOR_COMMAND, expandedInput);
 
     const command = COMMANDS[commandId] || null;
     if (command) {
-      let action = command(commandOptions);
-      if (action.type === ActionTypes.APPLY_COMMAND_EXECUTION && action.input === undefined) {
-        Object.assign(action, {
-          input: rawInput,
-        });
-      }
-      return action;
+      return command({
+        input,
+        args: commandOptions._,
+        options: _.omit(commandOptions, '_'),
+      });
     }
 
     return {
       type: ActionTypes.APPLY_COMMAND_EXECUTION,
-      input: rawInput,
+      input,
       output: '{red-fg}Invalid command{/}',
     };
   },

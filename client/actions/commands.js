@@ -14,8 +14,8 @@ export function _selectShellInputMode(playerStateCode) {
 export var SHELL_INPUT_MODE_ALIASES = {
 
   [ShellInputModes.WIZARD]: [
-    [/^adv/, '_wizard adventuring'],
-    [/^bat/, '_wizard battling'],
+    [/^(getstate|gs)/, '_wizard getstate'],
+    [/^(setstate|ss)/, '_wizard setstate'],
   ],
 };
 
@@ -26,8 +26,10 @@ export var COMMAND_DEFINITION = {
       commands: {
         adventuring: null,
         battling: null,
+        getstate: null,
         off: null,
         on: null,
+        setstate: null,
       },
     },
     alias: null,
@@ -66,48 +68,72 @@ export var MINIMIST_OPTIONS_FOR_COMMAND = {
 
 export var COMMANDS = {
 
-  '_wizard-adventuring': function wizardAdventuring() {
-    const { game } = AppModel.getInstance();
-    game._isAdventuring = true;
-    game._isBattling = false;
+  //'_wizard-adventuring': function wizardAdventuring() {
+  //  const { game } = AppModel.getInstance();
+  //  game._isAdventuring = true;
+  //  game._isBattling = false;
+  //  return {
+  //    type: ActionTypes.APPLY_COMMAND_EXECUTION,
+  //    newShellInputMode: _selectShellInputMode(game.getPlayerStateCode()),
+  //  };
+  //},
+
+  //'_wizard-battling': function wizardBattling() {
+  //  const { game } = AppModel.getInstance();
+  //  game._isAdventuring = true;
+  //  game._isBattling = true;
+  //  return {
+  //    type: ActionTypes.APPLY_COMMAND_EXECUTION,
+  //    newShellInputMode: _selectShellInputMode(game.getPlayerStateCode()),
+  //  };
+  //},
+
+  '_wizard-getstate': ({ input, args }) => {
+    const [ dataPath ] = args;
     return {
-      type: ActionTypes.APPLY_COMMAND_EXECUTION,
-      newShellInputMode: _selectShellInputMode(game.getPlayerStateCode()),
+      type: ActionTypes.APPLY_COMMAND_EXECUTION_BY_WIZARD,
+      mode: 'getstate',
+      dataPath,
+      input,
     };
   },
 
-  '_wizard-battling': function wizardBattling() {
-    const { game } = AppModel.getInstance();
-    game._isAdventuring = true;
-    game._isBattling = true;
-    return {
-      type: ActionTypes.APPLY_COMMAND_EXECUTION,
-      newShellInputMode: _selectShellInputMode(game.getPlayerStateCode()),
-    };
-  },
-
-  '_wizard-off': function wizardOn() {
+  '_wizard-off': ({ input }) => {
     return {
       type: ActionTypes.APPLY_COMMAND_EXECUTION,
       newShellInputMode: ShellInputModes.DEFAULT,
+      input,
     };
   },
 
-  '_wizard-on': function wizardOn() {
+  '_wizard-on': ({ input }) => {
     return {
       type: ActionTypes.APPLY_COMMAND_EXECUTION,
       newShellInputMode: ShellInputModes.WIZARD,
+      input,
     };
   },
 
-  'help-welcome': function helpIndex() {
+  '_wizard-setstate': ({ input, args }) => {
+    const [ dataPath, json ] = args;
+    return {
+      type: ActionTypes.APPLY_COMMAND_EXECUTION_BY_WIZARD,
+      mode: 'setstate',
+      dataPath,
+      json,
+      input,
+    };
+  },
+
+  'help-welcome': ({ input }) => {
     return {
       type: ActionTypes.APPLY_COMMAND_EXECUTION,
+      input,
       output: [
         '{magenta-fg}HAKUSURA{/} - A text-based hack & slash RPG',
         '',
         'If you are a beginner, please execute the `{green-fg}tutorial{/}` command.',
-      ].join('\n')
+      ].join('\n'),
     };
   },
 };
