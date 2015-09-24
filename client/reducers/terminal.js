@@ -1,7 +1,7 @@
 import _s from 'underscore.string';
 
-import { SCREEN_WIDTH } from 'components/ScreenComponent';
 import ActionTypes from 'consts/ActionTypes';
+import { SCREEN_WIDTH } from 'consts/ViewProps';
 import ShellInputModes from 'consts/ShellInputModes';
 import { generatePrompt } from 'lib/text-processor';
 

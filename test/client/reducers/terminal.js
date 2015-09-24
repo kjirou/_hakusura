@@ -1,8 +1,8 @@
 import assert from 'power-assert';
 import _s from 'underscore.string';
 
-import { SCREEN_WIDTH } from 'components/ScreenComponent';
 import ActionTypes from 'consts/ActionTypes';
+import { SCREEN_WIDTH } from 'consts/ViewProps';
 import terminalReducer from 'reducers/terminal';
 import { heading } from 'test/support/helpers';
 

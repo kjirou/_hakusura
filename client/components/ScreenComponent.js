@@ -2,11 +2,10 @@ import _ from 'lodash';
 import _s from 'underscore.string';
 
 import CursorCoverComponent from './CursorCoverComponent';
+import WindowComponent from './WindowComponent';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from 'consts/ViewProps';
 import { generatePrompt } from 'lib/text-processor';
 
-
-const SCREEN_WIDTH = 80;
-const SCREEN_HEIGHT = 32;
 
 export default class ScreenComponent extends React.Component {
 
@@ -80,6 +79,11 @@ export default class ScreenComponent extends React.Component {
       content: this.constructor.linesToContent(lines),
     };
 
+    let windowComponent = null;
+    if (this.props.window.isOpen) {
+      windowComponent = <WindowComponent { ...this.props } />;
+    }
+
     const cursorCoverProps = {
       key: 'cursor_cover',
       top: SCREEN_HEIGHT - 1,
@@ -89,13 +93,9 @@ export default class ScreenComponent extends React.Component {
 
     return (
       <box { ...props } >
+        {windowComponent}
         <CursorCoverComponent { ...cursorCoverProps } />
       </box>
     );
   }
 }
-
-Object.assign(ScreenComponent, {
-  SCREEN_WIDTH,
-  SCREEN_HEIGHT,
-});
