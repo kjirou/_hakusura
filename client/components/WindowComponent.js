@@ -4,6 +4,8 @@ import _s from 'underscore.string';
 import HorizontalLineComponent from './HorizontalLineComponent';
 import { SCREEN_WIDTH } from 'consts/ViewProps';
 
+import IndexWindowContentComponent from './window-contents/IndexWindowContentComponent';
+
 
 class StatusBarComponent extends React.Component {
 
@@ -17,9 +19,9 @@ class StatusBarComponent extends React.Component {
       tags: true,
       style: {
         fg: 'white',
-        //bg: 'black',
-        bg: 'magenta',
+        bg: 'black',
       },
+      content: '(index)',
     };
 
     return (
@@ -32,18 +34,29 @@ class StatusBarComponent extends React.Component {
 export default class WindowComponent extends React.Component {
 
   render() {
-    const height = 22;
+
+    let windowContentComponent = null;
+    let contentHeight = 0;
+    if (!this.props.window.isMinimized) {
+      contentHeight = 20;
+      const windowContentProps = Object.assign({}, this.props, {
+        top: 1,
+        width: SCREEN_WIDTH,
+        height: contentHeight,
+      });
+      windowContentComponent = <IndexWindowContentComponent { ...windowContentProps } />
+    }
+
+    const height = contentHeight + 2;
 
     const props = {
       top: 0,
       left: 0,
       width: SCREEN_WIDTH,
-      height: height,
+      height,
       tags: true,
       style: {
         fg: 'white',
-        //bg: 'black',
-        bg: 'blue',
       },
     };
 
@@ -60,6 +73,7 @@ export default class WindowComponent extends React.Component {
     return (
       <box { ...props } >
         <StatusBarComponent { ...statusBarProps } />
+        { windowContentComponent }
         <HorizontalLineComponent { ...horizontalLineProps } />
       </box>
     );
