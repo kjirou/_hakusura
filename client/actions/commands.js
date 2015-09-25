@@ -13,9 +13,14 @@ export function _selectShellInputMode(playerStateCode) {
 
 export var SHELL_INPUT_MODE_ALIASES = {
 
+  [ShellInputModes.DEFAULT]: [
+    [/^on/, '_wizard on'],
+  ],
+
   [ShellInputModes.WIZARD]: [
-    [/^(getstate|gs)/, '_wizard getstate'],
-    [/^(setstate|ss)/, '_wizard setstate'],
+    [/^off/, '_wizard off'],
+    [/^(getstate|get)/, '_wizard getstate'],
+    [/^(setstate|set)/, '_wizard setstate'],
   ],
 };
 
