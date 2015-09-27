@@ -73,26 +73,6 @@ export var MINIMIST_OPTIONS_FOR_COMMAND = {
 
 export var COMMANDS = {
 
-  //'_wizard-adventuring': function wizardAdventuring() {
-  //  const { game } = AppModel.getInstance();
-  //  game._isAdventuring = true;
-  //  game._isBattling = false;
-  //  return {
-  //    type: ActionTypes.APPLY_COMMAND_EXECUTION,
-  //    newShellInputMode: _selectShellInputMode(game.getPlayerStateCode()),
-  //  };
-  //},
-
-  //'_wizard-battling': function wizardBattling() {
-  //  const { game } = AppModel.getInstance();
-  //  game._isAdventuring = true;
-  //  game._isBattling = true;
-  //  return {
-  //    type: ActionTypes.APPLY_COMMAND_EXECUTION,
-  //    newShellInputMode: _selectShellInputMode(game.getPlayerStateCode()),
-  //  };
-  //},
-
   '_wizard-getstate': ({ input, args }) => {
     const [ dataPath ] = args;
     return {

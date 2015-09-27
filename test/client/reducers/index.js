@@ -8,7 +8,7 @@ import { heading } from 'test/support/helpers';
 
 describe(heading(__filename), function() {
 
-  context('screen', function() {
+  context('rootReducer', function() {
 
     it('should be', function() {
       let state;
@@ -19,6 +19,27 @@ describe(heading(__filename), function() {
         input: 'a',
       });
       assert.strictEqual(state.terminal.inputBuffer, 'a');
+    });
+
+
+    context('APPLY_COMMAND_EXECUTION', function() {
+
+      it('should be', function() {
+        let state = rootReducer();
+        assert.strictEqual(state.terminal.inputBuffer, '');
+        assert.deepEqual(state.terminal.outputLines, []);
+
+        state = rootReducer(state, {
+          type: ActionTypes.APPLY_COMMAND_EXECUTION,
+          input: 'help config',
+          output: 'config is ..',
+        });
+        assert.strictEqual(state.terminal.inputBuffer, '');
+        assert.deepEqual(state.terminal.outputLines, [
+          'config is ..',
+          '> help config',
+        ]);
+      });
     });
 
 

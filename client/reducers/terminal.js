@@ -1,7 +1,6 @@
 import _s from 'underscore.string';
 
 import {
-  syncTerminalStateByCommandExecution,
   syncTerminalStateByInputBufferChange,
 } from './shared';
 import ActionTypes from 'consts/ActionTypes';
@@ -24,11 +23,6 @@ const initialState = (() => {
 export default function terminalReducer(state = initialState, action = { type: '_init' }) {
 
   switch (action.type) {
-
-    case ActionTypes.APPLY_COMMAND_EXECUTION:
-      return (({ newShellInputMode = null, input = null, output = null }) => {
-        return syncTerminalStateByCommandExecution(state, { newShellInputMode, input, output });
-      })(action);
 
     case ActionTypes.DELETE_CHARACTER_FROM_SHELL:
       return (({ position }) => {

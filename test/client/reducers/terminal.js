@@ -71,23 +71,6 @@ describe(heading(__filename), function() {
     assert.deepEqual(state.shellLines, ['*drunk*']);
   });
 
-  it('APPLY_COMMAND_EXECUTION', function() {
-    let state = terminalReducer();
-    assert.strictEqual(state.inputBuffer, '');
-    assert.deepEqual(state.outputLines, []);
-
-    state = terminalReducer(state, {
-      type: ActionTypes.APPLY_COMMAND_EXECUTION,
-      input: 'help config',
-      output: 'config is ..',
-    });
-    assert.strictEqual(state.inputBuffer, '');
-    assert.deepEqual(state.outputLines, [
-      'config is ..',
-      '> help config',
-    ]);
-  });
-
   it('MOVE_CURSOR', function() {
     let state = terminalReducer();
     assert.strictEqual(state.cursorPosition, 0);

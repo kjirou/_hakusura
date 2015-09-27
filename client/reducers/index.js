@@ -65,8 +65,31 @@ const wizardReducer = (state, action = {}) => {
 };
 
 const rootReducer = (state, action = {}) => {
+
   state = statusReducer(state, action);
   state = wizardReducer(state, action);
+
+  switch (action.type) {
+
+    case ActionTypes.APPLY_COMMAND_EXECUTION:
+      return ((action) => {
+        const {
+          newShellInputMode = null,
+          input = null,
+          output = null,
+        } = action;
+
+        const newTerminalState = syncTerminalStateByCommandExecution(
+          state.terminal,
+          { newShellInputMode, input, output }
+        );
+
+        return Object.assign({}, state, {
+          terminal: newTerminalState,
+        });
+      })(action);
+  }
+
   return state;
 };
 
