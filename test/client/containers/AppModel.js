@@ -8,7 +8,10 @@ describe(heading(__filename), function() {
 
   beforeEach(clearApp);
 
-  it('should be', function() {
+  it('should create a instance', function() {
     const model = AppModel.getInstance();
+
+    assert.strictEqual(typeof model.game, 'object');
+    assert.strictEqual(typeof model.characterList, 'object');
   });
 });
