@@ -14,19 +14,19 @@ export function _selectShellInputMode(playerStateCode) {
 export var SHELL_INPUT_MODE_ALIASES = {
 
   [ShellInputModes.DEFAULT]: [
-    [/^on/, '_wizard on'],
+    [/^on/, 'wizard on'],
   ],
 
   [ShellInputModes.WIZARD]: [
-    [/^off/, '_wizard off'],
-    [/^(getstate|get)/, '_wizard getstate'],
-    [/^(setstate|set)/, '_wizard setstate'],
+    [/^off/, 'wizard off'],
+    [/^(getstate|get)/, 'wizard getstate'],
+    [/^(setstate|set)/, 'wizard setstate'],
   ],
 };
 
 export var COMMAND_DEFINITION = {
   commands: {
-    _wizard: {
+    wizard: {
       default: 'on',
       commands: {
         adventuring: null,
@@ -73,41 +73,6 @@ export var MINIMIST_OPTIONS_FOR_COMMAND = {
 
 export var COMMANDS = {
 
-  '_wizard-getstate': ({ input, args }) => {
-    const [ dataPath ] = args;
-    return {
-      type: ActionTypes.GET_STATE,
-      dataPath,
-      input,
-    };
-  },
-
-  '_wizard-off': ({ input }) => {
-    return {
-      type: ActionTypes.APPLY_COMMAND_EXECUTION,
-      newShellInputMode: ShellInputModes.DEFAULT,
-      input,
-    };
-  },
-
-  '_wizard-on': ({ input }) => {
-    return {
-      type: ActionTypes.APPLY_COMMAND_EXECUTION,
-      newShellInputMode: ShellInputModes.WIZARD,
-      input,
-    };
-  },
-
-  '_wizard-setstate': ({ input, args }) => {
-    const [ dataPath, json ] = args;
-    return {
-      type: ActionTypes.SET_STATE,
-      dataPath,
-      json,
-      input,
-    };
-  },
-
   'help-welcome': ({ input }) => {
     return {
       type: ActionTypes.APPLY_COMMAND_EXECUTION,
@@ -117,6 +82,41 @@ export var COMMANDS = {
         '',
         'If you are a beginner, please execute the `{green-fg}tutorial{/}` command.',
       ].join('\n'),
+    };
+  },
+
+  'wizard-getstate': ({ input, args }) => {
+    const [ dataPath ] = args;
+    return {
+      type: ActionTypes.GET_STATE,
+      dataPath,
+      input,
+    };
+  },
+
+  'wizard-off': ({ input }) => {
+    return {
+      type: ActionTypes.APPLY_COMMAND_EXECUTION,
+      newShellInputMode: ShellInputModes.DEFAULT,
+      input,
+    };
+  },
+
+  'wizard-on': ({ input }) => {
+    return {
+      type: ActionTypes.APPLY_COMMAND_EXECUTION,
+      newShellInputMode: ShellInputModes.WIZARD,
+      input,
+    };
+  },
+
+  'wizard-setstate': ({ input, args }) => {
+    const [ dataPath, json ] = args;
+    return {
+      type: ActionTypes.SET_STATE,
+      dataPath,
+      json,
+      input,
     };
   },
 };
