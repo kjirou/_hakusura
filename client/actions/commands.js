@@ -69,6 +69,14 @@ export var COMMAND_DEFINITION = {
 };
 
 export var MINIMIST_OPTIONS_FOR_COMMAND = {
+  'character-index': {
+    default: {
+      page: 1,
+    },
+    alias: {
+      page: ['p'],
+    },
+  },
   'character-list': {
     default: {
       from: 1,
@@ -83,7 +91,28 @@ export var MINIMIST_OPTIONS_FOR_COMMAND = {
 
 export var COMMANDS = {
 
-  'character-list': ({ input, options }) => {
+  'character-index': ({ input, args, options }) => {
+    const { characterList } = AppModel.getInstance();
+    return [
+      {
+        type: ActionTypes.ACTIVATE_INDEX_WINDOW,
+        listPagination: characterList.getListPagination(10, options.page),
+      },
+      {
+        type: ActionTypes.UNMINIMIZE_WINDOW,
+      },
+      {
+        type: ActionTypes.OPEN_WINDOW,
+      },
+      {
+        type: ActionTypes.APPLY_COMMAND_EXECUTION,
+        newShellInputMode: ShellInputModes.INDEX,
+        input,
+      },
+    ];
+  },
+
+  'character-list': ({ input, args, options }) => {
     const { characterList } = AppModel.getInstance();
     const objects = characterList.getListObjects().slice(options.from - 1, options.to);
     return {

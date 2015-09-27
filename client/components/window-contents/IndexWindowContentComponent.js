@@ -14,10 +14,37 @@ export default class IndexWindowContentComponent extends React.Component {
       height: this.props.height,
     });
 
-    props.style.bg = 'green';
+    const rowPropsTemplate = {
+      top: undefined,
+      left: 0,
+      width: props.width,
+      height: 1,
+      tags: true,
+      style: {
+        fg: 'white',
+        bg: 'black',
+      },
+    };
 
     return (
       <box { ...props } >
+      {
+        this.props.window.listPagination.indexedObjects.map(({ serialNumber, object }, idx) => {
+          const isCursorOver = this.props.window.cursorIndex === idx;
+          const rowProps = Object.assign({}, rowPropsTemplate, {
+            key: 'object-' + idx,
+            top: idx,
+            content: `[{magenta-fg}${serialNumber}{/}] ${object.toBlessedContent()}`,
+          });
+          if (isCursorOver) {
+            rowProps.style = {
+              fg: 'black',
+              bg: 'white',
+            };
+          }
+          return <box { ...rowProps } />;
+        })
+      }
       </box>
     );
   }

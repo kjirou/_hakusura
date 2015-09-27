@@ -1,6 +1,7 @@
 import assert from 'power-assert';
 
 import ActionTypes from 'consts/ActionTypes';
+import { WINDOW_CONTENT_TYPES } from 'consts/ViewProps';
 import windowReducer from 'reducers/window';
 import { heading } from 'test/support/helpers';
 
@@ -35,5 +36,24 @@ describe(heading(__filename), function() {
       type: ActionTypes.UNMINIMIZE_WINDOW,
     });
     assert.strictEqual(state.isMinimized, false);
+  });
+
+  it('ACTIVATE_INDEX_WINDOW, INACTIVATE_INDEX_WINDOW', function() {
+    let state = windowReducer();
+    assert.strictEqual(state.windowContentType, null);
+    assert.deepEqual(state.listPagination, []);
+
+    state = windowReducer(state, {
+      type: ActionTypes.ACTIVATE_INDEX_WINDOW,
+      listPagination: [{}, {}],
+    });
+    assert.strictEqual(state.windowContentType, WINDOW_CONTENT_TYPES.INDEX);
+    assert.deepEqual(state.listPagination, [{}, {}]);
+
+    state = windowReducer(state, {
+      type: ActionTypes.INACTIVATE_INDEX_WINDOW,
+    });
+    assert.strictEqual(state.windowContentType, null);
+    assert.deepEqual(state.listPagination, []);
   });
 });

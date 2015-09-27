@@ -5,6 +5,7 @@ const ShellInputModes = keymirror({
   ADVENTURE: null,
   BATTLE: null,
   DEFAULT: null,
+  INDEX: null,
   WIZARD: null,
 });
 
