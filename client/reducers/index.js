@@ -21,7 +21,7 @@ const rootReducer = (state, action = {}) => {
 
   state = statusReducer(state, action);
 
-  // GET_STATE and SET_STATE are not good as flux-way
+  // GET_STATE and SET_STATE are not good as redux-way
   // However, I dared to define for manual debugging
   switch (action.type) {
 

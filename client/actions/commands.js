@@ -15,6 +15,7 @@ export var SHELL_INPUT_MODE_ALIASES = {
 
   [ShellInputModes.DEFAULT]: [
     [/^on/, 'wizard on'],
+    [/^sb/, 'wizard sandbox'],
   ],
 
   [ShellInputModes.WIZARD]: [
@@ -29,11 +30,10 @@ export var COMMAND_DEFINITION = {
     wizard: {
       default: 'on',
       commands: {
-        adventuring: null,
-        battling: null,
         getstate: null,
         off: null,
         on: null,
+        sandbox: null,
         setstate: null,
       },
     },
@@ -130,6 +130,19 @@ export var COMMANDS = {
       newShellInputMode: ShellInputModes.WIZARD,
       input,
     };
+  },
+
+  'wizard-sandbox': ({ input, args, options }) => {
+    return [
+      {
+        type: ActionTypes.APPLY_COMMAND_EXECUTION,
+        input,
+      },
+      {
+        type: ActionTypes.APPLY_COMMAND_EXECUTION,
+        input,
+      },
+    ];
   },
 
   'wizard-setstate': ({ input, args }) => {
