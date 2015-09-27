@@ -69,9 +69,31 @@ export var COMMAND_DEFINITION = {
 };
 
 export var MINIMIST_OPTIONS_FOR_COMMAND = {
+  'character-list': {
+    default: {
+      from: 1,
+      to: 9999,
+    },
+    alias: {
+      from: ['f'],
+      to: ['t'],
+    },
+  },
 };
 
 export var COMMANDS = {
+
+  'character-list': ({ input, options }) => {
+    const { characterList } = AppModel.getInstance();
+    const objects = characterList.getListObjects().slice(options.from - 1, options.to);
+    return {
+      type: ActionTypes.APPLY_COMMAND_EXECUTION,
+      input,
+      output: objects.map((character) => {
+        return character.toBlessedContentLine();
+      }).join('\n'),
+    };
+  },
 
   'help-welcome': ({ input }) => {
     return {

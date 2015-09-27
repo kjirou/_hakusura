@@ -1,6 +1,7 @@
 import { aggregators } from 'rpgparameter';
 
 import Model from '../Model';
+import TextifyMixin from '../mixins/TextifyMixin';
 
 
 export default class CreatureModel extends Model {
@@ -31,3 +32,5 @@ export default class CreatureModel extends Model {
   //  this._adaptState();
   //}
 }
+
+Object.assign(CreatureModel.prototype, TextifyMixin);
