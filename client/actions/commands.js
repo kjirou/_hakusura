@@ -76,8 +76,7 @@ export var COMMANDS = {
   '_wizard-getstate': ({ input, args }) => {
     const [ dataPath ] = args;
     return {
-      type: ActionTypes.APPLY_COMMAND_EXECUTION_BY_WIZARD,
-      mode: 'getstate',
+      type: ActionTypes.GET_STATE,
       dataPath,
       input,
     };
@@ -102,8 +101,7 @@ export var COMMANDS = {
   '_wizard-setstate': ({ input, args }) => {
     const [ dataPath, json ] = args;
     return {
-      type: ActionTypes.APPLY_COMMAND_EXECUTION_BY_WIZARD,
-      mode: 'setstate',
+      type: ActionTypes.SET_STATE,
       dataPath,
       json,
       input,

@@ -43,17 +43,16 @@ describe(heading(__filename), function() {
     });
 
 
-    context('APPLY_COMMAND_EXECUTION_BY_WIZARD', function() {
+    context('GET_STATE', function() {
 
-      it('getstate', function() {
+      it('should be', function() {
         let state;
         state = rootReducer();
         assert.deepEqual(state.terminal.outputLines, []);
 
         // success
         state = rootReducer(state, {
-          type: ActionTypes.APPLY_COMMAND_EXECUTION_BY_WIZARD,
-          mode: 'getstate',
+          type: ActionTypes.GET_STATE,
           dataPath: 'terminal.shellInputMode',
         });
         assert.deepEqual(state.terminal.outputLines, [
@@ -62,29 +61,31 @@ describe(heading(__filename), function() {
 
         // not found
         state = rootReducer(state, {
-          type: ActionTypes.APPLY_COMMAND_EXECUTION_BY_WIZARD,
-          mode: 'getstate',
+          type: ActionTypes.GET_STATE,
           dataPath: 'not.exists',
         });
         assert.strictEqual(state.terminal.outputLines[1], ShellInputModes.DEFAULT);
         assert(/not\.exists/.test(state.terminal.outputLines[0]));
       });
 
-      it('input passing', function() {
+      it('should be passed the input', function() {
         let state;
         state = rootReducer();
         assert.deepEqual(state.terminal.outputLines, []);
 
         state = rootReducer(state, {
-          type: ActionTypes.APPLY_COMMAND_EXECUTION_BY_WIZARD,
-          mode: 'getstate',
+          type: ActionTypes.GET_STATE,
           dataPath: '',
           input: 'this_is_a_input',
         });
         assert(/this_is_a_input/.test(state.terminal.outputLines[1]));
       });
+    });
 
-      it('setstate', function() {
+
+    context('SET_STATE', function() {
+
+      it('should be', function() {
         let state;
         state = rootReducer();
 
@@ -92,8 +93,7 @@ describe(heading(__filename), function() {
         assert.strictEqual(state.time.appTime, 0);
         assert.deepEqual(state.terminal.outputLines, []);
         state = rootReducer(state, {
-          type: ActionTypes.APPLY_COMMAND_EXECUTION_BY_WIZARD,
-          mode: 'setstate',
+          type: ActionTypes.SET_STATE,
           dataPath: 'time.appTime',
           json: '100',
         });
@@ -103,8 +103,7 @@ describe(heading(__filename), function() {
         // set a string
         assert.strictEqual(state.terminal.shellInputMode, ShellInputModes.DEFAULT);
         state = rootReducer(state, {
-          type: ActionTypes.APPLY_COMMAND_EXECUTION_BY_WIZARD,
-          mode: 'setstate',
+          type: ActionTypes.SET_STATE,
           dataPath: 'terminal.shellInputMode',
           json: '"foo"',
         });
@@ -113,8 +112,7 @@ describe(heading(__filename), function() {
         // invalid dataPath
         assert.deepEqual(state.terminal.outputLines, []);
         state = rootReducer(state, {
-          type: ActionTypes.APPLY_COMMAND_EXECUTION_BY_WIZARD,
-          mode: 'setstate',
+          type: ActionTypes.SET_STATE,
           dataPath: 'not.exists',
           json: '1',
         });
@@ -123,8 +121,7 @@ describe(heading(__filename), function() {
         // invalid as a json string
         assert.deepEqual(state.terminal.outputLines, []);
         state = rootReducer(state, {
-          type: ActionTypes.APPLY_COMMAND_EXECUTION_BY_WIZARD,
-          mode: 'setstate',
+          type: ActionTypes.SET_STATE,
           dataPath: 'time.appTime',
           json: 'i',
         });

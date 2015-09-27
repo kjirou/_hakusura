@@ -17,58 +17,12 @@ const statusReducer = combineReducers({
   window: windowReducer,
 });
 
-const wizardReducer = (state, action = {}) => {
-
-  switch (action.type) {
-
-    case ActionTypes.APPLY_COMMAND_EXECUTION_BY_WIZARD:
-      return ((action) => {
-        const {
-          mode,
-          dataPath = null,
-          json = null,
-          input = null,
-        } = action;
-
-        let output = null;
-        // get state
-        if (mode === 'getstate') {
-          if (objectPath.has(state, dataPath)) {
-            output = objectPath.get(state, dataPath).toString();
-          } else {
-            output = `Could not find the state by "${dataPath}"`;
-          }
-        // set state
-        } else if (
-          mode === 'setstate' &&
-          typeof json === 'string' &&
-          objectPath.has(state, dataPath)
-        ) {
-          try {
-            const newValue = JSON.parse(json);
-            state = _.cloneDeep(state);
-            objectPath.set(state, dataPath, newValue)
-          } catch (err) {
-            output = '{red-fg}' + err.message + '{/}';
-          }
-        }
-
-        const terminalState = syncTerminalStateByCommandExecution(state.terminal, { input, output });
-
-        return Object.assign({}, state, {
-          terminal: terminalState,
-        });
-      })(action);
-  }
-
-  return state;
-};
-
 const rootReducer = (state, action = {}) => {
 
   state = statusReducer(state, action);
-  state = wizardReducer(state, action);
 
+  // GET_STATE and SET_STATE are not good as flux-way
+  // However, I dared to define for manual debugging
   switch (action.type) {
 
     case ActionTypes.APPLY_COMMAND_EXECUTION:
@@ -82,6 +36,52 @@ const rootReducer = (state, action = {}) => {
         const newTerminalState = syncTerminalStateByCommandExecution(
           state.terminal,
           { newShellInputMode, input, output }
+        );
+
+        return Object.assign({}, state, {
+          terminal: newTerminalState,
+        });
+      })(action);
+
+    case ActionTypes.GET_STATE:
+      return (({ dataPath, input }) => {
+        let output = null;
+
+        if (objectPath.has(state, dataPath)) {
+          output = objectPath.get(state, dataPath).toString();
+        } else {
+          output = `Could not find the state by "${dataPath}"`;
+        }
+
+        const newTerminalState = syncTerminalStateByCommandExecution(
+          state.terminal,
+          { input, output }
+        );
+
+        return Object.assign({}, state, {
+          terminal: newTerminalState,
+        });
+
+      })(action);
+
+    case ActionTypes.SET_STATE:
+      return (({ dataPath, json, input }) => {
+        let output = null;
+
+        if (typeof json === 'string' && objectPath.has(state, dataPath)) {
+          try {
+            const newValue = JSON.parse(json);
+            state = _.cloneDeep(state);
+            objectPath.set(state, dataPath, newValue)
+          } catch (err) {
+            output = '{red-fg}' + err.message + '{/}';
+          }
+
+        }
+
+        const newTerminalState = syncTerminalStateByCommandExecution(
+          state.terminal,
+          { input, output }
         );
 
         return Object.assign({}, state, {
