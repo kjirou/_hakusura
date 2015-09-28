@@ -36,7 +36,7 @@ const TerminalActionCreators = {
     };
   },
 
-  executeCommand(shellInputMode, input) {
+  executeCommand(shellInputMode, input, { silent = false } = {}) {
 
     let expandedInput = input;
     if (SHELL_INPUT_MODE_ALIASES[shellInputMode]) {
@@ -54,11 +54,21 @@ const TerminalActionCreators = {
 
     const command = COMMANDS[commandId] || null;
     if (command) {
-      return command({
+      const actionOrActions = command({
         input,
         args: commandOptions._,
         options: _.omit(commandOptions, '_'),
       });
+      // Apply silent execution
+      (Array.isArray(actionOrActions) ? actionOrActions : [actionOrActions]).forEach((action) => {
+        if (action.type === ActionTypes.APPLY_COMMAND_EXECUTION && silent) {
+          Object.assign(action, {
+            input: null,
+            output: null,
+          });
+        }
+      });
+      return actionOrActions;
     }
 
     return {
@@ -90,6 +100,13 @@ const TerminalActionCreators = {
     return {
       type: ActionTypes.MOVE_CURSOR,
       relativePosition,
+    };
+  },
+
+  moveIndexWindowCursor(relativeIndex) {
+    return {
+      type: ActionTypes.MOVE_INDEX_WINDOW_CURSOR,
+      relativeIndex,
     };
   },
 };

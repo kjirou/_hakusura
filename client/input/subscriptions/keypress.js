@@ -1,7 +1,7 @@
 import alphabet from 'alphabet';
 
 import EventTypes from 'consts/EventTypes';
-import { STAGE_SELECTION } from 'consts/Keys';
+import { WINDOW_CONTENT_TYPES } from 'consts/ViewProps';
 import AppEvent from 'containers/AppEvent';
 import AppStore from 'containers/AppStore';
 
@@ -33,6 +33,20 @@ export function onKeypress({ name: keyName, sequence: keySequence, ctrl: isEnabl
     // TODO: show confirmation dialog
     emitter.emit(EventTypes.EXIT_SCREEN);
     return;
+  }
+
+  if (keyName === 'up') {
+    if (state.window.windowContentType === WINDOW_CONTENT_TYPES.INDEX) {
+      dispatchers.terminal.moveIndexWindowCursor(-1);
+      return;
+    }
+  }
+
+  if (keyName === 'down') {
+    if (state.window.windowContentType === WINDOW_CONTENT_TYPES.INDEX) {
+      dispatchers.terminal.moveIndexWindowCursor(1);
+      return;
+    }
   }
 
   if (keyName === 'left') {

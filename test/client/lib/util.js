@@ -4,7 +4,8 @@ import conf from 'conf';
 import {
   calculateMillisecondsPerFrame,
   createCounter,
-  dictionarize
+  dictionarize,
+  rotateIndex,
 } from 'lib/util';
 import {heading} from 'test/support/helpers';
 
@@ -36,5 +37,13 @@ describe(heading(__filename), function() {
         bar: { type: 'bar', value: 2 }
       }
     );
+  });
+
+  it('rotateIndex', function() {
+    assert.strictEqual(rotateIndex(10, 0, 1), 1);
+    assert.strictEqual(rotateIndex(10, 3, 5), 8);
+    assert.strictEqual(rotateIndex(10, 5, 7), 2);
+    assert.strictEqual(rotateIndex(10, 0, -1), 9);
+    assert.strictEqual(rotateIndex(0, 0, 1), -1);
   });
 });

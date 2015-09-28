@@ -12,6 +12,7 @@ const ActionTypes = keymirror({
   INACTIVATE_INDEX_WINDOW: null,
   INPUT_TO_SHELL: null,
   MOVE_CURSOR: null,
+  MOVE_INDEX_WINDOW_CURSOR: null,
   MINIMIZE_WINDOW: null,
   OPEN_WINDOW: null,
   SET_STATE: null,
