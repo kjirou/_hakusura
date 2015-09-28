@@ -1,4 +1,4 @@
-import { SearchPaginator } from 'pagination';
+import paginate from 'simple-pagination';
 
 
 export default function ListingMixinCreator() {
@@ -13,30 +13,21 @@ export default function ListingMixinCreator() {
 
     /*
      * @param {number} rowsPerPage
-     * @param {number} currentPageNumber - To be started from 1
+     * @param {number} specifiedPage - To be started from 1
      * @return {object}
      */
-    getListPagination(rowsPerPage, currentPageNumber) {
-
-      const totalResult = this._listObjects.length;
-      const paginator = new SearchPaginator({
-        rowsPerPage,
-        totalResult,
-        current: currentPageNumber,
-      });
-      const paginated = paginator.getPaginationData();
-
-      const fromResultByIndex = paginated.fromResult - 1;
-      const objects = this._listObjects.slice(fromResultByIndex, fromResultByIndex + rowsPerPage);
+    getListPagination(rowsPerPage, specifiedPage) {
+      const paginated = paginate(this._listObjects.length, rowsPerPage, specifiedPage);
+      const fromIndex = paginated.fromCount - 1;
+      const objects = this._listObjects.slice(fromIndex, fromIndex + rowsPerPage);
       const indexedObjects = objects.map((object, i) => {
-        const serialNumber = paginated.fromResult + i;
+        const serialNumber = paginated.fromCount + i;
         return {
           index: serialNumber - 1,
           serialNumber,
           object,
         };
       });
-
       return Object.assign(paginated, {
         objects,
         indexedObjects,

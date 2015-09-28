@@ -40,10 +40,10 @@ describe(heading(__filename), function() {
 
     // npm pagination's results
     assert.strictEqual(pagination.pageCount, 3);
-    assert.strictEqual(pagination.current, 2);
-    assert.strictEqual(pagination.previous, 1);
-    assert.strictEqual(pagination.next, 3);
-    assert.strictEqual(pagination.fromResult, 3);
+    assert.strictEqual(pagination.currentPage, 2);
+    assert.strictEqual(pagination.previousPage, 1);
+    assert.strictEqual(pagination.nextPage, 3);
+    assert.strictEqual(pagination.fromCount, 3);
 
     // extended results
     assert.deepEqual(pagination.objects, [
@@ -66,10 +66,10 @@ describe(heading(__filename), function() {
     // the number of objects is less than the max page objects
     pagination = foo.getListPagination(3, 2);
     assert.strictEqual(pagination.pageCount, 2);
-    assert.strictEqual(pagination.current, 2);
-    assert.strictEqual(pagination.previous, 1);
-    assert.strictEqual(pagination.next, null);
-    assert.strictEqual(pagination.fromResult, 4);
+    assert.strictEqual(pagination.currentPage, 2);
+    assert.strictEqual(pagination.previousPage, 1);
+    assert.strictEqual(pagination.nextPage, null);
+    assert.strictEqual(pagination.fromCount, 4);
     assert.deepEqual(pagination.objects, [
       { name: 'Shiro' },
       { name: 'Goro' },
@@ -90,8 +90,8 @@ describe(heading(__filename), function() {
     // the current page number is out of range
     pagination = foo.getListPagination(1, 99);
     assert.strictEqual(pagination.pageCount, 5);
-    assert.strictEqual(pagination.current, 5);
-    assert.strictEqual(pagination.previous, 4);  // Notice: pageCount - 1
-    assert.strictEqual(pagination.next, null);
+    assert.strictEqual(pagination.currentPage, 5);
+    assert.strictEqual(pagination.previousPage, 4);  // Notice: pageCount - 1
+    assert.strictEqual(pagination.nextPage, null);
   });
 });
