@@ -50,13 +50,44 @@ export function onKeypress({ name: keyName, sequence: keySequence, ctrl: isEnabl
   }
 
   if (keyName === 'left') {
-    dispatchers.terminal.moveCursorByRelative(-1);
-    return;
+    if (state.window.windowContentType === WINDOW_CONTENT_TYPES.INDEX) {
+      dispatchers.terminal.executeCommand(
+        state.terminal.shellInputMode,
+        state.indexWindow.leftCommand,
+        { silent: true }
+      );
+      return;
+    } else {
+      dispatchers.terminal.moveCursorByRelative(-1);
+      return;
+    }
   }
+
   if (keyName === 'right') {
-    dispatchers.terminal.moveCursorByRelative(1);
-    return;
+    if (state.window.windowContentType === WINDOW_CONTENT_TYPES.INDEX) {
+      dispatchers.terminal.executeCommand(
+        state.terminal.shellInputMode,
+        state.indexWindow.rightCommand,
+        { silent: true }
+      );
+      return;
+    } else {
+      dispatchers.terminal.moveCursorByRelative(1);
+      return;
+    };
   }
+
+  if (keyName === 'space') {
+    if (state.window.windowContentType === WINDOW_CONTENT_TYPES.INDEX) {
+      dispatchers.terminal.executeCommand(
+        state.terminal.shellInputMode,
+        state.indexWindow.spaceCommand,
+        { silent: true }
+      );
+      return;
+    }
+  }
+
   if (isEnabledControl && keyName === 'a') {
     dispatchers.terminal.moveCursor(0);
     return;
