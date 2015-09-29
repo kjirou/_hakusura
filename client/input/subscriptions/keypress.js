@@ -1,7 +1,7 @@
 import alphabet from 'alphabet';
 
 import EventTypes from 'consts/EventTypes';
-import { STAGE_SELECTION } from 'consts/Keys';
+import { WINDOW_CONTENT_TYPES } from 'consts/ViewProps';
 import AppEvent from 'containers/AppEvent';
 import AppStore from 'containers/AppStore';
 
@@ -14,6 +14,9 @@ const WRITABLE_KEYS = [
   '\'',
   '-',
   '_',
+  '.',
+  ':',
+  ';',
 ];
 
 const BACKSPACE_KEYS = [
@@ -32,14 +35,59 @@ export function onKeypress({ name: keyName, sequence: keySequence, ctrl: isEnabl
     return;
   }
 
+  if (keyName === 'up') {
+    if (state.window.windowContentType === WINDOW_CONTENT_TYPES.INDEX) {
+      dispatchers.terminal.moveIndexWindowCursor(-1);
+      return;
+    }
+  }
+
+  if (keyName === 'down') {
+    if (state.window.windowContentType === WINDOW_CONTENT_TYPES.INDEX) {
+      dispatchers.terminal.moveIndexWindowCursor(1);
+      return;
+    }
+  }
+
   if (keyName === 'left') {
-    dispatchers.terminal.moveCursorByRelative(-1);
-    return;
+    if (state.window.windowContentType === WINDOW_CONTENT_TYPES.INDEX) {
+      dispatchers.terminal.executeCommand(
+        state.terminal.shellInputMode,
+        state.indexWindow.leftCommand,
+        { silent: true }
+      );
+      return;
+    } else {
+      dispatchers.terminal.moveCursorByRelative(-1);
+      return;
+    }
   }
+
   if (keyName === 'right') {
-    dispatchers.terminal.moveCursorByRelative(1);
-    return;
+    if (state.window.windowContentType === WINDOW_CONTENT_TYPES.INDEX) {
+      dispatchers.terminal.executeCommand(
+        state.terminal.shellInputMode,
+        state.indexWindow.rightCommand,
+        { silent: true }
+      );
+      return;
+    } else {
+      dispatchers.terminal.moveCursorByRelative(1);
+      return;
+    };
   }
+
+  if (keyName === 'space') {
+    if (state.window.windowContentType === WINDOW_CONTENT_TYPES.INDEX) {
+      dispatchers.terminal.executeCommand(
+        state.terminal.shellInputMode,
+        state.indexWindow.spaceCommand,
+        { silent: true }
+      );
+      return;
+    }
+  }
+
   if (isEnabledControl && keyName === 'a') {
     dispatchers.terminal.moveCursor(0);
     return;
@@ -64,9 +112,7 @@ export function onKeypress({ name: keyName, sequence: keySequence, ctrl: isEnabl
   }
 
   if (keyName === 'enter') {
-    dispatchers.terminal.executeCommand(state.terminal.inputBuffer, {
-      shellInputMode: state.terminal.shellInputMode,
-    });
+    dispatchers.terminal.executeCommand(state.terminal.shellInputMode, state.terminal.inputBuffer);
     return;
   }
 }

@@ -1,7 +1,10 @@
 import _s from 'underscore.string';
 
-import { SCREEN_WIDTH } from 'components/ScreenComponent';
+import {
+  syncTerminalStateByInputBufferChange,
+} from './shared';
 import ActionTypes from 'consts/ActionTypes';
+import { SCREEN_WIDTH } from 'consts/ViewProps';
 import ShellInputModes from 'consts/ShellInputModes';
 import { generatePrompt } from 'lib/text-processor';
 
@@ -17,34 +20,9 @@ const initialState = (() => {
   };
 })();
 
-function syncStateByInputBufferChange(state, newInputBuffer) {
-  const shellLines = state.shellLines.slice();
-  shellLines[0] = newInputBuffer;
-  return Object.assign({}, state, {
-    inputBuffer: newInputBuffer,
-    shellLines,
-  });
-}
-
 export default function terminalReducer(state = initialState, action = { type: '_init' }) {
 
   switch (action.type) {
-
-    case ActionTypes.APPLY_COMMAND_EXECUTION:
-      return (({ input, output, shellInputMode }) => {
-        const additionalOutputLines = [generatePrompt(state.shellInputMode) + input];
-        if (typeof output === 'string') {
-          additionalOutputLines.unshift(output);
-        }
-
-        state = syncStateByInputBufferChange(state, '');
-        state = Object.assign({}, state, {
-          outputLines: [...additionalOutputLines, ...state.outputLines],
-          shellInputMode: shellInputMode ? shellInputMode : state.shellInputMode,
-          cursorPosition: 0,
-        });
-        return state;
-      })(action);
 
     case ActionTypes.DELETE_CHARACTER_FROM_SHELL:
       return (({ position }) => {
@@ -55,7 +33,7 @@ export default function terminalReducer(state = initialState, action = { type: '
           return state;
         }
         const inputBuffer = _s.splice(state.inputBuffer, position, 1, '');
-        state = syncStateByInputBufferChange(state, inputBuffer);
+        state = syncTerminalStateByInputBufferChange(state, inputBuffer);
         state = Object.assign({}, state, {
           cursorPosition: state.cursorPosition - 1,
         });
@@ -65,7 +43,7 @@ export default function terminalReducer(state = initialState, action = { type: '
     // TODO: shellLines, outputLines
     case ActionTypes.UPDATE_SHELL:
       return (({ inputBuffer }) => {
-        return syncStateByInputBufferChange(state, inputBuffer);
+        return syncTerminalStateByInputBufferChange(state, inputBuffer);
       })(action);
 
     case ActionTypes.INPUT_TO_SHELL:
@@ -74,7 +52,7 @@ export default function terminalReducer(state = initialState, action = { type: '
           position = state.inputBuffer.length;
         }
         const inputBuffer = _s.insert(state.inputBuffer, position, input);
-        state = syncStateByInputBufferChange(state, inputBuffer);
+        state = syncTerminalStateByInputBufferChange(state, inputBuffer);
         state = Object.assign({}, state, {
           cursorPosition: state.cursorPosition + input.length,
         });

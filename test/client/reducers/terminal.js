@@ -1,8 +1,8 @@
 import assert from 'power-assert';
 import _s from 'underscore.string';
 
-import { SCREEN_WIDTH } from 'components/ScreenComponent';
 import ActionTypes from 'consts/ActionTypes';
+import { SCREEN_WIDTH } from 'consts/ViewProps';
 import terminalReducer from 'reducers/terminal';
 import { heading } from 'test/support/helpers';
 
@@ -69,23 +69,6 @@ describe(heading(__filename), function() {
     });
     assert.strictEqual(state.inputBuffer, '*drunk*');
     assert.deepEqual(state.shellLines, ['*drunk*']);
-  });
-
-  it('APPLY_COMMAND_EXECUTION', function() {
-    let state = terminalReducer();
-    assert.strictEqual(state.inputBuffer, '');
-    assert.deepEqual(state.outputLines, []);
-
-    state = terminalReducer(state, {
-      type: ActionTypes.APPLY_COMMAND_EXECUTION,
-      input: 'help config',
-      output: 'config is ..',
-    });
-    assert.strictEqual(state.inputBuffer, '');
-    assert.deepEqual(state.outputLines, [
-      'config is ..',
-      '> help config',
-    ]);
   });
 
   it('MOVE_CURSOR', function() {

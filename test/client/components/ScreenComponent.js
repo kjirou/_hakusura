@@ -1,10 +1,10 @@
 import assert from 'power-assert';
 import _s from 'underscore.string';
 
-import ScreenComponent, {
-  SCREEN_HEIGHT,
+import {
   linesToContent,
 } from 'components/ScreenComponent';
+import { SCREEN_HEIGHT } from 'consts/ViewProps';
 import { heading } from 'test/support/helpers';
 
 

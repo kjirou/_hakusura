@@ -2,16 +2,12 @@ import assert from 'power-assert';
 
 import Model from 'models/Model';
 import ParametersMixin from 'models/mixins/ParametersMixin';
-import {heading} from 'test/support/helpers';
+import { heading } from 'test/support/helpers';
 
 
 describe(heading(__filename), function() {
 
-  it('should be defined', function() {
-    assert.strictEqual(typeof ParametersMixin, 'object');
-  });
-
-  it('should extend Model', function() {
+  it('should extend Model', undefined, function() {
     class FooModel extends Model {
       constructor() {
         super();

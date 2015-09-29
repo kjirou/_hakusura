@@ -1,4 +1,5 @@
 import ScreenComponent from './ScreenComponent';
+import { ROOT_WIDTH, ROOT_HEIGHT } from 'consts/ViewProps';
 import AppStore from 'containers/AppStore';
 
 
@@ -28,8 +29,8 @@ export default class RootComponent extends React.Component {
     const props = {
       top: 'center',
       left: 'center',
-      width: 82,
-      height: 34,
+      width: ROOT_WIDTH,
+      height: ROOT_HEIGHT,
       border: {
         type: 'line'
       },

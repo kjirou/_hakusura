@@ -3,6 +3,7 @@ import { render } from 'react-blessed';
 
 import RootComponent from 'components/RootComponent';
 import EventTypes from 'consts/EventTypes';
+import ShellInputModes from 'consts/ShellInputModes';
 import AppEvent from 'containers/AppEvent';
 import AppStore from 'containers/AppStore';
 import AppInput from 'input/AppInput';
@@ -59,7 +60,7 @@ export default class CliApp {
     render(<RootComponent />, screen);
 
     const { dispatchers } = AppStore.getInstance();
-    dispatchers.terminal.executeCommand('help welcome');
+    dispatchers.terminal.executeCommand(ShellInputModes.DEFAULT, 'help welcome');
 
     this._screen = screen;
   }
