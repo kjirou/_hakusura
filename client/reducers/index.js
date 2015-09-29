@@ -2,6 +2,7 @@ import _ from 'lodash';
 import objectPath from 'object-path';
 import { combineReducers } from 'redux';
 
+import indexWindowReducer from './index-window';
 import screenReducer from './screen';
 import { syncTerminalStateByCommandExecution } from './shared';
 import terminalReducer from './terminal';
@@ -11,6 +12,7 @@ import ActionTypes from 'consts/ActionTypes';
 
 
 const statusReducer = combineReducers({
+  indexWindow: indexWindowReducer,
   screen: screenReducer,
   terminal: terminalReducer,
   time: timeReducer,

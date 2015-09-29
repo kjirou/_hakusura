@@ -1,5 +1,6 @@
 import ActionTypes from 'consts/ActionTypes';
 import ShellInputModes from 'consts/ShellInputModes';
+import { WINDOW_CONTENT_TYPES } from 'consts/ViewProps';
 import AppModel from 'containers/AppModel';
 import { PLAYER_STATE_CODES } from 'models/GameModel';
 
@@ -103,6 +104,7 @@ export var COMMANDS = {
       },
       {
         type: ActionTypes.OPEN_WINDOW,
+        windowContentType: WINDOW_CONTENT_TYPES.INDEX,
       },
       {
         type: ActionTypes.APPLY_COMMAND_EXECUTION,
