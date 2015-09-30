@@ -1,26 +1,21 @@
 import _s from 'underscore.string';
 
-import {
-  syncTerminalStateByInputBufferChange,
-} from './shared';
 import ActionTypes from 'consts/ActionTypes';
 import { SCREEN_WIDTH } from 'consts/ViewProps';
 import ShellInputModes from 'consts/ShellInputModes';
 import { generatePrompt } from 'lib/text-processor';
 
 
-const initialState = (() => {
-  const inputBuffer = '';
+const createInitialState = () => {
   return {
     shellInputMode: ShellInputModes.DEFAULT,
-    inputBuffer: inputBuffer,
+    inputBuffer: '',
     cursorPosition: 0,
     outputLines: [],
-    shellLines: [inputBuffer],
   };
-})();
+};
 
-export default function terminalReducer(state = initialState, action = { type: '_init' }) {
+export default function terminalReducer(state = createInitialState(), action = { type: '_init' }) {
 
   switch (action.type) {
 
@@ -32,18 +27,17 @@ export default function terminalReducer(state = initialState, action = { type: '
         if (position < 0) {
           return state;
         }
-        const inputBuffer = _s.splice(state.inputBuffer, position, 1, '');
-        state = syncTerminalStateByInputBufferChange(state, inputBuffer);
-        state = Object.assign({}, state, {
+        return Object.assign({}, state, {
+          inputBuffer: _s.splice(state.inputBuffer, position, 1, ''),
           cursorPosition: state.cursorPosition - 1,
         });
-        return state;
       })(action);
 
-    // TODO: shellLines, outputLines
     case ActionTypes.UPDATE_SHELL:
       return (({ inputBuffer }) => {
-        return syncTerminalStateByInputBufferChange(state, inputBuffer);
+        return Object.assign({}, state, {
+          inputBuffer,
+        });
       })(action);
 
     case ActionTypes.INPUT_TO_SHELL:
@@ -51,12 +45,10 @@ export default function terminalReducer(state = initialState, action = { type: '
         if (position === undefined || position === null) {
           position = state.inputBuffer.length;
         }
-        const inputBuffer = _s.insert(state.inputBuffer, position, input);
-        state = syncTerminalStateByInputBufferChange(state, inputBuffer);
-        state = Object.assign({}, state, {
+        return Object.assign({}, state, {
+          inputBuffer: _s.insert(state.inputBuffer, position, input),
           cursorPosition: state.cursorPosition + input.length,
         });
-        return state;
       })(action);
 
     case ActionTypes.MOVE_CURSOR:

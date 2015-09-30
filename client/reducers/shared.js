@@ -1,15 +1,6 @@
 import { generatePrompt } from 'lib/text-processor';
 
 
-export function syncTerminalStateByInputBufferChange(terminalState, newInputBuffer) {
-  const shellLines = terminalState.shellLines.slice();
-  shellLines[0] = newInputBuffer;
-  return Object.assign({}, terminalState, {
-    inputBuffer: newInputBuffer,
-    shellLines,
-  });
-}
-
 export function syncTerminalStateByCommandExecution(
   terminalState,
   { newShellInputMode = null, input = null, output = null }
@@ -24,8 +15,8 @@ export function syncTerminalStateByCommandExecution(
   }
   newShellInputMode = newShellInputMode || terminalState.shellInputMode;
 
-  terminalState = syncTerminalStateByInputBufferChange(terminalState, '');
   terminalState = Object.assign({}, terminalState, {
+    inputBuffer: '',
     outputLines: newOutputLines,
     shellInputMode: newShellInputMode,
     cursorPosition: 0,

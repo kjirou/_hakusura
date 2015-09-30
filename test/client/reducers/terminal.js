@@ -9,10 +9,9 @@ import { heading } from 'test/support/helpers';
 
 describe(heading(__filename), function() {
 
-  it('inputBuffer, shellLines', function() {
+  it('inputBuffer', function() {
     let state = terminalReducer();
     assert.strictEqual(state.inputBuffer, '');
-    assert.deepEqual(state.shellLines, ['']);
 
     // input a character to last
     state = terminalReducer(state, {
@@ -28,7 +27,6 @@ describe(heading(__filename), function() {
       input: 'r',
     });
     assert.strictEqual(state.inputBuffer, 'bar');
-    assert.deepEqual(state.shellLines, ['bar']);
 
     // delete a character
     state = terminalReducer(state, {
@@ -36,14 +34,12 @@ describe(heading(__filename), function() {
       position: 1,
     });
     assert.strictEqual(state.inputBuffer, 'br');
-    assert.deepEqual(state.shellLines, ['br']);
 
     // delete last character by default
     state = terminalReducer(state, {
       type: ActionTypes.DELETE_CHARACTER_FROM_SHELL,
     });
     assert.strictEqual(state.inputBuffer, 'b');
-    assert.deepEqual(state.shellLines, ['b']);
 
     // input characters
     state = terminalReducer(state, {
@@ -51,7 +47,6 @@ describe(heading(__filename), function() {
       input: 'eer',
     });
     assert.strictEqual(state.inputBuffer, 'beer');
-    assert.deepEqual(state.shellLines, ['beer']);
 
     // insert characters
     state = terminalReducer(state, {
@@ -60,7 +55,6 @@ describe(heading(__filename), function() {
       position: 2,
     });
     assert.strictEqual(state.inputBuffer, 'be engineer');
-    assert.deepEqual(state.shellLines, ['be engineer']);
 
     // update all
     state = terminalReducer(state, {
@@ -68,7 +62,6 @@ describe(heading(__filename), function() {
       inputBuffer: '*drunk*',
     });
     assert.strictEqual(state.inputBuffer, '*drunk*');
-    assert.deepEqual(state.shellLines, ['*drunk*']);
   });
 
   it('MOVE_CURSOR', function() {

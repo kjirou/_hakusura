@@ -9,21 +9,15 @@ import { generatePrompt, linesToBlessedContent } from 'lib/text-processor';
 
 export default class ScreenComponent extends React.Component {
 
-  static mergeLines(promptString, shellLines, outputLines) {
+  static mergeLines(promptString, inputBuffer, outputLines) {
     const borderLine = _s.repeat('\u2500', SCREEN_WIDTH);
-    const lines = [
+    const commandLine = promptString + inputBuffer;
+
+    return [
+      commandLine,
       borderLine,
+      ...outputLines,
     ];
-
-    shellLines = shellLines.slice();
-    if (shellLines.length > 0) {
-      shellLines[0] = promptString + shellLines[0];
-    }
-
-    shellLines.forEach(line => lines.unshift(line));
-    outputLines.forEach(line => lines.push(line));
-
-    return lines;
   }
 
   render() {
@@ -31,7 +25,7 @@ export default class ScreenComponent extends React.Component {
 
     const lines = this.constructor.mergeLines(
       promptString,
-      this.props.terminal.shellLines,
+      this.props.terminal.inputBuffer,
       this.props.terminal.outputLines
     );
 
