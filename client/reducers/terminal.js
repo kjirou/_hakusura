@@ -3,6 +3,7 @@ import _s from 'underscore.string';
 import ActionTypes from 'consts/ActionTypes';
 import { SCREEN_WIDTH } from 'consts/ViewProps';
 import ShellInputModes from 'consts/ShellInputModes';
+import { complementCommand, } from 'lib/command-parser';
 import { generatePrompt } from 'lib/text-processor';
 
 
@@ -10,6 +11,7 @@ const createInitialState = () => {
   return {
     shellInputMode: ShellInputModes.DEFAULT,
     inputBuffer: '',
+    commandSuggestion: null,
     cursorPosition: 0,
     outputLines: [],
   };
@@ -18,6 +20,24 @@ const createInitialState = () => {
 export default function terminalReducer(state = createInitialState(), action = { type: '_init' }) {
 
   switch (action.type) {
+
+    case ActionTypes.COMPLEMENT_COMMAND:
+      return (({ complementationPatterns }) => {
+        let newCommandSuggestion = state.commandSuggestion;
+        if (newCommandSuggestion === null) {
+          newCommandSuggestion = state.inputBuffer;
+        }
+        const newInputBuffer = complementCommand(
+          complementationPatterns,
+          newCommandSuggestion,
+          state.inputBuffer
+        );
+        return Object.assign({}, state, {
+          inputBuffer: newInputBuffer,
+          commandSuggestion: newCommandSuggestion,
+          cursorPosition: newInputBuffer.length,
+        });
+      })(action);
 
     case ActionTypes.DELETE_CHARACTER_FROM_SHELL:
       return (({ position }) => {
@@ -29,6 +49,7 @@ export default function terminalReducer(state = createInitialState(), action = {
         }
         return Object.assign({}, state, {
           inputBuffer: _s.splice(state.inputBuffer, position, 1, ''),
+          commandSuggestion: null,
           cursorPosition: state.cursorPosition - 1,
         });
       })(action);
@@ -40,6 +61,7 @@ export default function terminalReducer(state = createInitialState(), action = {
         }
         return Object.assign({}, state, {
           inputBuffer: _s.insert(state.inputBuffer, position, input),
+          commandSuggestion: null,
           cursorPosition: state.cursorPosition + input.length,
         });
       })(action);
@@ -55,6 +77,7 @@ export default function terminalReducer(state = createInitialState(), action = {
         const maxPosition = Math.min(SCREEN_WIDTH - 1, state.inputBuffer.length);
         nextPosition = Math.min(Math.max(nextPosition, 0), maxPosition);
         return Object.assign({}, state, {
+          commandSuggestion: null,
           cursorPosition: nextPosition,
         });
       })(action);

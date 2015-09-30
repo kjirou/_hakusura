@@ -5,6 +5,7 @@ const ActionTypes = keymirror({
   ACTIVATE_INDEX_WINDOW: null,
   APPLY_COMMAND_EXECUTION: null,
   CLOSE_WINDOW: null,
+  COMPLEMENT_COMMAND: null,
   DELETE_CHARACTER_FROM_SHELL: null,
   EXECUTE_SHELL: null,
   FORWARD_APP_TIME: null,

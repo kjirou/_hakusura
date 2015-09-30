@@ -2,6 +2,7 @@ import _ from 'lodash';
 import _s from 'underscore.string';
 
 import {
+  COMMAND_COMPLEMENTION_DEFINITION,
   COMMAND_DEFINITION,
   COMMANDS,
   MINIMIST_OPTIONS_FOR_COMMAND,
@@ -33,6 +34,13 @@ const TerminalActionCreators = {
     return {
       type: ActionTypes.DELETE_CHARACTER_FROM_SHELL,
       position: options.position,
+    };
+  },
+
+  complementCommand() {
+    return {
+      type: ActionTypes.COMPLEMENT_COMMAND,
+      complementationPatterns: COMMAND_COMPLEMENTION_DEFINITION,
     };
   },
 

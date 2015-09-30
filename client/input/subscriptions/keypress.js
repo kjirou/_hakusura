@@ -77,6 +77,11 @@ export function onKeypress({ name: keyName, sequence: keySequence, ctrl: isEnabl
     };
   }
 
+  if (keyName === 'tab') {
+    dispatchers.terminal.complementCommand();
+    return;
+  }
+
   if (keyName === 'space') {
     if (state.window.windowContentType === WINDOW_CONTENT_TYPES.INDEX) {
       dispatchers.terminal.executeCommand(

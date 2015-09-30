@@ -102,4 +102,71 @@ describe(heading(__filename), function() {
     });
     assert.strictEqual(state.cursorPosition, 1);
   });
+
+  it('COMPLEMENT_COMMAND', function() {
+    let state;
+    const patterns = [
+      'bar',
+      'foa',
+      'foa list',
+      'foa show',
+      'foo',
+    ];
+
+    state = terminalReducer();
+    state = terminalReducer(state, {
+      type: ActionTypes.INPUT_TO_SHELL,
+      input: 'fo',
+    });
+    assert.strictEqual(state.inputBuffer, 'fo');
+    assert.strictEqual(state.commandSuggestion, null);
+    assert.strictEqual(state.cursorPosition, 2);
+
+    state = terminalReducer(state, {
+      type: ActionTypes.COMPLEMENT_COMMAND,
+      complementationPatterns: patterns,
+    });
+    assert.strictEqual(state.inputBuffer, 'foa');
+    assert.strictEqual(state.commandSuggestion, 'fo');
+    assert.strictEqual(state.cursorPosition, 3);
+
+    state = terminalReducer(state, {
+      type: ActionTypes.COMPLEMENT_COMMAND,
+      complementationPatterns: patterns,
+    });
+    assert.strictEqual(state.inputBuffer, 'foo');
+    assert.strictEqual(state.commandSuggestion, 'fo');
+
+    state = terminalReducer(state, {
+      type: ActionTypes.COMPLEMENT_COMMAND,
+      complementationPatterns: patterns,
+    });
+    assert.strictEqual(state.inputBuffer, 'foa');
+    assert.strictEqual(state.commandSuggestion, 'fo');
+
+    state = terminalReducer(state, {
+      type: ActionTypes.INPUT_TO_SHELL,
+      input: ' ',
+    });
+
+    state = terminalReducer(state, {
+      type: ActionTypes.COMPLEMENT_COMMAND,
+      complementationPatterns: patterns,
+    });
+    assert.strictEqual(state.inputBuffer, 'foa list');
+    assert.strictEqual(state.commandSuggestion, 'foa ');
+
+    state = terminalReducer(state, {
+      type: ActionTypes.COMPLEMENT_COMMAND,
+      complementationPatterns: patterns,
+    });
+    assert.strictEqual(state.inputBuffer, 'foa show');
+    assert.strictEqual(state.commandSuggestion, 'foa ');
+
+    state = terminalReducer(state, {
+      type: ActionTypes.COMPLEMENT_COMMAND,
+      complementationPatterns: patterns,
+    });
+    assert.strictEqual(state.inputBuffer, 'foa list');
+  });
 });

@@ -188,3 +188,13 @@ export var COMMANDS = {
     };
   },
 };
+
+export var _generateCommandComplementionDefinition = (commandIds) => {
+  const uniqued = new Set();
+  commandIds.forEach(commandId => {
+    uniqued.add(commandId.split('-')[0]);
+    uniqued.add(commandId.replace(/-/g, ' '));
+  });
+  return Array.from(uniqued).sort();
+};
+export var COMMAND_COMPLEMENTION_DEFINITION = _generateCommandComplementionDefinition(Object.keys(COMMANDS));

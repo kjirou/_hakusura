@@ -2,6 +2,8 @@ import parseArgs from 'minimist';
 import parseCommands from 'minimist-subcommand';
 import _s from 'underscore.string';
 
+import { rotateIndex } from 'lib/util';
+
 
 /*
  * @param {string} shellInput - Like linux/unix shell input.
@@ -39,4 +41,21 @@ export function parse(commandDefinition, minimistOptionsForCommand, shellInput) 
     subCommandName: subCommandName || null,
     commandOptions: parseArgs(argv, minimistOptions),
   };
+}
+
+export function complementCommand(patterns, suggestedInput, selectedInput = null) {
+  const suggestedWordCount = suggestedInput.split(/ +/).length;
+  const matched = patterns.filter(pattern => {
+    const patternWordCount = pattern.split(/ +/).length;
+    return patternWordCount === suggestedWordCount &&
+      pattern.indexOf(suggestedInput) === 0;
+  });
+  if (matched.length === 0) {
+    return suggestedInput;
+  }
+  const selectedIndex = matched.indexOf(selectedInput);
+  if (selectedIndex === -1) {
+    return matched[0];
+  }
+  return matched[rotateIndex(matched.length, selectedIndex, 1)];
 }

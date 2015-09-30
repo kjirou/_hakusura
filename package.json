@@ -12,6 +12,7 @@
     "blessed": "0.1.81",
     "chalk": "1.1.1",
     "dev-null": "0.1.1",
+    "escape-string-regexp": "1.0.3",
     "keymirror": "0.1.1",
     "keypress": "0.2.1",
     "lodash": "3.10.1",
