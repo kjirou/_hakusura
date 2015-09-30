@@ -17,7 +17,6 @@ const ActionTypes = keymirror({
   OPEN_WINDOW: null,
   SET_STATE: null,
   UNMINIMIZE_WINDOW: null,
-  UPDATE_SHELL: null,
 });
 
 export default ActionTypes;

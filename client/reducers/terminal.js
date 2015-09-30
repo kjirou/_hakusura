@@ -33,13 +33,6 @@ export default function terminalReducer(state = createInitialState(), action = {
         });
       })(action);
 
-    case ActionTypes.UPDATE_SHELL:
-      return (({ inputBuffer }) => {
-        return Object.assign({}, state, {
-          inputBuffer,
-        });
-      })(action);
-
     case ActionTypes.INPUT_TO_SHELL:
       return (({ input, position }) => {
         if (position === undefined || position === null) {

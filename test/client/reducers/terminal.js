@@ -55,13 +55,6 @@ describe(heading(__filename), function() {
       position: 2,
     });
     assert.strictEqual(state.inputBuffer, 'be engineer');
-
-    // update all
-    state = terminalReducer(state, {
-      type: ActionTypes.UPDATE_SHELL,
-      inputBuffer: '*drunk*',
-    });
-    assert.strictEqual(state.inputBuffer, '*drunk*');
   });
 
   it('MOVE_CURSOR', function() {
