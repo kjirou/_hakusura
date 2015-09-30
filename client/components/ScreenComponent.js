@@ -4,7 +4,7 @@ import _s from 'underscore.string';
 import CursorCoverComponent from './CursorCoverComponent';
 import WindowComponent from './WindowComponent';
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from 'consts/ViewProps';
-import { generatePrompt } from 'lib/text-processor';
+import { generatePrompt, linesToBlessedContent } from 'lib/text-processor';
 
 
 export default class ScreenComponent extends React.Component {
@@ -26,37 +26,6 @@ export default class ScreenComponent extends React.Component {
     return lines;
   }
 
-  static linesToContent(lines) {
-    lines = lines.slice();
-
-    // pad lines for a case of not enough
-    _.range(SCREEN_HEIGHT).forEach(() => lines.push(''));
-
-    return lines
-      // cut the apparently extra lines for speed
-      .slice(0, SCREEN_HEIGHT)
-      // ensure that the beginning of lines is displayed to the top
-      .reverse()
-      .map((line) => {
-
-        // normalize CRLF and CR to LF
-        line = line.replace(/(\r\n|\r)/g, '\n');
-
-        // TODO: consider to both blessed tags, ansi-colors and multibyte
-        //line = line.slice(0, SCREEN_WIDTH);
-
-        return line;
-      })
-      // expand multilined-line
-      // e.g. ['a\nb', 'c'] -> ['a', 'b', 'c']
-      .join('\n').split('\n')
-      // adjust lines into display
-      .slice(-SCREEN_HEIGHT)
-      // to string
-      .join('\n')
-    ;
-  }
-
   render() {
     const promptString = generatePrompt(this.props.terminal.shellInputMode);
 
@@ -76,7 +45,7 @@ export default class ScreenComponent extends React.Component {
         fg: 'white',
         bg: 'black',
       },
-      content: this.constructor.linesToContent(lines),
+      content: linesToBlessedContent(lines, SCREEN_WIDTH, SCREEN_HEIGHT),
     };
 
     let windowComponent = null;
