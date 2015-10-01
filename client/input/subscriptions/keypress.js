@@ -82,17 +82,6 @@ export function onKeypress({ name: keyName, sequence: keySequence, ctrl: isEnabl
     return;
   }
 
-  if (keyName === 'space') {
-    if (state.window.windowContentType === WINDOW_CONTENT_TYPES.INDEX) {
-      dispatchers.terminal.executeCommand(
-        state.terminal.shellInputMode,
-        state.indexWindow.spaceCommand,
-        { silent: true }
-      );
-      return;
-    }
-  }
-
   if (isEnabledControl && keyName === 'a') {
     dispatchers.terminal.moveCursor(0);
     return;
@@ -117,6 +106,18 @@ export function onKeypress({ name: keyName, sequence: keySequence, ctrl: isEnabl
   }
 
   if (keyName === 'enter') {
+    if (
+      state.window.windowContentType === WINDOW_CONTENT_TYPES.INDEX &&
+      state.terminal.inputBuffer === ''
+    ) {
+      dispatchers.terminal.executeCommand(
+        state.terminal.shellInputMode,
+        state.indexWindow.actionCommand,
+        { silent: true }
+      );
+      return;
+    }
+
     dispatchers.terminal.executeCommand(state.terminal.shellInputMode, state.terminal.inputBuffer);
     return;
   }

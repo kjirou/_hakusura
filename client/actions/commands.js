@@ -99,7 +99,7 @@ export var COMMANDS = {
         type: ActionTypes.ACTIVATE_INDEX_WINDOW,
         listPagination: characterList.getListPagination(10, options.page),
         rightAndLeftCommandTemplate: 'character index --page <%= page %>',
-        spaceCommandTemplate: '',
+        actionCommandTemplate: '',
       },
       {
         type: ActionTypes.UNMINIMIZE_WINDOW,

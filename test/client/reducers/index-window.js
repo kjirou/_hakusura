@@ -13,7 +13,7 @@ describe(heading(__filename), function() {
 
   it('expandCommands', function() {
     const rightAndLeftCommandTemplate = 'list -p <%= page %>';
-    const spaceCommandTemplate = 'show <%= id %>:<%= name %>';
+    const actionCommandTemplate = 'show <%= id %>:<%= name %>';
 
     const list = {};
     Object.assign(list, ListingMixinCreator());
@@ -26,49 +26,49 @@ describe(heading(__filename), function() {
     ];
 
     assert.deepEqual(
-      expandCommands(list.getListPagination(2, 2), 0, { rightAndLeftCommandTemplate, spaceCommandTemplate }),
+      expandCommands(list.getListPagination(2, 2), 0, { rightAndLeftCommandTemplate, actionCommandTemplate }),
       {
         leftCommand: 'list -p 1',
         rightCommand: 'list -p 3',
-        spaceCommand: 'show xxx3:Saburo',
+        actionCommand: 'show xxx3:Saburo',
       }
     );
 
     assert.deepEqual(
-      expandCommands(list.getListPagination(2, 1), 0, { rightAndLeftCommandTemplate, spaceCommandTemplate }),
+      expandCommands(list.getListPagination(2, 1), 0, { rightAndLeftCommandTemplate, actionCommandTemplate }),
       {
         leftCommand: 'list -p 3',
         rightCommand: 'list -p 2',
-        spaceCommand: 'show xxx1:Taro',
+        actionCommand: 'show xxx1:Taro',
       }
     );
 
     assert.deepEqual(
-      expandCommands(list.getListPagination(2, 3), 0, { rightAndLeftCommandTemplate, spaceCommandTemplate }),
+      expandCommands(list.getListPagination(2, 3), 0, { rightAndLeftCommandTemplate, actionCommandTemplate }),
       {
         leftCommand: 'list -p 2',
         rightCommand: 'list -p 1',
-        spaceCommand: 'show xxx5:Goro',
+        actionCommand: 'show xxx5:Goro',
       }
     );
 
     // Not selected by cursor
     assert.deepEqual(
-      expandCommands(list.getListPagination(2, 2), 99, { rightAndLeftCommandTemplate, spaceCommandTemplate }),
+      expandCommands(list.getListPagination(2, 2), 99, { rightAndLeftCommandTemplate, actionCommandTemplate }),
       {
         leftCommand: 'list -p 1',
         rightCommand: 'list -p 3',
-        spaceCommand: '',
+        actionCommand: '',
       }
     );
 
     // page count is 0
     assert.deepEqual(
-      expandCommands({ pageCount: 0 }, 0, { rightAndLeftCommandTemplate, spaceCommandTemplate }),
+      expandCommands({ pageCount: 0 }, 0, { rightAndLeftCommandTemplate, actionCommandTemplate }),
       {
         leftCommand: '',
         rightCommand: '',
-        spaceCommand: '',
+        actionCommand: '',
       }
     );
   });
@@ -77,17 +77,17 @@ describe(heading(__filename), function() {
     let state = indexWindowReducer();
     assert.deepEqual(state.listPagination, null);
     assert.deepEqual(state.rightAndLeftCommandTemplate, '');
-    assert.deepEqual(state.spaceCommandTemplate, '');
+    assert.deepEqual(state.actionCommandTemplate, '');
 
     state = indexWindowReducer(state, {
       type: ActionTypes.ACTIVATE_INDEX_WINDOW,
       listPagination: {},
       rightAndLeftCommandTemplate: 'right_and_left',
-      spaceCommandTemplate: 'enter',
+      actionCommandTemplate: 'enter',
     });
     assert.deepEqual(state.listPagination, {});
     assert.deepEqual(state.rightAndLeftCommandTemplate, 'right_and_left');
-    assert.deepEqual(state.spaceCommandTemplate, 'enter');
+    assert.deepEqual(state.actionCommandTemplate, 'enter');
 
     state = indexWindowReducer(state, {
       type: ActionTypes.INACTIVATE_INDEX_WINDOW,
@@ -109,23 +109,23 @@ describe(heading(__filename), function() {
         type: ActionTypes.ACTIVATE_INDEX_WINDOW,
         listPagination: model.getListPagination(5, 1),
         rightAndLeftCommandTemplate: '',
-        spaceCommandTemplate: 'show <%= id %>',
+        actionCommandTemplate: 'show <%= id %>',
       });
-      assert.deepEqual(state.spaceCommand, 'show 1');
+      assert.deepEqual(state.actionCommand, 'show 1');
 
       state = indexWindowReducer(state, {
         type: ActionTypes.MOVE_INDEX_WINDOW_CURSOR,
         relativeIndex: 1,
       });
       assert.deepEqual(state.cursorIndex, 1);
-      assert.deepEqual(state.spaceCommand, 'show 2');
+      assert.deepEqual(state.actionCommand, 'show 2');
 
       state = indexWindowReducer(state, {
         type: ActionTypes.MOVE_INDEX_WINDOW_CURSOR,
         relativeIndex: 3,
       });
       assert.deepEqual(state.cursorIndex, 4);
-      assert.deepEqual(state.spaceCommand, 'show 5');
+      assert.deepEqual(state.actionCommand, 'show 5');
 
       state = indexWindowReducer(state, {
         type: ActionTypes.MOVE_INDEX_WINDOW_CURSOR,
@@ -149,7 +149,7 @@ describe(heading(__filename), function() {
         type: ActionTypes.ACTIVATE_INDEX_WINDOW,
         listPagination: model.getListPagination(7, 1),
         rightAndLeftCommandTemplate: '',
-        spaceCommandTemplate: '',
+        actionCommandTemplate: '',
       });
 
       state = indexWindowReducer(state, {
@@ -190,7 +190,7 @@ describe(heading(__filename), function() {
           pageCount: 0,
         },
         rightAndLeftCommandTemplate: '',
-        spaceCommandTemplate: '',
+        actionCommandTemplate: '',
       });
       state = indexWindowReducer(state, {
         type: ActionTypes.MOVE_INDEX_WINDOW_CURSOR,

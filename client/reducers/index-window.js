@@ -10,8 +10,8 @@ const createInitialState = () => {
     rightAndLeftCommandTemplate: '',
     leftCommand: '',
     rightCommand: '',
-    spaceCommandTemplate: '',
-    spaceCommand: '',
+    actionCommandTemplate: '',
+    actionCommand: '',
     cursorIndex: 0,
   };
 };
@@ -20,10 +20,10 @@ const createInitialState = () => {
 export var expandCommands = (listPagination, cursorIndex, templates) => {
   const {
     rightAndLeftCommandTemplate,
-    spaceCommandTemplate,
+    actionCommandTemplate,
   } = templates;
 
-  const commands = _.pick(createInitialState(), 'leftCommand', 'rightCommand', 'spaceCommand');
+  const commands = _.pick(createInitialState(), 'leftCommand', 'rightCommand', 'actionCommand');
 
   if (listPagination.pageCount === 0) {
     return commands;
@@ -37,7 +37,7 @@ export var expandCommands = (listPagination, cursorIndex, templates) => {
   });
   const selectedObject = listPagination.objects[cursorIndex];
   if (selectedObject) {
-    commands.spaceCommand = _.template(spaceCommandTemplate)(selectedObject);
+    commands.actionCommand = _.template(actionCommandTemplate)(selectedObject);
   }
 
   return commands;
@@ -51,9 +51,9 @@ export default function indexWindowReducer(state = createInitialState(), action 
      * @param {object} listPagination - Ref) ListingMixin#getListPagination
      */
     case ActionTypes.ACTIVATE_INDEX_WINDOW:
-      return (({ listPagination, rightAndLeftCommandTemplate, spaceCommandTemplate }) => {
+      return (({ listPagination, rightAndLeftCommandTemplate, actionCommandTemplate }) => {
         const assignedState = _.pick(createInitialState(),
-          'cursorIndex', 'leftCommand', 'rightCommand', 'spaceCommand');
+          'cursorIndex', 'leftCommand', 'rightCommand', 'actionCommand');
 
         if (listPagination.pageCount > 0) {
           // Keep cursor index
@@ -65,7 +65,7 @@ export default function indexWindowReducer(state = createInitialState(), action 
             expandCommands(
               listPagination,
               assignedState.cursorIndex,
-              { rightAndLeftCommandTemplate, spaceCommandTemplate }
+              { rightAndLeftCommandTemplate, actionCommandTemplate }
             )
           );
         }
@@ -73,7 +73,7 @@ export default function indexWindowReducer(state = createInitialState(), action 
         return Object.assign({}, state, {
           listPagination,
           rightAndLeftCommandTemplate,
-          spaceCommandTemplate,
+          actionCommandTemplate,
         }, assignedState);
       })(action);
 
@@ -93,7 +93,7 @@ export default function indexWindowReducer(state = createInitialState(), action 
         newCursorIndex = rotateIndex(itemCount, newCursorIndex, relativeIndex);
         const commands = expandCommands(state.listPagination, newCursorIndex, {
           rightAndLeftCommandTemplate: state.rightAndLeftCommandTemplate,
-          spaceCommandTemplate: state.spaceCommandTemplate,
+          actionCommandTemplate: state.actionCommandTemplate,
         });
 
         return Object.assign({}, state, {
