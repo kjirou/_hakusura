@@ -17,6 +17,7 @@ const ActionTypes = keymirror({
   MINIMIZE_WINDOW: null,
   OPEN_WINDOW: null,
   SET_STATE: null,
+  TOGGLE_WINDOW: null,
   UNMINIMIZE_WINDOW: null,
 });
 

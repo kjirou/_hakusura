@@ -28,7 +28,7 @@ describe(heading(__filename), function() {
     assert.strictEqual(state.windowContentType, null);
   });
 
-  it('MINIMIZE_WINDOW, UNMINIMIZE_WINDOW', function() {
+  it('MINIMIZE_WINDOW, UNMINIMIZE_WINDOW, TOGGLE_WINDOW', function() {
     let state = windowReducer();
     assert.strictEqual(state.isMinimized, false);
 
@@ -39,6 +39,16 @@ describe(heading(__filename), function() {
 
     state = windowReducer(state, {
       type: ActionTypes.UNMINIMIZE_WINDOW,
+    });
+    assert.strictEqual(state.isMinimized, false);
+
+    state = windowReducer(state, {
+      type: ActionTypes.TOGGLE_WINDOW,
+    });
+    assert.strictEqual(state.isMinimized, true);
+
+    state = windowReducer(state, {
+      type: ActionTypes.TOGGLE_WINDOW,
     });
     assert.strictEqual(state.isMinimized, false);
   });

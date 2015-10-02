@@ -42,6 +42,13 @@ export default function windowReducer(state = initialState, action = {}) {
         });
       })(action);
 
+    case ActionTypes.TOGGLE_WINDOW:
+      return (() => {
+        return Object.assign({}, state, {
+          isMinimized: !state.isMinimized,
+        });
+      })(action);
+
     default:
       return state;
   }

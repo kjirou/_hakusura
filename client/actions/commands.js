@@ -46,7 +46,7 @@ export var COMMAND_DEFINITION = {
         list: null,
         select: null,
         show: null,
-      }
+      },
     },
     config: null,
     dictionary: null,
@@ -55,7 +55,7 @@ export var COMMAND_DEFINITION = {
       default: 'welcome',
       commands: {
         welcome: null,
-      }
+      },
     },
     item: {
       default: 'index',
@@ -63,9 +63,16 @@ export var COMMAND_DEFINITION = {
         index: null,
         list: null,
         show: null,
-      }
+      },
     },
     recruit: null,
+    window: {
+      default: 'toggle',
+      commands: {
+        close: null,
+        toggle: null,
+      },
+    },
   },
 };
 
@@ -138,6 +145,18 @@ export var COMMANDS = {
         'If you are a beginner, please execute the `{green-fg}tutorial{/}` command.',
       ].join('\n'),
     };
+  },
+
+  'window-toggle': ({ input }) => {
+    return [
+      {
+        type: ActionTypes.TOGGLE_WINDOW,
+      },
+      {
+        type: ActionTypes.APPLY_COMMAND_EXECUTION,
+        input,
+      },
+    ];
   },
 
   'wizard-getstate': ({ input, args }) => {
