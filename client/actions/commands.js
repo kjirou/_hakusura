@@ -69,7 +69,7 @@ export var COMMAND_DEFINITION = {
     window: {
       default: 'toggle',
       commands: {
-        close: null,
+        purge: null,
         toggle: null,
       },
     },
@@ -145,6 +145,22 @@ export var COMMANDS = {
         'If you are a beginner, please execute the `{green-fg}tutorial{/}` command.',
       ].join('\n'),
     };
+  },
+
+  'window-purge': ({ input }) => {
+    return [
+      {
+        type: ActionTypes.CLOSE_WINDOW,
+      },
+      {
+        type: ActionTypes.INACTIVATE_INDEX_WINDOW,
+      },
+      {
+        type: ActionTypes.APPLY_COMMAND_EXECUTION,
+        newShellInputMode: ShellInputModes.DEFAULT,
+        input,
+      },
+    ];
   },
 
   'window-toggle': ({ input }) => {
