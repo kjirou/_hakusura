@@ -1,20 +1,23 @@
 import assert from 'power-assert';
 
-import ListingMixinCreator from 'models/mixins/ListingMixinCreator';
+import ListingMixin from 'models/mixins/ListingMixin';
+
 import { heading } from 'test/support/helpers';
 
 
-describe(heading(__filename), function() {
+describe(heading(__filename), () => {
 
-  it('should be able to extend a object', function() {
+  it('should be able to extend a object', () => {
     const foo = {};
-    Object.assign(foo, ListingMixinCreator());
+    Object.assign(foo, ListingMixin);
+    foo._initializeListingMixin();
     assert(Array.isArray(foo._listObjects));
     assert.strictEqual(typeof foo.getListObjects, 'function');
   });
 
-  it('getListObjects', function() {
-    const foo = Object.assign({}, ListingMixinCreator());
+  it('getListObjects', () => {
+    const foo = Object.assign({}, ListingMixin);
+    foo._initializeListingMixin();
     foo._listObjects = [
       { name: 'Taro' },
       { name: 'Jiro' },
@@ -25,8 +28,9 @@ describe(heading(__filename), function() {
     ]);
   });
 
-  it('getListPagination', function() {
-    const foo = Object.assign({}, ListingMixinCreator());
+  it('getListPagination', () => {
+    const foo = Object.assign({}, ListingMixin);
+    foo._initializeListingMixin();
     foo._listObjects = [
       { name: 'Taro' },
       { name: 'Jiro' },
