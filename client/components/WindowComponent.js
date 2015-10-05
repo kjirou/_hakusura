@@ -4,7 +4,7 @@ import _s from 'underscore.string';
 import HorizontalLineComponent from './HorizontalLineComponent';
 import { SCREEN_WIDTH } from 'consts/ViewProps';
 
-import IndexWindowContentComponent from './window-contents/IndexWindowContentComponent';
+import WindowContentComponents from './window-contents';
 
 
 class StatusBarComponent extends React.Component {
@@ -35,16 +35,17 @@ export default class WindowComponent extends React.Component {
 
   render() {
 
+    const AWindowContentComponent = WindowContentComponents[this.props.window.windowContentType];
     let windowContentComponent = null;
     let contentHeight = 0;
-    if (!this.props.window.isMinimized) {
+    if (AWindowContentComponent && !this.props.window.isMinimized) {
       contentHeight = 20;
       const windowContentProps = Object.assign({}, this.props, {
         top: 1,
         width: SCREEN_WIDTH,
         height: contentHeight,
       });
-      windowContentComponent = <IndexWindowContentComponent { ...windowContentProps } />
+      windowContentComponent = React.createElement(AWindowContentComponent, windowContentProps);
     }
 
     const height = contentHeight + 2;

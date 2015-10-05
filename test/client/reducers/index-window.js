@@ -2,7 +2,7 @@ import _ from 'lodash';
 import assert from 'power-assert';
 
 import ActionTypes from 'consts/ActionTypes';
-import ListingMixinCreator from 'models/mixins/ListingMixinCreator';
+import ListingMixin from 'models/mixins/ListingMixin';
 import indexWindowReducer, {
   expandCommands,
 }from 'reducers/index-window';
@@ -16,7 +16,8 @@ describe(heading(__filename), function() {
     const actionCommandTemplate = 'show <%= id %>:<%= name %>';
 
     const list = {};
-    Object.assign(list, ListingMixinCreator());
+    Object.assign(list, ListingMixin);
+    list._initializeListingMixin();
     list._listObjects = [
       { id: 'xxx1', name: 'Taro'},
       { id: 'xxx2', name: 'Jiro'},
@@ -99,7 +100,8 @@ describe(heading(__filename), function() {
   context('MOVE_INDEX_WINDOW_CURSOR', function() {
 
     it('should be', function() {
-      const model = Object.assign({}, ListingMixinCreator());
+      const model = Object.assign({}, ListingMixin);
+      model._initializeListingMixin();
       model._listObjects = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
 
       let state = indexWindowReducer();
@@ -141,7 +143,8 @@ describe(heading(__filename), function() {
     });
 
     it('short rotation', function() {
-      const model = Object.assign({}, ListingMixinCreator());
+      const model = Object.assign({}, ListingMixin);
+      model._initializeListingMixin();
       model._listObjects = _.range(10).map(i => { id: i * 10 });
 
       let state = indexWindowReducer();

@@ -26,80 +26,18 @@ export var SHELL_INPUT_MODE_ALIASES = {
   ],
 };
 
-export var COMMAND_DEFINITION = {
-  commands: {
-    wizard: {
-      default: 'on',
-      commands: {
-        getstate: null,
-        off: null,
-        on: null,
-        sandbox: null,
-        setstate: null,
-      },
-    },
-    alias: null,
-    character: {
-      default: 'index',
-      commands: {
-        index: null,
-        list: null,
-        select: null,
-        show: null,
-      }
-    },
-    config: null,
-    dictionary: null,
-    guild: null,
-    help: {
-      default: 'welcome',
-      commands: {
-        welcome: null,
-      }
-    },
-    item: {
-      default: 'index',
-      commands: {
-        index: null,
-        list: null,
-        show: null,
-      }
-    },
-    recruit: null,
-  },
-};
-
-export var MINIMIST_OPTIONS_FOR_COMMAND = {
-  'character-index': {
-    default: {
-      page: 1,
-    },
-    alias: {
-      page: ['p'],
-    },
-  },
-  'character-list': {
-    default: {
-      from: 1,
-      to: 9999,
-    },
-    alias: {
-      from: ['f'],
-      to: ['t'],
-    },
-  },
-};
-
 export var COMMANDS = {
 
   'character-index': ({ input, args, options }) => {
-    const { characterList } = AppModel.getInstance();
+    const { characterList, windowHistoryList } = AppModel.getInstance();
+    windowHistoryList.stack(input);
+
     return [
       {
         type: ActionTypes.ACTIVATE_INDEX_WINDOW,
         listPagination: characterList.getListPagination(10, options.page),
         rightAndLeftCommandTemplate: 'character index --page <%= page %>',
-        actionCommandTemplate: '',
+        actionCommandTemplate: 'character show',
       },
       {
         type: ActionTypes.UNMINIMIZE_WINDOW,
@@ -128,6 +66,32 @@ export var COMMANDS = {
     };
   },
 
+  'character-show': ({ input, args, options }) => {
+    const { characterList, windowHistoryList } = AppModel.getInstance();
+    windowHistoryList.stack(input);
+
+    return [
+      //{
+      //  type: ActionTypes.ACTIVATE_INDEX_WINDOW,
+      //  listPagination: characterList.getListPagination(10, options.page),
+      //  rightAndLeftCommandTemplate: 'character index --page <%= page %>',
+      //  actionCommandTemplate: '',
+      //},
+      {
+        type: ActionTypes.UNMINIMIZE_WINDOW,
+      },
+      {
+        type: ActionTypes.OPEN_WINDOW,
+        windowContentType: WINDOW_CONTENT_TYPES.CHARACTER,
+      },
+      {
+        type: ActionTypes.APPLY_COMMAND_EXECUTION,
+        //newShellInputMode: ShellInputModes.INDEX,
+        input,
+      },
+    ];
+  },
+
   'help-welcome': ({ input }) => {
     return {
       type: ActionTypes.APPLY_COMMAND_EXECUTION,
@@ -138,6 +102,55 @@ export var COMMANDS = {
         'If you are a beginner, please execute the `{green-fg}tutorial{/}` command.',
       ].join('\n'),
     };
+  },
+
+  'window-close': ({ input }) => {
+    const { windowHistoryList } = AppModel.getInstance();
+    windowHistoryList.pop();
+    const command = windowHistoryList.getListObjects()[0] || null;
+
+    if (!command) {
+      return [
+        {
+          type: ActionTypes.CLOSE_WINDOW,
+        },
+        {
+          type: ActionTypes.APPLY_COMMAND_EXECUTION,
+          newShellInputMode: ShellInputModes.DEFAULT,
+          input,
+        },
+      ];
+    } else {
+      return command;
+    };
+  },
+
+  'window-purge': ({ input }) => {
+    return [
+      {
+        type: ActionTypes.CLOSE_WINDOW,
+      },
+      {
+        type: ActionTypes.INACTIVATE_INDEX_WINDOW,
+      },
+      {
+        type: ActionTypes.APPLY_COMMAND_EXECUTION,
+        newShellInputMode: ShellInputModes.DEFAULT,
+        input,
+      },
+    ];
+  },
+
+  'window-toggle': ({ input }) => {
+    return [
+      {
+        type: ActionTypes.TOGGLE_WINDOW,
+      },
+      {
+        type: ActionTypes.APPLY_COMMAND_EXECUTION,
+        input,
+      },
+    ];
   },
 
   'wizard-getstate': ({ input, args }) => {
@@ -189,7 +202,7 @@ export var COMMANDS = {
   },
 };
 
-export var _generateCommandComplementionDefinition = (commandIds) => {
+export const _generateCommandComplementions = (commandIds) => {
   const uniqued = new Set();
   commandIds.forEach(commandId => {
     uniqued.add(commandId.split('-')[0]);
@@ -197,4 +210,4 @@ export var _generateCommandComplementionDefinition = (commandIds) => {
   });
   return Array.from(uniqued).sort();
 };
-export var COMMAND_COMPLEMENTION_DEFINITION = _generateCommandComplementionDefinition(Object.keys(COMMANDS));
+export const COMMAND_COMPLEMENTIONS = _generateCommandComplementions(Object.keys(COMMANDS));

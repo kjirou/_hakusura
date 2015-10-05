@@ -3,13 +3,14 @@ import randomName from 'node-random-name';
 
 import Model from './Model';
 import CharacterModel from './creatures/CharacterModel';
-import ListingMixinCreator from './mixins/ListingMixinCreator';
+import ListingMixin from './mixins/ListingMixin';
 
 
 export default class CharacterListModel extends Model {
 
   constructor(...args) {
     super(...args);
+    this._initializeListingMixin();
 
     // TMP:
     _.range(35).forEach(() => {
@@ -23,4 +24,4 @@ export default class CharacterListModel extends Model {
   }
 }
 
-Object.assign(CharacterListModel.prototype, ListingMixinCreator());
+Object.assign(CharacterListModel.prototype, ListingMixin);

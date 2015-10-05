@@ -2,13 +2,16 @@ import _ from 'lodash';
 import _s from 'underscore.string';
 
 import {
-  COMMAND_COMPLEMENTION_DEFINITION,
-  COMMAND_DEFINITION,
+  COMMAND_COMPLEMENTIONS,
   COMMANDS,
-  MINIMIST_OPTIONS_FOR_COMMAND,
   SHELL_INPUT_MODE_ALIASES,
 } from './commands';
 import ActionTypes from 'consts/ActionTypes';
+import {
+  COMMAND_TREE,
+  MINIMIST_OPTIONS,
+} from 'consts/CommandDefinition';
+import ShellInputModes from 'consts/ShellInputModes';
 import { parse } from 'lib/command-parser';
 
 
@@ -22,6 +25,58 @@ export function _applyShellInputModeAliasesToInput(aliases, input) {
     return false;
   });
   return input;
+}
+
+const executeCommand = (shellInputMode, input, { silent = false } = {}) => {
+
+  let expandedInput = input;
+  if (SHELL_INPUT_MODE_ALIASES[shellInputMode]) {
+    expandedInput = _applyShellInputModeAliasesToInput(SHELL_INPUT_MODE_ALIASES[shellInputMode], input);
+  }
+
+  if (_s.trim(expandedInput) === '') {
+    return {
+      type: ActionTypes.APPLY_COMMAND_EXECUTION,
+      input: '',
+    };
+  }
+
+  const { commandId, commandOptions } = parse(COMMAND_TREE, MINIMIST_OPTIONS, expandedInput);
+
+  // TODO: Too complex
+  const command = COMMANDS[commandId] || null;
+  if (command) {
+    const actionOrActionsOrCommand = command({
+      input,
+      args: commandOptions._,
+      options: _.omit(commandOptions, '_'),
+    });
+    // Pass to another command recursively
+    if (_.isString(actionOrActionsOrCommand)) {
+      return executeCommand(ShellInputModes.DEFAULT, actionOrActionsOrCommand, { silent: true });
+    }
+    // To array
+    const actions = (Array.isArray(actionOrActionsOrCommand))
+      ? actionOrActionsOrCommand
+      : [actionOrActionsOrCommand]
+    ;
+    // Apply silent execution
+    actions.forEach((action) => {
+      if (action.type === ActionTypes.APPLY_COMMAND_EXECUTION && silent) {
+        Object.assign(action, {
+          input: null,
+          output: null,
+        });
+      }
+    });
+    return actions;
+  }
+
+  return {
+    type: ActionTypes.APPLY_COMMAND_EXECUTION,
+    input,
+    output: '{red-fg}Invalid command{/}',
+  };
 }
 
 
@@ -40,51 +95,11 @@ const TerminalActionCreators = {
   complementCommand() {
     return {
       type: ActionTypes.COMPLEMENT_COMMAND,
-      complementationPatterns: COMMAND_COMPLEMENTION_DEFINITION,
+      complementationPatterns: COMMAND_COMPLEMENTIONS,
     };
   },
 
-  executeCommand(shellInputMode, input, { silent = false } = {}) {
-
-    let expandedInput = input;
-    if (SHELL_INPUT_MODE_ALIASES[shellInputMode]) {
-      expandedInput = _applyShellInputModeAliasesToInput(SHELL_INPUT_MODE_ALIASES[shellInputMode], input);
-    }
-
-    if (_s.trim(expandedInput) === '') {
-      return {
-        type: ActionTypes.APPLY_COMMAND_EXECUTION,
-        input: '',
-      };
-    }
-
-    const { commandId, commandOptions } = parse(COMMAND_DEFINITION, MINIMIST_OPTIONS_FOR_COMMAND, expandedInput);
-
-    const command = COMMANDS[commandId] || null;
-    if (command) {
-      const actionOrActions = command({
-        input,
-        args: commandOptions._,
-        options: _.omit(commandOptions, '_'),
-      });
-      // Apply silent execution
-      (Array.isArray(actionOrActions) ? actionOrActions : [actionOrActions]).forEach((action) => {
-        if (action.type === ActionTypes.APPLY_COMMAND_EXECUTION && silent) {
-          Object.assign(action, {
-            input: null,
-            output: null,
-          });
-        }
-      });
-      return actionOrActions;
-    }
-
-    return {
-      type: ActionTypes.APPLY_COMMAND_EXECUTION,
-      input,
-      output: '{red-fg}Invalid command{/}',
-    };
-  },
+  executeCommand,
 
   inputToShell(input, options = {}) {
     options = Object.assign({
