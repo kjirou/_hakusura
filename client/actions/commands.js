@@ -29,13 +29,15 @@ export var SHELL_INPUT_MODE_ALIASES = {
 export var COMMANDS = {
 
   'character-index': ({ input, args, options }) => {
-    const { characterList } = AppModel.getInstance();
+    const { characterList, windowHistoryList } = AppModel.getInstance();
+    windowHistoryList.stack(input);
+
     return [
       {
         type: ActionTypes.ACTIVATE_INDEX_WINDOW,
         listPagination: characterList.getListPagination(10, options.page),
         rightAndLeftCommandTemplate: 'character index --page <%= page %>',
-        actionCommandTemplate: '',
+        actionCommandTemplate: 'character show',
       },
       {
         type: ActionTypes.UNMINIMIZE_WINDOW,
@@ -64,6 +66,32 @@ export var COMMANDS = {
     };
   },
 
+  'character-show': ({ input, args, options }) => {
+    const { characterList, windowHistoryList } = AppModel.getInstance();
+    windowHistoryList.stack(input);
+
+    return [
+      //{
+      //  type: ActionTypes.ACTIVATE_INDEX_WINDOW,
+      //  listPagination: characterList.getListPagination(10, options.page),
+      //  rightAndLeftCommandTemplate: 'character index --page <%= page %>',
+      //  actionCommandTemplate: '',
+      //},
+      {
+        type: ActionTypes.UNMINIMIZE_WINDOW,
+      },
+      {
+        type: ActionTypes.OPEN_WINDOW,
+        windowContentType: WINDOW_CONTENT_TYPES.CHARACTER,
+      },
+      {
+        type: ActionTypes.APPLY_COMMAND_EXECUTION,
+        //newShellInputMode: ShellInputModes.INDEX,
+        input,
+      },
+    ];
+  },
+
   'help-welcome': ({ input }) => {
     return {
       type: ActionTypes.APPLY_COMMAND_EXECUTION,
@@ -73,6 +101,27 @@ export var COMMANDS = {
         '',
         'If you are a beginner, please execute the `{green-fg}tutorial{/}` command.',
       ].join('\n'),
+    };
+  },
+
+  'window-close': ({ input }) => {
+    const { windowHistoryList } = AppModel.getInstance();
+    windowHistoryList.pop();
+    const command = windowHistoryList.getListObjects()[0] || null;
+
+    if (!command) {
+      return [
+        {
+          type: ActionTypes.CLOSE_WINDOW,
+        },
+        {
+          type: ActionTypes.APPLY_COMMAND_EXECUTION,
+          newShellInputMode: ShellInputModes.DEFAULT,
+          input,
+        },
+      ];
+    } else {
+      return command;
     };
   },
 

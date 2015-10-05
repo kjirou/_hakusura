@@ -1,22 +1,11 @@
 export const COMMAND_TREE = {
   commands: {
-    wizard: {
-      default: 'on',
-      commands: {
-        getstate: null,
-        off: null,
-        on: null,
-        sandbox: null,
-        setstate: null,
-      },
-    },
     alias: null,
     character: {
       default: 'index',
       commands: {
         index: null,
         list: null,
-        select: null,
         show: null,
       },
     },
@@ -41,8 +30,19 @@ export const COMMAND_TREE = {
     window: {
       default: 'toggle',
       commands: {
+        close: null,
         purge: null,
         toggle: null,
+      },
+    },
+    wizard: {
+      default: 'on',
+      commands: {
+        getstate: null,
+        off: null,
+        on: null,
+        sandbox: null,
+        setstate: null,
       },
     },
   },
