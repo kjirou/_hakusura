@@ -26,77 +26,6 @@ export var SHELL_INPUT_MODE_ALIASES = {
   ],
 };
 
-export var COMMAND_DEFINITION = {
-  commands: {
-    wizard: {
-      default: 'on',
-      commands: {
-        getstate: null,
-        off: null,
-        on: null,
-        sandbox: null,
-        setstate: null,
-      },
-    },
-    alias: null,
-    character: {
-      default: 'index',
-      commands: {
-        index: null,
-        list: null,
-        select: null,
-        show: null,
-      },
-    },
-    config: null,
-    dictionary: null,
-    guild: null,
-    help: {
-      default: 'welcome',
-      commands: {
-        welcome: null,
-      },
-    },
-    item: {
-      default: 'index',
-      commands: {
-        index: null,
-        list: null,
-        show: null,
-      },
-    },
-    recruit: null,
-    window: {
-      default: 'toggle',
-      commands: {
-        purge: null,
-        toggle: null,
-      },
-    },
-  },
-};
-
-export var MINIMIST_OPTIONS_FOR_COMMAND = {
-  'character-index': {
-    default: {
-      page: 1,
-    },
-    alias: {
-      page: ['p'],
-    },
-  },
-  'character-list': {
-    default: {
-      from: 1,
-      to: 9999,
-    },
-    alias: {
-      from: ['f'],
-      to: ['t'],
-    },
-  },
-};
-
 export var COMMANDS = {
 
   'character-index': ({ input, args, options }) => {
@@ -224,7 +153,7 @@ export var COMMANDS = {
   },
 };
 
-export var _generateCommandComplementionDefinition = (commandIds) => {
+export const _generateCommandComplementions = (commandIds) => {
   const uniqued = new Set();
   commandIds.forEach(commandId => {
     uniqued.add(commandId.split('-')[0]);
@@ -232,4 +161,4 @@ export var _generateCommandComplementionDefinition = (commandIds) => {
   });
   return Array.from(uniqued).sort();
 };
-export var COMMAND_COMPLEMENTION_DEFINITION = _generateCommandComplementionDefinition(Object.keys(COMMANDS));
+export const COMMAND_COMPLEMENTIONS = _generateCommandComplementions(Object.keys(COMMANDS));

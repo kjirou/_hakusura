@@ -2,13 +2,15 @@ import _ from 'lodash';
 import _s from 'underscore.string';
 
 import {
-  COMMAND_COMPLEMENTION_DEFINITION,
-  COMMAND_DEFINITION,
+  COMMAND_COMPLEMENTIONS,
   COMMANDS,
-  MINIMIST_OPTIONS_FOR_COMMAND,
   SHELL_INPUT_MODE_ALIASES,
 } from './commands';
 import ActionTypes from 'consts/ActionTypes';
+import {
+  COMMAND_TREE,
+  MINIMIST_OPTIONS,
+} from 'consts/CommandDefinition';
 import { parse } from 'lib/command-parser';
 
 
@@ -40,7 +42,7 @@ const TerminalActionCreators = {
   complementCommand() {
     return {
       type: ActionTypes.COMPLEMENT_COMMAND,
-      complementationPatterns: COMMAND_COMPLEMENTION_DEFINITION,
+      complementationPatterns: COMMAND_COMPLEMENTIONS,
     };
   },
 
@@ -58,7 +60,7 @@ const TerminalActionCreators = {
       };
     }
 
-    const { commandId, commandOptions } = parse(COMMAND_DEFINITION, MINIMIST_OPTIONS_FOR_COMMAND, expandedInput);
+    const { commandId, commandOptions } = parse(COMMAND_TREE, MINIMIST_OPTIONS, expandedInput);
 
     const command = COMMANDS[commandId] || null;
     if (command) {
