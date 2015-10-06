@@ -1,7 +1,6 @@
 import assert from 'power-assert';
 
 import {
-  _generateCommandComplementions,
   _selectShellInputMode,
 } from 'actions/commands';
 import ShellInputModes from 'consts/ShellInputModes';
@@ -16,22 +15,5 @@ describe(heading(__filename), function() {
     assert.deepEqual(_selectShellInputMode(''), ShellInputModes.DEFAULT);
     assert.deepEqual(_selectShellInputMode(PLAYER_STATE_CODES.ADVENTURING), ShellInputModes.ADVENTURE);
     assert.deepEqual(_selectShellInputMode(PLAYER_STATE_CODES.BATTLING), ShellInputModes.BATTLE);
-  });
-
-  it('_generateCommandComplementions', function() {
-    assert.deepEqual(_generateCommandComplementions([
-      'foo',
-      'bar',
-      'baz',
-      'bar-show',
-      'bar-list',
-      'foo',
-    ]), [
-      'bar',
-      'bar list',
-      'bar show',
-      'baz',
-      'foo',
-    ]);
   });
 });

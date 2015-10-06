@@ -201,13 +201,3 @@ export var COMMANDS = {
     };
   },
 };
-
-export const _generateCommandComplementions = (commandIds) => {
-  const uniqued = new Set();
-  commandIds.forEach(commandId => {
-    uniqued.add(commandId.split('-')[0]);
-    uniqued.add(commandId.replace(/-/g, ' '));
-  });
-  return Array.from(uniqued).sort();
-};
-export const COMMAND_COMPLEMENTIONS = _generateCommandComplementions(Object.keys(COMMANDS));

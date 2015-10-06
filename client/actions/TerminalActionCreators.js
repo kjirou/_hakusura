@@ -2,12 +2,12 @@ import _ from 'lodash';
 import _s from 'underscore.string';
 
 import {
-  COMMAND_COMPLEMENTIONS,
   COMMANDS,
   SHELL_INPUT_MODE_ALIASES,
 } from './commands';
 import ActionTypes from 'consts/ActionTypes';
 import {
+  COMMAND_COMPLEMENTIONS,
   COMMAND_TREE,
   MINIMIST_OPTIONS,
 } from 'consts/CommandDefinition';

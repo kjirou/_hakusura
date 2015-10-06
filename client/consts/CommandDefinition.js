@@ -68,3 +68,21 @@ export const MINIMIST_OPTIONS = {
     },
   },
 };
+
+export const _generateCommandComplementions = (commandTree) => {
+  const uniqued = new Set();
+  const addCommandIdRecursively = (tree, currentCommands) => {
+    Object.keys(tree.commands).sort().forEach((command) => {
+      const nextCommands = [...currentCommands, command];
+      const commandId = nextCommands.join(' ');
+      uniqued.add(commandId);
+      const children = tree.commands[command];
+      if (children) {
+        addCommandIdRecursively(children, nextCommands);
+      }
+    });
+  }
+  addCommandIdRecursively(commandTree, []);
+  return Array.from(uniqued).sort();
+};
+export const COMMAND_COMPLEMENTIONS = _generateCommandComplementions(COMMAND_TREE);
