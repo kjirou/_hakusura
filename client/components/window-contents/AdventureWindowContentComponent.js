@@ -8,9 +8,36 @@ class DungeonCardComponent extends React.Component {
 
   render() {
     const props = {
+      top: this.props.top,
+      left: this.props.left,
+      width: 16,
+      height: 12,
+      border: {
+        type: 'line'
+      },
+      style: {
+        fg: 'white',
+        bg: 'green',
+        border: {
+          fg: 'white',
+        }
+      },
     };
+
+    return (
+      <box { ...props } >
+      </box>
+    );
   }
 }
+
+Object.assign(DungeonCardComponent, {
+  propTypes: {
+    top: React.PropTypes.number.isRequired,
+    left: React.PropTypes.number.isRequired,
+  },
+});
+
 
 export default class AdventureWindowContentComponent extends React.Component {
 
@@ -22,21 +49,17 @@ export default class AdventureWindowContentComponent extends React.Component {
       height: this.props.height,
     });
 
-    const dungeonCardPropsTemplate = {
-      top: undefined,
-      left: 0,
-      width: props.width,
-      height: 1,
-      tags: true,
-      style: {
-        fg: 'white',
-        bg: 'black',
-      },
-    };
-
     return (
       <box { ...props } >
-        AdventureWindowContentComponent!
+      {
+        Array.from({ length: 5 }).map((v, idx) => {
+          return React.createElement(DungeonCardComponent, {
+            key: 'dungeon_card_' + idx,
+            top: 0,
+            left: idx * 16,
+          });
+        })
+      }
       </box>
     );
   }
