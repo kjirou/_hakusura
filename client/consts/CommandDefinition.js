@@ -1,5 +1,11 @@
 export const COMMAND_TREE = {
   commands: {
+    adventure: {
+      default: 'start',
+      commands: {
+        start: null,
+      },
+    },
     alias: null,
     character: {
       default: 'index',

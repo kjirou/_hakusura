@@ -28,6 +28,26 @@ export var SHELL_INPUT_MODE_ALIASES = {
 
 export var COMMANDS = {
 
+  'adventure-start': ({ input, args, options }) => {
+    return [
+      {
+        type: ActionTypes.ACTIVATE_ADVENTURE_WINDOW,
+      },
+      {
+        type: ActionTypes.UNMINIMIZE_WINDOW,
+      },
+      {
+        type: ActionTypes.OPEN_WINDOW,
+        windowContentType: WINDOW_CONTENT_TYPES.ADVENTURE,
+      },
+      {
+        type: ActionTypes.APPLY_COMMAND_EXECUTION,
+        //newShellInputMode: ShellInputModes.INDEX,
+        input,
+      },
+    ];
+  },
+
   'character-index': ({ input, args, options }) => {
     const { characterList, windowHistoryList } = AppModel.getInstance();
     windowHistoryList.stack(input);
