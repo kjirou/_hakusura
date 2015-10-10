@@ -1,24 +1,27 @@
 import keymirror from 'keymirror';
 
+import AdventureModel from './AdventureModel';
 import Model from './Model';
+import CharacterModel from './creatures/CharacterModel';
 
 
 const PLAYER_STATE_CODES = keymirror({
   ADVENTURING: null,
-  BATTLING: null,
   IN_PREPARATION: null,
   WAITING: null,
 });
 
+/*
+ * Interface to put together references
+ *   from the outside into the game
+ */
 export default class GameModel extends Model {
 
   constructor(...args) {
     super(...args);
 
-    // TMP:
-    this._isCharacterSelected = true;
-    this._isAdventuring = false;
-    this._isBattling = false;
+    this._adventurer = null;
+    this._adventure = null;
   }
 
   /*
@@ -28,14 +31,28 @@ export default class GameModel extends Model {
    * @return {string} PLAYER_STATE_CODES
    */
   getPlayerStateCode() {
-    if (this._isBattling) {
-      return PLAYER_STATE_CODES.BATTLING;
-    } else if (this._isAdventuring) {
+    if (this._adventure) {
       return PLAYER_STATE_CODES.ADVENTURING;
-    } else if (this._isCharacterSelected) {
+    } else if (this._adventurer) {
       return PLAYER_STATE_CODES.IN_PREPARATION;
     }
     return PLAYER_STATE_CODES.WAITING;
+  }
+
+  prepareAdventurer() {
+    if (this.getPlayerStateCode() !== PLAYER_STATE_CODES.WAITING) {
+      throw new Error('Unexpected situation');
+    }
+    // TMP:
+    this._adventurer = new CharacterModel();
+    this._adventurer._name = 'Tmp Man';
+  }
+
+  prepareAdventure() {
+    if (this.getPlayerStateCode() !== PLAYER_STATE_CODES.IN_PREPARATION) {
+      throw new Error('Lack of preparation for the adventure');
+    }
+    this._adventure = new AdventureModel();
   }
 }
 
