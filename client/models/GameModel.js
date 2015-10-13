@@ -24,6 +24,10 @@ export default class GameModel extends Model {
     this._adventure = null;
   }
 
+  get adventure() {
+    return this._adventure;
+  }
+
   /*
    * Returns broad player's state by code
    * Mainly for shell-input switching
@@ -52,7 +56,9 @@ export default class GameModel extends Model {
     if (this.getPlayerStateCode() !== PLAYER_STATE_CODES.IN_PREPARATION) {
       throw new Error('Lack of preparation for the adventure');
     }
-    this._adventure = new AdventureModel();
+    this._adventure = new AdventureModel({
+      adventurer: this._adventurer,
+    });
   }
 }
 

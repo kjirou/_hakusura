@@ -29,9 +29,13 @@ export var SHELL_INPUT_MODE_ALIASES = {
 export var COMMANDS = {
 
   'adventure-start': ({ input, args, options }) => {
+    const { game } = AppModel.getInstance();
+    game.prepareAdventurer();
+    game.prepareAdventure();
     return [
       {
         type: ActionTypes.ACTIVATE_ADVENTURE_WINDOW,
+        dungeonCards: game.adventure.dungeonCardList,
       },
       {
         type: ActionTypes.UNMINIMIZE_WINDOW,
@@ -43,6 +47,32 @@ export var COMMANDS = {
       {
         type: ActionTypes.APPLY_COMMAND_EXECUTION,
         //newShellInputMode: ShellInputModes.INDEX,
+        input,
+      },
+    ];
+  },
+
+  'adventure-proceed': ({ input, args, options }) => {
+    const { game } = AppModel.getInstance();
+
+    // TODO:
+    if (game.getPlayerStateCode() !== PLAYER_STATE_CODES.ADVENTURING) {
+      return {
+        type: ActionTypes.APPLY_COMMAND_EXECUTION,
+        input,
+        output: '{red-fg}Not in adventure{/}',
+      };
+    }
+
+    game.adventure.proceed();
+
+    return [
+      {
+        type: ActionTypes.ACTIVATE_ADVENTURE_WINDOW,
+        dungeonCards: game.adventure.dungeonCardList,
+      },
+      {
+        type: ActionTypes.APPLY_COMMAND_EXECUTION,
         input,
       },
     ];

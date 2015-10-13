@@ -3,6 +3,7 @@ export const COMMAND_TREE = {
     adventure: {
       default: 'start',
       commands: {
+        proceed: null,
         start: null,
       },
     },

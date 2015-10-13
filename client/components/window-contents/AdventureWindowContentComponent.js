@@ -26,6 +26,7 @@ class DungeonCardComponent extends React.Component {
 
     return (
       <box { ...props } >
+        {this.props.cardModel.seq}
       </box>
     );
   }
@@ -35,6 +36,7 @@ Object.assign(DungeonCardComponent, {
   propTypes: {
     top: React.PropTypes.number.isRequired,
     left: React.PropTypes.number.isRequired,
+    cardModel: React.PropTypes.object.isRequired,
   },
 });
 
@@ -52,11 +54,12 @@ export default class AdventureWindowContentComponent extends React.Component {
     return (
       <box { ...props } >
       {
-        Array.from({ length: 5 }).map((v, idx) => {
+        this.props.adventureWindow.dungeonCardsOnBoard.map((dungeonCardModel, idx) => {
           return React.createElement(DungeonCardComponent, {
             key: 'dungeon_card_' + idx,
             top: 0,
             left: idx * 16,
+            cardModel: dungeonCardModel,
           });
         })
       }
