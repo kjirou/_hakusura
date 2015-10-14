@@ -1,4 +1,13 @@
+import keymirror from 'keymirror';
+
 import Model from './Model';
+
+
+const ADVENTURE_STATE_CODES = keymirror({
+  CONTINUATION: null,
+  DEFEAT: null,
+  VICTORY: null,
+});
 
 
 export default class AdventureModel extends Model {
@@ -58,6 +67,15 @@ export default class AdventureModel extends Model {
     )[0] || null;
   }
 
+  _getStateCode() {
+    if (0) {  // adventurer is dead
+      return ADVENTURE_STATE_CODES.DEFEAT;
+    } else if (this._dungeonCardList.length === 0) {
+      return ADVENTURE_STATE_CODES.VICTORY;
+    }
+    return ADVENTURE_STATE_CODES.CONTINUATION;
+  }
+
   /*
    * @return {object} - Specification of the difference in before and after the anyone's solution.
    *                    They are in for animation mainly.
@@ -69,10 +87,37 @@ export default class AdventureModel extends Model {
     if (!resolver) {
       throw new Error('Can not find next resovler');
     }
-    const stateDiff = resolver.tryToResolve({
+
+    const resolutionStateDiff = resolver.tryToResolve({
       adventurer: this._adventurer,
       dungeonCardList: this._dungeonCardList,
     });
-    return stateDiff;
+
+    const adventureStateCode = this._getStateCode();
+
+    // TODO: Judge the adventure ending & Determine rewards and damages
+    const report = {
+      obtainedExp: 1,
+      obtainedMoney: 1,
+      obtainedEquipments: [],
+    };
+    switch (adventureStateCode) {
+      case ADVENTURE_STATE_CODES.DEFEAT:
+        Object.assign(report, {});
+        break;
+      case ADVENTURE_STATE_CODES.VICTORY:
+        Object.assign(report, {});
+        break;
+    }
+
+    return {
+      adventureStateCode,
+      resolutionStateDiff,
+      report,
+    };
   }
 }
+
+Object.assign(AdventureModel, {
+  ADVENTURE_STATE_CODES,
+});
