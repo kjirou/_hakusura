@@ -34,7 +34,7 @@ export default class CliApp {
 
   _onPrintScreenDebugLog(...args) {
     this._screen.debug(...args);
-    console.log(...args);
+    //console.log(...args);
   }
 
   _onExitScreen() {

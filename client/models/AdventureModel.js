@@ -18,7 +18,7 @@ export default class AdventureModel extends Model {
     this._adventurer = adventurer;
 
     // TMP:
-    this._dungeonCardList = Array.from({ length: 50 }).map((v, idx) => {
+    this._dungeonCardList = Array.from({ length: 6 }).map((v, idx) => {
       return {
         seq: idx + 1,  // TMP:
       };
@@ -83,6 +83,10 @@ export default class AdventureModel extends Model {
    *                    "100hp - 20dmg = 80hp" and "100hp - (10dmg * 2) = 80hp" becomes the same in the View.
    */
   proceed() {
+    if (this._getStateCode() !== ADVENTURE_STATE_CODES.CONTINUATION) {
+      throw new Error('The adventure is over already');
+    }
+
     const resolver = this._getNextResolver();
     if (!resolver) {
       throw new Error('Can not find next resovler');

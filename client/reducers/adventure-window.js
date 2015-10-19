@@ -3,8 +3,10 @@ import _ from 'lodash';
 import ActionTypes from 'consts/ActionTypes';
 
 
-const syncStateByNewDungeonCards = (state, newDungeonCards) => {
-  const dungeonCardsOnBoard = newDungeonCards.slice(0, 5);
+export const _MAX_BOARD_DUNGEON_CARD_COUNT = 5;
+
+export const _syncStateByNewDungeonCards = (state, newDungeonCards) => {
+  const dungeonCardsOnBoard = newDungeonCards.slice(0, _MAX_BOARD_DUNGEON_CARD_COUNT);
   const remainingCardCount = newDungeonCards.length;
   return Object.assign({}, state, {
     dungeonCards: newDungeonCards,
@@ -23,13 +25,13 @@ const createInitialState = () => {
 };
 
 
-const adventurexWindowReducer = (state = createInitialState(), action = {}) => {
+const adventureWindowReducer = (state = createInitialState(), action = {}) => {
 
   switch (action.type) {
 
     case ActionTypes.ACTIVATE_ADVENTURE_WINDOW:
       return (({ dungeonCards }) => {
-        return syncStateByNewDungeonCards(state, dungeonCards);
+        return _syncStateByNewDungeonCards(state, dungeonCards);
       })(action);
 
     case ActionTypes.INACTIVATE_ADVENTURE_WINDOW:
@@ -42,4 +44,4 @@ const adventurexWindowReducer = (state = createInitialState(), action = {}) => {
   }
 };
 
-export default adventurexWindowReducer;
+export default adventureWindowReducer;
