@@ -14,6 +14,10 @@ export function _selectShellInputMode(playerStateCode) {
 
 export var SHELL_INPUT_MODE_ALIASES = {
 
+  [ShellInputModes.ADVENTURE]: [
+    [/^$/, 'adventure proceed'],
+  ],
+
   [ShellInputModes.DEFAULT]: [
     [/^on/, 'wizard on'],
     [/^sb/, 'wizard sandbox'],
@@ -27,6 +31,73 @@ export var SHELL_INPUT_MODE_ALIASES = {
 };
 
 export var COMMANDS = {
+
+  'adventure-start': ({ input, args, options }) => {
+    const { game } = AppModel.getInstance();
+    game.prepareAdventurer();
+    game.prepareAdventure();
+    return [
+      {
+        type: ActionTypes.ACTIVATE_ADVENTURE_WINDOW,
+        dungeonCards: game.adventure.dungeonCardList,
+      },
+      {
+        type: ActionTypes.UNMINIMIZE_WINDOW,
+      },
+      {
+        type: ActionTypes.OPEN_WINDOW,
+        windowContentType: WINDOW_CONTENT_TYPES.ADVENTURE,
+      },
+      {
+        type: ActionTypes.APPLY_COMMAND_EXECUTION,
+        newShellInputMode: ShellInputModes.ADVENTURE,
+        input,
+      },
+    ];
+  },
+
+  'adventure-proceed': ({ input, args, options }) => {
+    const { game } = AppModel.getInstance();
+
+    // TODO:
+    if (game.getPlayerStateCode() !== PLAYER_STATE_CODES.ADVENTURING) {
+      return {
+        type: ActionTypes.APPLY_COMMAND_EXECUTION,
+        input,
+        output: '{red-fg}Not in adventure{/}',
+      };
+    }
+
+    const proceedingResult = game.adventure.proceed();
+    if (proceedingResult.isFinished) {
+      game.terminateAdventure();
+      // TODO: Show the Report Page with animation
+      return [
+        {
+          type: ActionTypes.CLOSE_WINDOW,
+        },
+        {
+          type: ActionTypes.INACTIVATE_ADVENTURE_WINDOW,
+        },
+        {
+          type: ActionTypes.APPLY_COMMAND_EXECUTION,
+          newShellInputMode: ShellInputModes.DEFAULT,
+          input,
+        },
+      ];
+    }
+
+    return [
+      {
+        type: ActionTypes.ACTIVATE_ADVENTURE_WINDOW,
+        dungeonCards: proceedingResult.dungeonCardList,
+      },
+      {
+        type: ActionTypes.APPLY_COMMAND_EXECUTION,
+        input,
+      },
+    ];
+  },
 
   'character-index': ({ input, args, options }) => {
     const { characterList, windowHistoryList } = AppModel.getInstance();

@@ -7,6 +7,8 @@ const ViewProps = {
   SCREEN_WIDTH: 80,
   SCREEN_HEIGHT: 32,
   WINDOW_CONTENT_TYPES: keymirror({
+    ADVENTURE: null,
+    BATTLE: null,
     CHARACTER: null,
     INDEX: null,
   }),
