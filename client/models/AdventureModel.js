@@ -116,6 +116,9 @@ export default class AdventureModel extends Model {
 
     return {
       adventureStateCode,
+      isFinished: adventureStateCode === ADVENTURE_STATE_CODES.DEFEAT ||
+        adventureStateCode === ADVENTURE_STATE_CODES.VICTORY,
+      dungeonCardList: this._dungeonCardList,
       resolutionStateDiff,
       report,
     };

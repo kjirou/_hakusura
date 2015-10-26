@@ -46,8 +46,10 @@ describe(heading(__filename), () => {
       model._dungeonCardList = [{}, {}];  // TMP:
       let proceedingResult = model.proceed();
       assert.strictEqual(proceedingResult.adventureStateCode, ADVENTURE_STATE_CODES.CONTINUATION);
+      assert.strictEqual(proceedingResult.isFinished, false);
       proceedingResult = model.proceed();
       assert.notStrictEqual(proceedingResult.adventureStateCode, ADVENTURE_STATE_CODES.CONTINUATION);
+      assert.strictEqual(proceedingResult.isFinished, true);
       assert.throws(() => {
         model.proceed();
       }, /over/);

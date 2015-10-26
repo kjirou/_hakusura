@@ -60,6 +60,11 @@ export default class GameModel extends Model {
       adventurer: this._adventurer,
     });
   }
+
+  terminateAdventure() {
+    this._adventurer = null;
+    this._adventure = null;
+  }
 }
 
 Object.assign(GameModel, {

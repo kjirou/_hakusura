@@ -14,6 +14,10 @@ export function _selectShellInputMode(playerStateCode) {
 
 export var SHELL_INPUT_MODE_ALIASES = {
 
+  [ShellInputModes.ADVENTURE]: [
+    [/^$/, 'adventure proceed'],
+  ],
+
   [ShellInputModes.DEFAULT]: [
     [/^on/, 'wizard on'],
     [/^sb/, 'wizard sandbox'],
@@ -46,7 +50,7 @@ export var COMMANDS = {
       },
       {
         type: ActionTypes.APPLY_COMMAND_EXECUTION,
-        //newShellInputMode: ShellInputModes.INDEX,
+        newShellInputMode: ShellInputModes.ADVENTURE,
         input,
       },
     ];
@@ -64,12 +68,29 @@ export var COMMANDS = {
       };
     }
 
-    game.adventure.proceed();
+    const proceedingResult = game.adventure.proceed();
+    if (proceedingResult.isFinished) {
+      game.terminateAdventure();
+      // TODO: Show the Report Page with animation
+      return [
+        {
+          type: ActionTypes.CLOSE_WINDOW,
+        },
+        {
+          type: ActionTypes.INACTIVATE_ADVENTURE_WINDOW,
+        },
+        {
+          type: ActionTypes.APPLY_COMMAND_EXECUTION,
+          newShellInputMode: ShellInputModes.DEFAULT,
+          input,
+        },
+      ];
+    }
 
     return [
       {
         type: ActionTypes.ACTIVATE_ADVENTURE_WINDOW,
-        dungeonCards: game.adventure.dungeonCardList,
+        dungeonCards: proceedingResult.dungeonCardList,
       },
       {
         type: ActionTypes.APPLY_COMMAND_EXECUTION,
